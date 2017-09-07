@@ -1,7 +1,10 @@
 describe('WeightedOptions', () => {
   let opt
+  const data = {a: 1, b: 2, c : 2}
+  let optWithData
 
   beforeEach( () => {
+    optWithData = new WeightedOptions(data)
     opt = new WeightedOptions()
   })
 
@@ -16,8 +19,6 @@ describe('WeightedOptions', () => {
     })
 
     it('when the constructor is passed an object as first argument, is set to that object', ()  => {
-      const data = {'a': 1, 'b': 2}
-      const optWithData = new WeightedOptions(data)
       expect(optWithData.options).toEqual(data)
     })
 
@@ -28,6 +29,17 @@ describe('WeightedOptions', () => {
 
     xit('throws an error when the first argument is not an object', ()  => {
     })
-
   })
+
+  describe('getTotalWeight method', () => {
+    it('Is a function', ()  => {
+      expect(typeof opt.getTotalWeight).toEqual('function')
+    })
+
+    it('Returns the sum of the values in options property', ()  => {
+      expect(opt.getTotalWeight()).toEqual(0)
+      expect(optWithData.getTotalWeight()).toEqual(5)
+    })
+  })
+
 })
