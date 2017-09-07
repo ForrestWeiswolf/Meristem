@@ -1,0 +1,10 @@
+{
+  "framework": "jasmine2",
+  "src_files": [
+    "**/*.js"
+  ],
+  "src_files_ignore": [
+    "node_modules/**/*",
+    "gulpfile.js"
+  ]
+}
