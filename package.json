@@ -1,12 +1,12 @@
 {
-  "name": "generator",
+  "name": "Meristem",
   "version": "1.0.0",
-  "description": "",
+  "description": "Procedural text generation using a context-free grammar",
   "main": "index.js",
   "scripts": {
     "test": "testem"
   },
-  "dependencies": {
+  "dev-dependencies": {
     "jasmine": "^2.7.0"
   },
   "author": "Forrest Weiswolf",
