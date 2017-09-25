@@ -1,0 +1,31 @@
+A user passes a definition, consisting of a string and a definitions object (optionally, options object):
+
+Meristem.expand("Example sentence: (A)(B)(C).", {
+  A: {this: 1, that: 2},
+  B: {'is a': 3, 'was a': 2, 'will be a': 1},
+  C: {'(E)': 3, '(D)(E)': 1},
+  D: {'brown': 2, 'black': 3, 'white': 1},
+  E: {'dog': 3, 'cat': 2}
+}
+
+String is split by token end: ["Example sentence: (A", "(B", "(C", "."]
+Each section is split by token start.
+The first part is added to result. The second part, if it exists, is looked up in definitions.
+If the value at that key is a string, it's expanded, then added to result.
+If it's an object, convert it to a weighted option and continue
+If it's a weighted option, choose is called on it, and the returned value added to result.
+
+"Example sentence: (A"
+result = "Example sentence: "
+definitions['A'] = {this: 1, that: 2}
+.choose()
+result = "Example sentence: this"
+
+. . .
+
+"(C"
+definitions['C']: {'$E': 3, '$D$E': 1}
+.choose() = '(E)'
+expand('(E)') = 'dog'
+result = "Example sentence: this was a dog"
+
