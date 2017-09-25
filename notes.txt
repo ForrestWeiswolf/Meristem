@@ -29,3 +29,12 @@ definitions['C']: {'$E': 3, '$D$E': 1}
 expand('(E)') = 'dog'
 result = "Example sentence: this was a dog"
 
+extra features:
+inline alternation:
+  "(1|2)" -> '1' or '2'
+inline optionals:
+  ((a)) - 'a' or ''
+...and other such things that you usually have in backus-naur
+ability to manipulate a format in ways other than expand:
+  .generate(n) runs it n times
+takes an options object, so you can, i.e. change what the token start and end chars are

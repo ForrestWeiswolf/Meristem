@@ -39,4 +39,32 @@ describe('Format', () => {
       expect(wrongSecondTypeConstructor).toThrow(new Error('Incorrect second argument to Format constructor'));
     })
   })
+
+  describe('expand method', () => {
+    let format
+
+    it('is an instance method', () => {
+      expect(typeof Format.prototype.expand).toEqual('function')
+    })
+
+    it('returns a string', () => {
+      format = new Format('(A)', {'a': 'example'})      
+      expect(typeof format.expand()).toEqual('string')
+    })
+
+    it('when the string contains no parentheses, returns it as-is', () => {
+      format = new Format('ABC', {'a': 'example'})
+      expect(format.expand()).toEqual('ABC')
+    })
+
+    it('inserts strings from the definitions object in place of parenthetical tokens', () => {
+      format = new Format('(a)BC', {'a': 'example'})
+      expect(format.expand()).toEqual('exampleBC')
+    })
+
+    it('throws an error when a token is not found in the definitions object', () => {
+      format = new Format('(a)BC', {'d': 'example'})
+      expect(format.expand).toThrow(new Error('"a" not found in definitions'));      
+    })
+  })
 })
