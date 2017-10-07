@@ -6,6 +6,7 @@ describe('Format', () => {
 
     it('Takes a string and a non-empty object as arguments', () => {
       const format = new Format('(a)', {a: 'example'})
+      expect(format).toBeDefined()
     })
 
     it('Is a constructor', () => {
@@ -58,8 +59,8 @@ describe('Format', () => {
     })
 
     it('inserts strings from the definitions object in place of parenthetical tokens', () => {
-      format = new Format('(a)BC', {'a': 'example'})
-      expect(format.expand()).toEqual('exampleBC')
+      format = new Format('(a), (b)(c)', {'a': 'foo', 'b': 'bar', 'c': '...'})
+      expect(format.expand()).toEqual('foo, bar...')
     })
 
     it('throws an error when a token is not found in the definitions object', () => {
