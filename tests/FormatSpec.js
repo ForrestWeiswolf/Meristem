@@ -4,8 +4,10 @@ describe('Format', () => {
       expect(typeof Format).toEqual('function')
     })
 
-    it('Takes a string and a non-empty object as arguments', () => {
-      const format = new Format('(a)', {a: 'example'})
+    it('Takes a string and an option non-empty object as arguments', () => {
+      let format = new Format('(a)', {a: 'example'})
+      expect(format).toBeDefined()
+      format = new Format('(a)')
       expect(format).toBeDefined()
     })
 
@@ -25,19 +27,6 @@ describe('Format', () => {
 
       expect(emptyConstructor).toThrow(new Error('Incorrect first argument to Format constructor'));
       expect(wrongTypeConstructor).toThrow(new Error('Incorrect first argument to Format constructor'));
-    })
-
-    it('Throws an error if second arg is not a object', () => {
-      function emptySecondConstructor() {
-        return new Format('(a)')
-      }
-
-      function wrongSecondTypeConstructor() {
-        return new Format('(a)', 1)
-      }
-
-      expect(emptySecondConstructor).toThrow(new Error('Incorrect second argument to Format constructor'));
-      expect(wrongSecondTypeConstructor).toThrow(new Error('Incorrect second argument to Format constructor'));
     })
   })
 
@@ -63,9 +52,26 @@ describe('Format', () => {
       expect(format.expand()).toEqual('foo, bar...')
     })
 
+    it('when the definition is an object with an expand method, it is called and the returned value added to result', () => {
+      format = new Format('(a), (b)(c)', {'a': 'foo', 'b': 'bar', 'c': '...'})
+      let recFormat = new Format('Recursive example: (recurse)', format)
+      expect(recFormat.expand()).toEqual('foo, bar...')
+    })
+
+    it('uses passed definitons object if this.definitions does not exist', () => {
+      format = new Format('(a), (b)(c)')
+      expect(format.expand()).toEqual({'a': 'foo', 'b': 'bar', 'c': '...'})
+    })
+
+    it('throws an error when this.definitions does not exist and no object is passed', () => {
+      format = new Format('(a)BC')
+      expect(format.expand).toThrow(new Error('This.definitions does not exist and no definitions argument passed'));      
+    })
+
     it('throws an error when a token is not found in the definitions object', () => {
       format = new Format('(a)BC', {'d': 'example'})
       expect(format.expand).toThrow(new Error('"a" not found in definitions'));      
     })
+
   })
 })
