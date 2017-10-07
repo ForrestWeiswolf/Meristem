@@ -29,12 +29,23 @@ definitions['C']: {'$E': 3, '$D$E': 1}
 expand('(E)') = 'dog'
 result = "Example sentence: this was a dog"
 
+
 extra features:
+
 inline alternation:
   "(1|2)" -> '1' or '2'
 inline optionals:
   ((a)) - 'a' or ''
 ...and other such things that you usually have in backus-naur
+
 ability to manipulate a format in ways other than expand:
   .generate(n) runs it n times
+
 takes an options object, so you can, i.e. change what the token start and end chars are
+
+PromptOptions - asks user instead of picking at random
+MarkovOptions - makes a markov chain style choice
+(these, along with WeightedOptions can inherit from an 'Pptions' prototype and have a .choose, 
+so .expand can handle them similarly )
+
+can handle a funciton, simply calling it with (resultSoFar, definitions)
