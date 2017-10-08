@@ -55,8 +55,8 @@ describe('Format', () => {
     it('throws an error when a token is not found in the definitions object', () => {
       format = new Format('(a)BC', { 'd': 'example' })
 
-       //wrapper function because passing a method to expect().toThrow seems to cause issues:
-      function badExpand(){
+      //wrapper function because passing a method to expect().toThrow seems to cause issues:
+      function badExpand() {
         return format.expand()
       }
 
@@ -86,5 +86,19 @@ describe('Format', () => {
         expect(recFormat.expand()).toEqual('Recursive example: foo, bar')
       })
     }) //end 'when a token is itself a Format'
+
+    xdescribe('when a token is a weightedOptions', () => {
+      it('calls the weightedOptions choose method', () => {
+        const wOpt = new WeightedOptions({ maple: 2, maypole: 2, catch: 1, carry: 2 })
+        spyOn(wOpt, 'choose').and.callThrough()
+
+        format = new Format('(a), (a)', { 'a': wOpt })
+        format.expand()
+
+        expect(wOpt.choose).toHaveBeenCalled()
+        expect(wOpt.choose.calls.count()).toEqual(2)
+      })
+    }) //end 'when a token is a weightedOptions'    
   })
+
 })
