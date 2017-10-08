@@ -38,7 +38,7 @@ describe('Format', () => {
     })
 
     it('returns a string', () => {
-      format = new Format('(A)', { 'a': 'example' })
+      format = new Format('(a)', { 'a': 'example' })
       expect(typeof format.expand()).toEqual('string')
     })
 
@@ -50,6 +50,11 @@ describe('Format', () => {
     it('inserts strings from the definitions object in place of parenthetical tokens', () => {
       format = new Format('(a), (b)(c)', { 'a': 'foo', 'b': 'bar', 'c': '...' })
       expect(format.expand()).toEqual('foo, bar...')
+    })
+
+    it('throws an error when a token is not found in the definitions object', () => {
+      format = new Format('(a)BC', { 'd': 'example' })
+      expect(format.expand).toThrow(new Error('"a" not found in definitions'))
     })
 
     describe('when a token is itself a Format', () => {
@@ -73,11 +78,6 @@ describe('Format', () => {
         format = new Format('(a), (b)')
         let recFormat = new Format('Recursive example: (recurse)', { 'recurse': format, 'a': 'foo', 'b': 'bar' })
         expect(recFormat.expand()).toEqual('Recursive example: foo, bar')
-      })
-
-      it('throws an error when a token is not found in the definitions object', () => {
-        format = new Format('(a)BC', { 'd': 'example' })
-        expect(format.expand).toThrow(new Error('"a" not found in definitions'));
       })
     }) //end 'when a token is itself a Format'
   })
