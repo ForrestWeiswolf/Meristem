@@ -57,17 +57,17 @@ describe('Format', () => {
       expect(format.expand).toThrow(new Error('"a" not found in definitions'))
     })
 
+    it('uses passed definitions object if this.definitions does not exist', () => {
+      format = new Format('(a), (b)(c)')
+      expect(format.expand({ 'a': 'foo', 'b': 'bar', 'c': '...' })).toEqual('foo, bar...')
+    })
+
+    it('throws an error when this.definitions does not exist and no object is passed', () => {
+      format = new Format('(a)BC')
+      expect(format.expand).toThrow(new Error('This.definitions does not exist and no definitions argument passed'));
+    })
+
     describe('when a token is itself a Format', () => {
-      it('uses passed definitions object if this.definitions does not exist', () => {
-        format = new Format('(a), (b)(c)')
-        expect(format.expand({ 'a': 'foo', 'b': 'bar', 'c': '...' })).toEqual('foo, bar...')
-      })
-
-      it('throws an error when this.definitions does not exist and no object is passed', () => {
-        format = new Format('(a)BC')
-        expect(format.expand).toThrow(new Error('This.definitions does not exist and no definitions argument passed'));
-      })
-
       it('when the definition is an object with an expand method, it is called and the returned value added to result', () => {
         format = new Format('(a), (b)', { 'a': 'foo', 'b': 'bar' })
         let recFormat = new Format('Recursive example: (recurse)', { 'recurse': format })
