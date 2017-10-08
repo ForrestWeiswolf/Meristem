@@ -54,7 +54,13 @@ describe('Format', () => {
 
     it('throws an error when a token is not found in the definitions object', () => {
       format = new Format('(a)BC', { 'd': 'example' })
-      expect(format.expand).toThrow(new Error('"a" not found in definitions'))
+
+       //wrapper function because passing a method to expect().toThrow seems to cause issues:
+      function badExpand(){
+        return format.expand()
+      }
+
+      expect(badExpand).toThrow(new Error('"a" not found in definitions'))
     })
 
     it('uses passed definitions object if this.definitions does not exist', () => {
