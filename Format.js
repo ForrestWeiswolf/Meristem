@@ -22,20 +22,26 @@ Format.prototype.expand = function (definitionsArg) {
       const text = splitSection[0]
       const token = splitSection[1]
       if (text) result += text
+      result += this.handleToken(token, definitions)
 
-      if (token && definitions[token]) {
-        result += handleToken(definitions[token], definitions)
-      } else if (token) {
-        throw new Error(`"${token}" not found in definitions`)
-      }
     })
   return result;
 }
 
-const handleToken = function (token, definitions) {
-  if (typeof token === 'string') {
-    return token
-  } else if (typeof token === 'object' && token.expand) {
-    return token.expand(definitions)
+Format.prototype.handleToken = function (tokenStr, definitions) {
+  if (!tokenStr) {
+    return ''
+  } else if (!definitions[tokenStr]) {
+    throw new Error(`"${tokenStr}" not found in definitions`)
+  } else {
+
+    let token = definitions[tokenStr]
+
+    if (typeof token === 'string') {
+      return token
+    } else if (typeof token === 'object' && token.expand) {
+      console.log(definitions)
+      return token.expand(definitions)
+    }
   }
 }

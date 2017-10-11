@@ -28,7 +28,7 @@ describe('Format', () => {
       expect(emptyConstructor).toThrow(new Error('Incorrect first argument to Format constructor'));
       expect(wrongTypeConstructor).toThrow(new Error('Incorrect first argument to Format constructor'));
     })
-  })
+  }) //end 'constructor'
 
   describe('expand method', () => {
     let format
@@ -47,58 +47,89 @@ describe('Format', () => {
       expect(format.expand()).toEqual('ABC')
     })
 
-    it('inserts strings from the definitions object in place of parenthetical tokens', () => {
-      format = new Format('(a), (b)(c)', { 'a': 'foo', 'b': 'bar', 'c': '...' })
-      expect(format.expand()).toEqual('foo, bar...')
+    it('calls handleToken on any parenthetical tokens, and replaces them with the returned value', () => {
+      format = new Format('(a) (b) (c)...', { 'a': 'example' })
+      spyOn(format, 'handleToken').and.callFake((token, defs) => token ? 'baz' : '')
+
+      expect(format.expand()).toEqual('baz baz baz...')
+      expect(format.handleToken.calls.argsFor(0)).toContain('a')
+      expect(format.handleToken.calls.argsFor(1)).toContain('b')
+      expect(format.handleToken.calls.argsFor(2)).toContain('c')
     })
 
-    it('throws an error when a token is not found in the definitions object', () => {
-      format = new Format('(a)BC', { 'd': 'example' })
+    it('passes its definitions as a second argument to handleToken', () => {
+      let definitions = { 'a': 'example' }
+      format = new Format('(a) (b) (c)...', definitions)
+      spyOn(format, 'handleToken').and.callFake((token, defs) => token ? 'baz' : '')
 
-      //wrapper function because passing a method to expect().toThrow seems to cause issues:
-      function badExpand() {
-        return format.expand()
-      }
-
-      expect(badExpand).toThrow(new Error('"a" not found in definitions'))
+      expect(format.expand()).toEqual('baz baz baz...')
+      expect(format.handleToken).toHaveBeenCalledWith('a', definitions)
     })
 
     it('uses passed definitions object if this.definitions does not exist', () => {
-      format = new Format('(a), (b)(c)')
-      expect(format.expand({ 'a': 'foo', 'b': 'bar', 'c': '...' })).toEqual('foo, bar...')
+      let definitions = { 'a': 'example' }
+      format = new Format('(a) (b) (c)...', definitions)
+
+      spyOn(format, 'handleToken').and.callFake((token, defs) => token ? 'baz' : '')
+
+      expect(format.expand(definitions)).toEqual('baz baz baz...')
+      expect(format.handleToken).toHaveBeenCalledWith('a', definitions)
     })
 
     it('throws an error when this.definitions does not exist and no object is passed', () => {
       format = new Format('(a)BC')
       expect(format.expand).toThrow(new Error('This.definitions does not exist and no definitions argument passed'));
     })
+  }) //end 'expand'
+
+  describe('handleToken', () => {
+    beforeEach(() => {
+      format = new Format('nothing')
+    })
+
+    it('returns a passed token\'s value in definitions when said value is a string', () => {
+      expect(format.handleToken('a', { 'a': 'foo' })).toEqual('foo')
+    })
+
+    it('throws an error when a token is not found in the definitions object', () => {
+      //wrapper function because passing a method to expect().toThrow seems to cause issues:
+      function badExpand() {
+        return format.handleToken('a', { 'b': 'foo' })
+      }
+
+      expect(badExpand).toThrow(new Error('"a" not found in definitions'))
+    })
 
     describe('when a token is itself a Format', () => {
-      it('when the definition is an object with an expand method, it is called and the returned value added to result', () => {
-        format = new Format('(a), (b)', { 'a': 'foo', 'b': 'bar' })
-        let recFormat = new Format('Recursive example: (recurse)', { 'recurse': format })
-        expect(recFormat.expand()).toEqual('Recursive example: foo, bar')
+      it('its expand method is called and the returned value added to result', () => {
+        format = new Format('(a)', { 'a': 'recursive' })
+        spyOn(format, 'expand').and.returnValue('recursive')
+
+        format.handleToken('recurse', { 'recurse': format })
+
+        expect(format.expand).toHaveBeenCalled()
       })
 
       it('passes the expand method this.definitions', () => {
-        format = new Format('(a), (b)')
-        let recFormat = new Format('Recursive example: (recurse)', { 'recurse': format, 'a': 'foo', 'b': 'bar' })
-        expect(recFormat.expand()).toEqual('Recursive example: foo, bar')
+        format = new Format('(a)', { 'a': 'recursive' })
+        let definitions = { 'recurse': format }       
+        spyOn(format, 'expand').and.returnValue('recursive')
+
+        format.handleToken('recurse', definitions)
+
+        expect(format.expand).toHaveBeenCalledWith(definitions)
       })
     }) //end 'when a token is itself a Format'
 
-    xdescribe('when a token is a weightedOptions', () => {
+    describe('when a token is a weightedOptions', () => {
       it('calls the weightedOptions choose method', () => {
         const wOpt = new WeightedOptions({ maple: 2, maypole: 2, catch: 1, carry: 2 })
         spyOn(wOpt, 'choose').and.callThrough()
 
-        format = new Format('(a), (a)', { 'a': wOpt })
-        format.expand()
+        format.handleToken('Bast', {'Bast' : wOpt})
 
         expect(wOpt.choose).toHaveBeenCalled()
-        expect(wOpt.choose.calls.count()).toEqual(2)
       })
     }) //end 'when a token is a weightedOptions'    
-  })
-
-})
+  }) //end 'handleToken
+}) 
