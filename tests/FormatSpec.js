@@ -121,7 +121,7 @@ describe('Format', () => {
       })
     }) //end 'when a token is itself a Format'
 
-    describe('when a token is a weightedOptions', () => {
+    describe('when a token is a WeightedOptions', () => {
       it('calls the weightedOptions choose method', () => {
         const wOpt = new WeightedOptions({ maple: 2, maypole: 2, catch: 1, carry: 2 })
         spyOn(wOpt, 'choose').and.callThrough()
@@ -139,14 +139,6 @@ describe('Format', () => {
         
         expect(format.handleToken('Bast', { 'Bast': wOpt })).toEqual(testStr)
       })
-
-      xit('calls handleToken on the returned value of the choose method if it\'s not a string', () => {
-        const handleTokenCalledWithTestStr = format.handleToken.calls.allArgs()
-          .includes((arg) => arg === testStr)
-
-        expect(handleTokenCalledWithTestStr).toBeTruthy()
-      })
-
     }) //end 'when a token is a weightedOptions'    
   }) //end 'handleToken
 }) 

@@ -40,8 +40,12 @@ Format.prototype.handleToken = function (tokenStr, definitions) {
     if (typeof token === 'string') {
       return token
     } else if (typeof token === 'object' && token.expand) {
-      console.log(definitions)
       return token.expand(definitions)
+    } else if (typeof token === 'object' && token.choose) {
+      //let choice = token.choose()
+      //return typeof choice === 'string' ? choice : 
+      return token.choose()
     }
+
   }
 }
