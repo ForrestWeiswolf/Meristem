@@ -1,12 +1,12 @@
-function WeightedRandom(options = {}) {
-  this.options = options
+function WeightedRandom(choices = {}) {
+  this.choices = choices
 }
 
 WeightedRandom.prototype.getTotalWeight = function() {
-  const keys = Object.keys(this.options)
+  const keys = Object.keys(this.choices)
 
   return keys.reduce((sum, key) => {
-    return this.options[key] + sum
+    return this.choices[key] + sum
   }, 0)
 };
 
@@ -18,8 +18,8 @@ WeightedRandom.prototype.choose = function() {
     return null
   }
 
-  for (var key in this.options){
-    count += this.options[key]
+  for (var key in this.choices){
+    count += this.choices[key]
     if(count > rand){
       return key
     }
