@@ -1,8 +1,8 @@
-function WeightedOptions(options = {}) {
+function WeightedRandom(options = {}) {
   this.options = options
 }
 
-WeightedOptions.prototype.getTotalWeight = function() {
+WeightedRandom.prototype.getTotalWeight = function() {
   const keys = Object.keys(this.options)
 
   return keys.reduce((sum, key) => {
@@ -10,7 +10,7 @@ WeightedOptions.prototype.getTotalWeight = function() {
   }, 0)
 };
 
-WeightedOptions.prototype.choose = function() {
+WeightedRandom.prototype.choose = function() {
   const rand = Math.random() * this.getTotalWeight()
   let count = 0
 
@@ -26,9 +26,9 @@ WeightedOptions.prototype.choose = function() {
   }
 };
 
-// module.exports = WeightedOptions
+// module.exports = WeightedRandom
 
-const opt = new WeightedOptions({a: 1, b: 2, c: 3})
+const opt = new WeightedRandom({a: 1, b: 2, c: 3})
 let results = {}
 let rand
 

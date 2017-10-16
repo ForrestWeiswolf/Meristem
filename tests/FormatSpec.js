@@ -121,9 +121,9 @@ describe('Format', () => {
       })
     }) //end 'when a token is itself a Format'
 
-    describe('when a token is a WeightedOptions', () => {
-      it('calls the weightedOptions choose method', () => {
-        const wOpt = new WeightedOptions({ maple: 2, maypole: 2, catch: 1, carry: 2 })
+    describe('when a token is a WeightedRandom', () => {
+      it('calls the WeightedRandom choose method', () => {
+        const wOpt = new WeightedRandom({ maple: 2, maypole: 2, catch: 1, carry: 2 })
         spyOn(wOpt, 'choose').and.callThrough()
 
         format.handleToken('Bast', { 'Bast': wOpt })
@@ -134,11 +134,11 @@ describe('Format', () => {
       it('returns the returned value of the choose method if it is a string', () => {
         const testStr = 'Ash and ember, elderberry'
 
-        const wOpt = new WeightedOptions({ maple: 2, maypole: 2, catch: 1, carry: 2 })
+        const wOpt = new WeightedRandom({ maple: 2, maypole: 2, catch: 1, carry: 2 })
         spyOn(wOpt, 'choose').and.returnValue(testStr)
         
         expect(format.handleToken('Bast', { 'Bast': wOpt })).toEqual(testStr)
       })
-    }) //end 'when a token is a weightedOptions'    
+    }) //end 'when a token is a WeightedRandom'    
   }) //end 'handleToken
 }) 
