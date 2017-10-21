@@ -9,6 +9,12 @@ describe('Format', () => {
       expect(new Format('(a)')).toBeDefined()
     })
 
+    it('can take a WeightedRandom and an optional non-empty object as arguments', () => {
+      const coin = new WeightedRandom({heads: 1, tails: 1})
+      expect(new Format(coin, { a: 'example' })).toBeDefined()
+      expect(new Format(coin)).toBeDefined()
+    })
+
     it('Is a constructor', () => {
       const format = new Format('(a)', { a: 'example' })
       expect(typeof format).toEqual('object')
@@ -41,11 +47,6 @@ describe('Format', () => {
   describe('expand method', () => {
     it('is an instance method', () => {
       expect(typeof Format.prototype.expand).toEqual('function')
-    })
-
-    it('when the format string contains no parentheses, returns it as-is', () => {
-      const format = new Format('ABC', { 'a': 'example' })
-      expect(format.expand()).toEqual('ABC')
     })
 
     it('calls handleToken on any parenthetical tokens, and replaces them with the returned value', () => {
