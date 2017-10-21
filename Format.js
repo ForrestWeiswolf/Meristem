@@ -49,3 +49,5 @@ Format.prototype.handleToken = function (tokenStr, definitions) {
 
   }
 }
+
+module.exports = Format

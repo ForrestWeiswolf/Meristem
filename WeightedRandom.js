@@ -26,15 +26,4 @@ WeightedRandom.prototype.choose = function() {
   }
 };
 
-// module.exports = WeightedRandom
-
-const opt = new WeightedRandom({a: 1, b: 2, c: 3})
-let results = {}
-let rand
-
-for (var i = 0; i < 500; i++){
-  rand = opt.choose()
-  results[rand] = results[rand] + 1 || 1
-}
-
-console.log(results)
+module.exports = WeightedRandom
