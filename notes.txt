@@ -32,6 +32,8 @@ result = "Example sentence: this was a dog"
 
 extra features:
 
+can take a wRand instead of formatStr
+
 inline alternation:
   "(1|2)" -> '1' or '2'
 inline optionals:
@@ -48,4 +50,6 @@ MarkovOptions - makes a markov chain style choice
 (these, along with WeightedOptions can inherit from an 'Pptions' prototype and have a .choose, 
 so .expand can handle them similarly )
 
-can handle a funciton, simply calling it with (resultSoFar, definitions)
+can handle a function, simply calling it with (resultSoFar, definitions)
+
+WeightedRandom that only chooses once, then always returns the same thing

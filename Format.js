@@ -38,7 +38,7 @@ Format.prototype.handleToken = function (tokenStr, definitions) {
     let token = definitions[tokenStr]
 
     if (typeof token === 'string') {
-      return token
+      return new Format(token, definitions).expand()
     } else if (typeof token === 'object' && token.expand) {
       return token.expand(definitions)
     } else if (typeof token === 'object' && token.choose) {

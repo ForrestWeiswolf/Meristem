@@ -87,10 +87,6 @@ describe('Format', () => {
       format = new Format('nothing')
     })
 
-    it('returns a passed token\'s value in definitions when said value is a string', () => {
-      expect(format.handleToken('a', { 'a': 'foo' })).toEqual('foo')
-    })
-
     it('throws an error when a token is not found in the definitions object', () => {
       //wrapper function because passing a method to expect().toThrow seems to cause issues:
       function badExpand() {
@@ -98,6 +94,15 @@ describe('Format', () => {
       }
 
       expect(badExpand).toThrow(new Error('"a" not found in definitions'))
+    })
+
+    describe('when a token is a string', () => {
+      //not sure this is the best way to test this 
+      it('casts it into a format and expands it', ()=>{
+        const definitions = {'nest': '..a nest in a (tree)', 'tree': 'tree in a (bog)', 'bog': 'bog down in the valley, oh'}
+
+        expect(format.handleToken('nest', definitions)).toEqual('..a nest in a tree in a bog down in the valley, oh')
+      })
     })
 
     describe('when a token is itself a Format', () => {
