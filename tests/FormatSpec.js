@@ -1,6 +1,6 @@
 describe('Format', () => {
   let format
-  
+
   describe('constructor', () => {
     it('Is a function', () => {
       expect(typeof Format).toEqual('function')
@@ -82,7 +82,7 @@ describe('Format', () => {
     })
   }) //end 'expand'
 
-  describe('handleToken', () => {    
+  describe('handleToken', () => {
     beforeEach(() => {
       format = new Format('nothing')
     })
@@ -98,8 +98,8 @@ describe('Format', () => {
 
     describe('when a token is a string', () => {
       //not sure this is the best way to test this 
-      it('casts it into a format and expands it', ()=>{
-        const definitions = {'nest': '..a nest in a (tree)', 'tree': 'tree in a (bog)', 'bog': 'bog down in the valley, oh'}
+      it('casts it into a format and expands it', () => {
+        const definitions = { 'nest': '..a nest in a (tree)', 'tree': 'tree in a (bog)', 'bog': 'bog down in the valley, oh' }
 
         expect(format.handleToken('nest', definitions)).toEqual('..a nest in a tree in a bog down in the valley, oh')
       })
@@ -136,13 +136,13 @@ describe('Format', () => {
         expect(wOpt.choose).toHaveBeenCalled()
       })
 
-      it('returns the returned value of the choose method if it is a string', () => {
-        const testStr = 'Ash and ember, elderberry'
+      it('casts the result of choose into a format and expands it', () => {
+        //not sure this is the best way to test this 
+        const cities = new WeightedRandom({ '(NYC)': 1 })
+        const definitions = { 'city': cities, 'NYC': 'New York City' }
+        format = new Format('(city)', definitions)
 
-        const wOpt = new WeightedRandom({ maple: 2, maypole: 2, catch: 1, carry: 2 })
-        spyOn(wOpt, 'choose').and.returnValue(testStr)
-        
-        expect(format.handleToken('Bast', { 'Bast': wOpt })).toEqual(testStr)
+        expect(format.handleToken('city', definitions)).toEqual('New York City')
       })
     }) //end 'when a token is a WeightedRandom'    
   }) //end 'handleToken
