@@ -1,20 +1,16 @@
 describe('Format', () => {
-  let format
-
   describe('constructor', () => {
     it('Is a function', () => {
       expect(typeof Format).toEqual('function')
     })
 
-    it('Takes a string and an option non-empty object as arguments', () => {
-      format = new Format('(a)', { a: 'example' })
-      expect(format).toBeDefined()
-      format = new Format('(a)')
-      expect(format).toBeDefined()
+    it('can take a string and an optional non-empty object as arguments', () => {
+      expect(new Format('(a)', { a: 'example' })).toBeDefined()
+      expect(new Format('(a)')).toBeDefined()
     })
 
     it('Is a constructor', () => {
-      format = new Format('(a)', { a: 'example' })
+      const format = new Format('(a)', { a: 'example' })
       expect(typeof format).toEqual('object')
     })
 
@@ -23,12 +19,22 @@ describe('Format', () => {
         return new Format()
       }
 
-      function wrongTypeConstructor() {
+      function numberConstructor() {
         return new Format(1)
       }
 
+      function objectConstructor() {
+        return new Format({key: 'value'})
+      }
+
+      function nullConstructor() {
+        return new Format(null)
+      }
+
       expect(emptyConstructor).toThrow(new Error('Incorrect first argument to Format constructor'));
-      expect(wrongTypeConstructor).toThrow(new Error('Incorrect first argument to Format constructor'));
+      expect(numberConstructor).toThrow(new Error('Incorrect first argument to Format constructor'));
+      expect(objectConstructor).toThrow(new Error('Incorrect first argument to Format constructor'));
+      expect(nullConstructor).toThrow(new Error('Incorrect first argument to Format constructor'));
     })
   }) //end 'constructor'
 
@@ -37,18 +43,13 @@ describe('Format', () => {
       expect(typeof Format.prototype.expand).toEqual('function')
     })
 
-    it('returns a string', () => {
-      format = new Format('(a)', { 'a': 'example' })
-      expect(typeof format.expand()).toEqual('string')
-    })
-
-    it('when the string contains no parentheses, returns it as-is', () => {
-      format = new Format('ABC', { 'a': 'example' })
+    it('when the format string contains no parentheses, returns it as-is', () => {
+      const format = new Format('ABC', { 'a': 'example' })
       expect(format.expand()).toEqual('ABC')
     })
 
     it('calls handleToken on any parenthetical tokens, and replaces them with the returned value', () => {
-      format = new Format('(a) (b) (c)...', { 'a': 'example' })
+      const format = new Format('(a) (b) (c)...', { 'a': 'example' })
       spyOn(format, 'handleToken').and.callFake((token, defs) => token ? 'baz' : '')
 
       expect(format.expand()).toEqual('baz baz baz...')
@@ -58,8 +59,8 @@ describe('Format', () => {
     })
 
     it('passes its definitions as a second argument to handleToken', () => {
-      let definitions = { 'a': 'example' }
-      format = new Format('(a) (b) (c)...', definitions)
+      const definitions = { 'a': 'example' }
+      const format = new Format('(a) (b) (c)...', definitions)
       spyOn(format, 'handleToken').and.callFake((token, defs) => token ? 'baz' : '')
 
       expect(format.expand()).toEqual('baz baz baz...')
@@ -67,8 +68,8 @@ describe('Format', () => {
     })
 
     it('uses passed definitions object if this.definitions does not exist', () => {
-      let definitions = { 'a': 'example' }
-      format = new Format('(a) (b) (c)...', definitions)
+      const definitions = { 'a': 'example' }
+      const format = new Format('(a) (b) (c)...', definitions)
 
       spyOn(format, 'handleToken').and.callFake((token, defs) => token ? 'baz' : '')
 
@@ -77,7 +78,7 @@ describe('Format', () => {
     })
 
     it('throws an error when this.definitions does not exist and no object is passed', () => {
-      format = new Format('(a)BC')
+      const format = new Format('(a)BC')
       expect(format.expand).toThrow(new Error('This.definitions does not exist and no definitions argument passed'));
     })
   }) //end 'expand'
