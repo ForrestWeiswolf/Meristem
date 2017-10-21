@@ -9,12 +9,6 @@ describe('Format', () => {
       expect(new Format('(a)')).toBeDefined()
     })
 
-    it('can take a WeightedRandom and an optional non-empty object as arguments', () => {
-      const coin = new WeightedRandom({heads: 1, tails: 1})
-      expect(new Format(coin, { a: 'example' })).toBeDefined()
-      expect(new Format(coin)).toBeDefined()
-    })
-
     it('Is a constructor', () => {
       const format = new Format('(a)', { a: 'example' })
       expect(typeof format).toEqual('object')
