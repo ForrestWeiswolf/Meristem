@@ -4,21 +4,25 @@ const WeightedRandom = require('../WeightedRandom')
 const Format = require('../Format')
 
 const definitions = {
-  context: new WeightedRandom({
-    'In All Things,': 6,
-    '(abstraction) and': 3,
-    '(abstraction), (abstraction),': 1,
-    '(abstraction) through': 2,
+  motto: new WeightedRandom({
+    'In All Things, (abstraction)': 6,
+    '(abstraction) and (abstraction)': 3,
+    '(abstraction) through (abstraction)': 2,
+    'In (abstraction), we become (adjective)': 3,
+    'In (abstraction), we are (adjective)': 3  
   }),
   abstraction: new WeightedRandom({
     'Love': 2,
     'Peace': 3,
     'Nature': 1,
-    'Faith': 3,
-    'Hope': 1,
-    'Truth': 2,
-    'Vigilance': 1,
-    'Strength': 2
+    'Faith': 2,
+    'Hope': 2,
+    'Truth': 3,
+    'Vigilance': 4,
+    'Strength': 4,
+    'Honor': 4,
+    'Charity': 2,
+    '(abstraction), (abstraction)': 1
   }),
   adjective: new WeightedRandom({
     'Honorable': 2,
@@ -31,7 +35,7 @@ const definitions = {
   })
 }
 
-const motto = new Format('(context) (abstraction)', definitions)
+const motto = new Format('(motto)', definitions)
 for(var i  = 0; i < 5; i++){
   console.log(motto.expand())
 }
