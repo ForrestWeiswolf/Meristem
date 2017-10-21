@@ -1,18 +1,20 @@
 describe('Format', () => {
+  let format
+  
   describe('constructor', () => {
     it('Is a function', () => {
       expect(typeof Format).toEqual('function')
     })
 
     it('Takes a string and an option non-empty object as arguments', () => {
-      let format = new Format('(a)', { a: 'example' })
+      format = new Format('(a)', { a: 'example' })
       expect(format).toBeDefined()
       format = new Format('(a)')
       expect(format).toBeDefined()
     })
 
     it('Is a constructor', () => {
-      const format = new Format('(a)', { a: 'example' })
+      format = new Format('(a)', { a: 'example' })
       expect(typeof format).toEqual('object')
     })
 
@@ -31,8 +33,6 @@ describe('Format', () => {
   }) //end 'constructor'
 
   describe('expand method', () => {
-    let format
-
     it('is an instance method', () => {
       expect(typeof Format.prototype.expand).toEqual('function')
     })
@@ -82,7 +82,7 @@ describe('Format', () => {
     })
   }) //end 'expand'
 
-  describe('handleToken', () => {
+  describe('handleToken', () => {    
     beforeEach(() => {
       format = new Format('nothing')
     })
