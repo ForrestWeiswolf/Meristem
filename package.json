@@ -7,14 +7,19 @@
   "scripts": {
     "test": "testem"
   },
-  "files": ["Format.js", "WeightedRandom.js", "index.js"],
+  "files": [
+    "Format.js",
+    "WeightedRandom.js",
+    "index.js"
+  ],
   "dev-dependencies": {
     "jasmine": "^2.7.0"
   },
-  "repository" :
-  { "type" : "git", 
-    "url" : "https://github.com/ForrestWeiswolf/Meristem.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ForrestWeiswolf/Meristem.git"
   },
   "author": "Forrest Weiswolf",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {}
 }
