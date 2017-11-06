@@ -2,6 +2,7 @@
   "name": "Meristem",
   "version": "1.0.0",
   "description": "Procedural text generation using a context-free grammar",
+  "author": "Forrest Weiswolf <forrest.weiswolf@gmail.com>",  
   "main": "index.js",
   "bugs": "https://github.com/forrestWeiswolf/meristem/issues",
   "scripts": {
@@ -12,6 +13,7 @@
     "WeightedRandom.js",
     "index.js"
   ],
+  "dependencies": {},  
   "dev-dependencies": {
     "jasmine": "^2.7.0"
   },
@@ -19,7 +21,5 @@
     "type": "git",
     "url": "https://github.com/ForrestWeiswolf/Meristem.git"
   },
-  "author": "Forrest Weiswolf",
-  "license": "ISC",
-  "dependencies": {}
+  "license": "ISC"
 }
