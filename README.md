@@ -59,3 +59,11 @@ const wRand = new WeightedRandom({rain: 1, sun: 2})
 console.log(wRand.choose())
 ```
 will print 'rain' 1/3 of the time, and 'sun' 2/3 of the time. (The denominator being the total of the weights.) 
+
+###Using a WeightedRandom in a format:
+When a nonterminal's value is a WeightedRandom, the WeightedRandom's `.choose` method is called, and the result expanded if relevant and inserted in the result, just as any other string would be. This allow you to generate random text using a format, like so:
+```javascript
+const weather = new WeightedRandom({rainy: 1, sunny: 2})
+const day = new WeightedRandom({today: 2, tommorrow: 3})
+const forecast = new Format('The weather (d) will be (w).', {d: day, w: weather})
+```
