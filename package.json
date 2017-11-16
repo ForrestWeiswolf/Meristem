@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Procedural text generation using a context-free grammar",
   "author": "Forrest Weiswolf <forrest.weiswolf@gmail.com>",
-  "main": "dist/bundle.js",
+  "main": "index.js",
   "bugs": "https://github.com/forrestWeiswolf/meristem/issues",
   "scripts": {
     "test": "testem",
@@ -12,7 +12,8 @@
   "files": [
     "Format.js",
     "WeightedRandom.js",
-    "index.js"
+    "index.js",
+    "README.md"
   ],
   "repository": {
     "type": "git",
