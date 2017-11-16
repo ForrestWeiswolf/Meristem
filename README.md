@@ -42,3 +42,5 @@ let definitions = { 'nest': '..a nest in a (tree)', 'tree': 'tree in a (bog)', '
 const rattlinBog = new Format('(nest', definitions)
 console.log(rattlinBog.expand()) //prints '..a nest in a tree in a bog down in the valley, oh!'
 ```
+
+What about when the values in the definitions object aren't strings? When a nonterminal's value is itself a Format, its expand method will be called, and then the result will be treated just as any other string would. This is could be useful if you want to nest Formats but don't want the inner ones to use the same definitions as the outer. However, a more common situation is for the value to be a WeightedRandom.
