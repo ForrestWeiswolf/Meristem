@@ -16,35 +16,35 @@ Format.prototype.expand = function (definitionsArg) {
     throw new Error('This.definitions does not exist and no definitions argument passed')
   }
 
-  this.formatString.split(this.separators.end) //splits into sections ending with a token
+  this.formatString.split(this.separators.end) //splits into sections ending with a nonterminal
     .forEach((section) => {
-      const splitSection = section.split(this.separators.start) //splits into arrays where first member is text and second is token 
+      const splitSection = section.split(this.separators.start) //splits into arrays where first member is text and second is nonterminal 
       const text = splitSection[0]
-      const token = splitSection[1]
+      const nonterminal = splitSection[1]
       if (text) result += text
-      result += this.handleToken(token, definitions)
+      result += this.handleNonterminal(nonterminal, definitions)
 
     })
   return result;
 }
 
-Format.prototype.handleToken = function (tokenStr, definitions) {
-  if (!tokenStr) {
+Format.prototype.handleNonterminal = function (nonterminalStr, definitions) {
+  if (!nonterminalStr) {
     return ''
-  } else if (!definitions[tokenStr]) {
-    throw new Error(`"${tokenStr}" not found in definitions`)
+  } else if (!definitions[nonterminalStr]) {
+    throw new Error(`"${nonterminalStr}" not found in definitions`)
   } else {
 
-    let token = definitions[tokenStr]
+    let nonterminal = definitions[nonterminalStr]
 
-    if (typeof token === 'string') {
-      return new Format(token, definitions).expand()
-    } else if (typeof token === 'object' && token.expand) {
-      return token.expand(definitions)
-    } else if (typeof token === 'object' && token.choose) {
-      //let choice = token.choose()
+    if (typeof nonterminal === 'string') {
+      return new Format(nonterminal, definitions).expand()
+    } else if (typeof nonterminal === 'object' && nonterminal.expand) {
+      return nonterminal.expand(definitions)
+    } else if (typeof nonterminal === 'object' && nonterminal.choose) {
+      //let choice = nonterminal.choose()
       //return typeof choice === 'string' ? choice : 
-      return new Format(token.choose(), definitions).expand()
+      return new Format(nonterminal.choose(), definitions).expand()
     }
 
   }
