@@ -18,9 +18,9 @@ Meristem privides two constructors: `Format` and `WeightedRandom`.
 ###Format:
 When creating a Format, you will generally pass the constructor a string, which we'll call the format string, and an object, which we'll call the definitions, or definitions object. 
 
-When you call a Format's `.expand` method, it will return the format string, but with any parenthetical 'tokens' replaced with the values found when they are treated as keys in the definitions object, like so:
+When you call a Format's `.expand` method, it will return the format string, but with any parenthetical 'nonterminals' replaced with string values found when they are treated as keys in the definitions object, like so:
 ```javascript
-var f = new Format('Fill in the (b).', {b: 'blank'})
+let f = new Format('Fill in the (b).', {b: 'blank'})
 console.log(f.expand()) //prints 'Fill in the blank.'
 ```
 
@@ -28,9 +28,17 @@ console.log(f.expand()) //prints 'Fill in the blank.'
 
 If you pass an object to `Format.expand`, it will be used instead of the Format's own definitions object. This also you to use a format with no definitions specified:
 ```javascript
-var f = new Format('Fill in the (b).')
+f = new Format('Fill in the (b).')
 console.log(f.expand({b: 'blank'})) //prints 'Fill in the blank.'
-var planet = new Format('Pluto (?) a planet!', {'?': 'is'})
+
+const planet = new Format('Pluto (?) a planet!', {'?': 'is'})
 console.log(planet.expand()) //prints 'Pluto is a planet'
 console.log(planet.expand({'?': 'is not'})) //prints 'Pluto is not a planet'
+```
+
+`Format.expand` also operates recursively: if a nonterminal's definition is itsself a string with parentheticals in it, they will be treated as nonterminals as well:
+```javascript
+let definitions = { 'nest': '..a nest in a (tree)', 'tree': 'tree in a (bog)', 'bog': 'bog down in the valley, oh!' } 
+const rattlinBog = new Format('(nest', definitions)
+console.log(rattlinBog.expand()) //prints '..a nest in a tree in a bog down in the valley, oh!'
 ```
