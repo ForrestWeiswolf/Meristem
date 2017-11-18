@@ -16,7 +16,7 @@ WeightedRandom = require('meristem').WeightedRandom
 ```
 Meristem privides two constructors: `Format` and `WeightedRandom`.
 
-###Format:
+### Format:
 When creating a Format, you will generally pass the constructor a string, which we'll call the format string, and an object, which we'll call the definitions, or definitions object. 
 
 When you call a Format's `.expand` method, it will return the format string, but with any parenthetical 'nonterminals' replaced with string values found when they are treated as keys in the definitions object, like so:
@@ -39,7 +39,9 @@ console.log(planet.expand({'?': 'is not'})) //prints 'Pluto is not a planet'
 
 `Format.expand` also operates recursively: if a nonterminal's definition is itsself a string with parentheticals in it, they will be treated as nonterminals as well:
 ```javascript
-let definitions = { 'nest': '..a nest in a (tree)', 'tree': 'tree in a (bog)', 'bog': 'bog down in the valley, oh!' } 
+let definitions = {
+  'nest': '..a nest in a (tree)', 'tree': 'tree in a (bog)', 'bog': 'bog down in the valley, oh!'
+} 
 const rattlinBog = new Format('(nest', definitions)
 console.log(rattlinBog.expand()) //prints '..a nest in a tree in a bog down in the valley, oh!'
 ```
@@ -50,7 +52,7 @@ Well, when a nonterminal's value is itself a Format, its expand method will be c
 
 However, a more common situation is for the value to be a WeightedRandom.
 
-###WeightedRandom:
+### WeightedRandom:
 The purpose of a WeightedRandom is to choose randomly from a list of options, but allow you to set weights, making some options more likely than others.
 
 The WeightedRandom constructor currently takes an object, with numerical values (support may be added later for other types of input). It has a `.choose` method, which, when called, returns a random key from that object, with probability correspning to the assosciated value. For example
@@ -60,7 +62,7 @@ console.log(wRand.choose())
 ```
 will print 'rain' 1/3 of the time, and 'sun' 2/3 of the time. (The denominator being the total of the weights.) 
 
-###Using a WeightedRandom in a format:
+### Using a WeightedRandom in a format:
 When a nonterminal's value is a WeightedRandom, the WeightedRandom's `.choose` method is called, and the result expanded if relevant and inserted in the result, just as any other string would be. This allow you to generate random text using a format, like so:
 ```javascript
 const weather = new WeightedRandom({rainy: 1, sunny: 2})
