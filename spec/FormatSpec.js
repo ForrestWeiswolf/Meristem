@@ -1,3 +1,5 @@
+const {WeightedRandom, Format} = require('../index')
+
 describe('Format', () => {
   describe('constructor', () => {
     it('Is a function', () => {

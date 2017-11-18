@@ -1,3 +1,5 @@
+const {WeightedRandom} = require('../index')
+
 describe('WeightedRandom', () => {
   let emptyRand
   const data = {a: 1, b: 2, c : 2}

@@ -6,7 +6,7 @@
   "main": "index.js",
   "bugs": "https://github.com/forrestWeiswolf/meristem/issues",
   "scripts": {
-    "test": "testem",
+    "test": "jasmine",
     "webpack": "webpack"
   },
   "files": [
@@ -20,9 +20,9 @@
     "url": "https://github.com/ForrestWeiswolf/Meristem.git"
   },
   "license": "ISC",
-  "dependencies": {},  
+  "dependencies": {},
   "devDependencies": {
-    "webpack": "^3.8.1",
-    "jasmine": "^2.7.0"    
+    "jasmine": "^2.8.0",
+    "webpack": "^3.8.1"
   }
 }
