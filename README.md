@@ -71,7 +71,7 @@ const forecast = new Format('The weather (d) will be (w).', {d: day, w: weather}
 ```
 
 ## FrozenRandom:
-FrozenRandom extends WeightedRandom, and behaves identically the first time its `.choose` method is called. However, every subsequent call of `.choose` will return the same result. For example,
+FrozenRandom extends WeightedRandom, and behaves identically the first time its `.choose` method is called. However, every subsequent call of `.choose` will return the same result as the first. For example,
 ```javascript
 const name = new FrozenRandom({Lee: 2, Abdallah: 3})
 const introductions = new Format('"Hello. I\'m (name)," I said. "Nice to meet you, (name)," she replied.', {d: day, w: weather})
