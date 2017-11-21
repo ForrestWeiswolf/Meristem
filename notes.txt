@@ -52,5 +52,3 @@ MarkovOptions - makes a markov chain style choice
 so .expand can handle them similarly )
 
 can handle a function, simply calling it with (definitions, resultSoFar)
-
-WeightedRandom that only chooses once, then always returns the same thing

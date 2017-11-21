@@ -67,5 +67,4 @@ describe('WeightedRandom', () => {
       expect( Object.keys(data).indexOf(rand) ).not.toBeLessThan(0);
     })
   })
-
 })
