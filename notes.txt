@@ -29,6 +29,7 @@ definitions['C']: {'$E': 3, '$D$E': 1}
 expand('(E)') = 'dog'
 result = "Example sentence: this was a dog"
 
+Should check for mismatched parens!
 
 extra features:
 
@@ -47,9 +48,9 @@ takes an options object, so you can, i.e. change what the token start and end ch
 
 PromptOptions - asks user instead of picking at random
 MarkovOptions - makes a markov chain style choice
-(these, along with WeightedOptions can inherit from an 'Pptions' prototype and have a .choose, 
+(these, along with WeightedOptions can inherit from an 'Options' prototype and have a .choose, 
 so .expand can handle them similarly )
 
-can handle a function, simply calling it with (resultSoFar, definitions)
+can handle a function, simply calling it with (definitions, resultSoFar)
 
 WeightedRandom that only chooses once, then always returns the same thing
