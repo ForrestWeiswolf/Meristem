@@ -2,7 +2,7 @@
 
 (Updated Tuesday, November 21st, 2017)
 
-**_Class and Level: Node Module 1_** 5
+**_Class and Level:_** Node Module 1
 
 **_XP:_** 21
 
