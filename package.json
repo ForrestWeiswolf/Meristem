@@ -1,6 +1,6 @@
 {
   "name": "meristem",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Procedural text generation using a context-free grammar",
   "author": "Forrest Weiswolf <forrest.weiswolf@gmail.com>",
   "main": "index.js",
