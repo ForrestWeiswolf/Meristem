@@ -76,4 +76,4 @@ FrozenRandom extends WeightedRandom, and behaves identically the first time its 
 const name = new FrozenRandom({Lee: 2, Abdallah: 3})
 const introductions = new Format('"Hello. I\'m (name)," I said. "Nice to meet you, (name)," she replied.', {d: day, w: weather})
 ```
-will return '"Hello. I\'m Lee," I said. "Nice to meet you, Lee," she replied.' or '"Hello. I\'m Abdallah," I said. "Nice to meet you, Abdallah," she replied.', but *won't* ever return '"Hello. I\'m Lee," I said. "Nice to meet you, Abdallah," she replied.'
+will return `'"Hello. I\'m Lee," I said. "Nice to meet you, Lee," she replied.'` or `'"Hello. I\'m Abdallah,"` I said. `"Nice to meet you, Abdallah," she replied.'`, but *won't* ever return `'"Hello. I\'m Lee," I said. "Nice to meet you, Abdallah,"` she replied.'
