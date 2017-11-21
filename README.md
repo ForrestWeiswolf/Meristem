@@ -14,7 +14,7 @@ First, `npm install meristem`, and `require` it in your code:
 Format = require('meristem').Format
 WeightedRandom = require('meristem').WeightedRandom
 ```
-Meristem privides two constructors: `Format` and `WeightedRandom`.
+Meristem privides three constructors: `Format`, `WeightedRandom`, and `FrozenRandom`.
 
 ### Format:
 When creating a Format, you will generally pass the constructor a string, which we'll call the format string, and an object, which we'll call the definitions, or definitions object. 
@@ -62,10 +62,18 @@ console.log(wRand.choose())
 ```
 will print 'rain' 1/3 of the time, and 'sun' 2/3 of the time. (The denominator being the total of the weights.) 
 
-### Using a WeightedRandom in a format:
+## Using a WeightedRandom in a format:
 When a nonterminal's value is a WeightedRandom, the WeightedRandom's `.choose` method is called, and the result expanded if relevant and inserted in the result, just as any other string would be. This allow you to generate random text using a format, like so:
 ```javascript
 const weather = new WeightedRandom({rainy: 1, sunny: 2})
 const day = new WeightedRandom({today: 2, tommorrow: 3})
 const forecast = new Format('The weather (d) will be (w).', {d: day, w: weather})
 ```
+
+## FrozenRandom:
+FrozenRandom extends WeightedRandom, and behaves identically the first time its `.choose` method is called. However, every subsequent call of `.choose` will return the same result. For example,
+```javascript
+const name = new FrozenRandom({Lee: 2, Abdallah: 3})
+const introductions = new Format('"Hello. I\'m (name)," I said. "Nice to meet you, (name)," she replied.', {d: day, w: weather})
+```
+will return '"Hello. I\'m Lee," I said. "Nice to meet you, Lee," she replied.' or '"Hello. I\'m Abdallah," I said. "Nice to meet you, Abdallah," she replied.', but *won't* ever return '"Hello. I\'m Lee," I said. "Nice to meet you, Abdallah," she replied.'
