@@ -1,5 +1,7 @@
-##Meristem.js Scoreboard and Character Sheet:
+## Meristem.js Scoreboard and Character Sheet:
+
 (Updated Tuesday, November 21st, 2017)
+
 **_Class and Level: Node Module 1_** 5
 
 **_XP:_** 21
