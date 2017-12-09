@@ -1,6 +1,6 @@
 {
   "name": "meristem",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Procedural text generation using a context-free grammar",
   "author": "Forrest Weiswolf <forrest.weiswolf@gmail.com>",
   "main": "index.js",
@@ -12,6 +12,7 @@
   "files": [
     "Format.js",
     "WeightedRandom.js",
+    "FrozenRandom.js",
     "index.js",
     "README.md"
   ],
