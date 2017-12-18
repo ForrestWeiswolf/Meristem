@@ -1,15 +1,16 @@
-## Meristem.js Scoreboard and Character Sheet:
+## Meristem.js Character Sheet:
 
-(Updated Tuesday, November 21st, 2017)
+(Updated December 18, 2017)
 
 **_Class and Level:_** Node Module 1
 
-**_XP:_** 22
+**_XP:_** 23
 
 **_GP:_** 0
 
 **_Alignment:_** Chaotic Shiny
 
+### Inventory:
 
 **_Stars (Github):_** 3
 
