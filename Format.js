@@ -12,7 +12,6 @@ Format.prototype.expand = function (definitionsArg) {
   let result = '';
   let definitions = this.definitions || definitionsArg
   if (!definitions) {
-    console.log(this.definitions, definitionsArg)
     throw new Error('This.definitions does not exist and no definitions argument passed')
   }
 
