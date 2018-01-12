@@ -21,6 +21,24 @@ describe('WeightedRandom', () => {
     expect(emptyConstructor).toThrow(new Error('No argument passed to WeightedRandom constructor'))
   })
 
+  it('throws an informative error when the first argument is not an object', () => {
+    function strConstructor() {
+      return new WeightedRandom('Ce n\'est pas un objet')
+    }
+
+    function numConstructor() {
+      return new WeightedRandom(72)
+    }
+
+    function nullConstructor() {
+      return new WeightedRandom(null)
+    }
+
+    expect(strConstructor).toThrow(new Error('WeightedRandom constructor was passed string instead of object'))
+    expect(numConstructor).toThrow(new Error('WeightedRandom constructor was passed number instead of object'))
+    expect(nullConstructor).toThrow(new Error('WeightedRandom constructor was passed null instead of object'))
+  })
+
   describe('choices property', () => {
     it('Is an object', () => {
       expect(typeof randWithData.choices).toEqual('object')

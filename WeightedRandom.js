@@ -1,8 +1,12 @@
 function WeightedRandom(choices) {
   if (typeof choices === 'undefined') {
     throw new Error('No argument passed to WeightedRandom constructor')
+  } else if (choices === null) {
+    throw new Error('WeightedRandom constructor was passed null instead of object')
+  } else if (typeof choices !== 'object') {
+    throw new Error(`WeightedRandom constructor was passed ${typeof choices} instead of object`)
   }
-  
+
   this.choices = choices
 }
 
