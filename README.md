@@ -3,9 +3,10 @@ Meristem
 
 A Javascript library for procedural text generation using a context-free grammar.
 Several examples of usage can be found [here](https://github.com/ForrestWeiswolf/Meristem-examples)
-This README is a work in progress, as indeed is Meristem itself. You can contact me if you have any questions. 
 
 (I apologize for any unconventional terminology - what I'm trying to do here is close enough to the normal uses of context-free grammars that I feel I ought to follow convention, but not so similar that I'm easily able to do so without potentially misleading)
+
+This project was inspired by [Mark Rosenfelder's Language Text Generator](http://zompist.com/gen.html), although I haven't looked at his code.
 
 How To Use
 ------
