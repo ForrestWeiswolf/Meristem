@@ -1,13 +1,14 @@
 function Format(formatString, definitions) {
-  if (typeof formatString !== 'string') {
-    throw new Error('Incorrect first argument to Format constructor')
+  if (typeof formatString === 'undefined') {
+    throw new Error('No argument passed to Format constructor')
   }
-
-  if (!checkParens(formatString)) {
+  else if (formatString === null) {
+    throw new Error('Format constructor was passed null instead of string')
+  } else if (typeof formatString !== 'string') {
+    throw new Error(`Format constructor was passed ${typeof formatString} instead of string`)
+  } else if (!checkParens(formatString)) {
     throw new Error('Mismatched parentheses in Format string')
-  }
-
-  if(formatString.includes('()')){
+  } else if (formatString.includes('()')) {
     throw new Error('Empty parentheses in Format string')
   }
 

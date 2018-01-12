@@ -16,28 +16,32 @@ describe('Format', () => {
       expect(typeof format).toEqual('object')
     })
 
-    it('Throws an error if first arg is not a string', () => {
+    it('throws an error when no argument is passed', () => {
       function emptyConstructor() {
         return new Format()
       }
 
-      function numberConstructor() {
-        return new Format(1)
+      expect(emptyConstructor).toThrow(new Error('No argument passed to Format constructor'))
+    })
+
+    it('throws an informative error when the first argument is not a string', () => {
+      function objectConstructor() {
+        return new Format({})
       }
 
-      function objectConstructor() {
-        return new Format({ key: 'value' })
+      function numConstructor() {
+        return new Format(72)
       }
 
       function nullConstructor() {
         return new Format(null)
       }
 
-      expect(emptyConstructor).toThrow(new Error('Incorrect first argument to Format constructor'));
-      expect(numberConstructor).toThrow(new Error('Incorrect first argument to Format constructor'));
-      expect(objectConstructor).toThrow(new Error('Incorrect first argument to Format constructor'));
-      expect(nullConstructor).toThrow(new Error('Incorrect first argument to Format constructor'));
+      expect(objectConstructor).toThrow(new Error('Format constructor was passed object instead of string'))
+      expect(numConstructor).toThrow(new Error('Format constructor was passed number instead of string'))
+      expect(nullConstructor).toThrow(new Error('Format constructor was passed null instead of string'))
     })
+
 
     it('throws an error if parens in first arg are mismatched', () => {
       function noClose() {
