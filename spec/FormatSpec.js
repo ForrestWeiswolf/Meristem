@@ -56,6 +56,15 @@ describe('Format', () => {
       expect(noOpen).toThrow(new Error('Mismatched parentheses in Format string'))
       expect(closeBeforeOpen).toThrow(new Error('Mismatched parentheses in Format string'))
     })
+
+    it('throws an error if there are empty parens in first arg', () => {
+      function emptyParens() {
+        return new Format('()')
+      }
+
+      expect(emptyParens).toThrow(new Error('Empty parentheses in Format string'))
+    })
+
   }) //end 'constructor'
 
   describe('expand method', () => {

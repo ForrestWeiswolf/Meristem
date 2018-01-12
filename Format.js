@@ -7,6 +7,10 @@ function Format(formatString, definitions) {
     throw new Error('Mismatched parentheses in Format string')
   }
 
+  if(formatString.includes('()')){
+    throw new Error('Empty parentheses in Format string')
+  }
+
   this.formatString = formatString
   this.definitions = definitions
   this.separators = { start: '(', end: ')' }
