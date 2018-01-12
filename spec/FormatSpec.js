@@ -1,4 +1,4 @@
-const {WeightedRandom, Format} = require('../index')
+const { WeightedRandom, Format } = require('../index')
 
 describe('Format', () => {
   describe('constructor', () => {
@@ -26,7 +26,7 @@ describe('Format', () => {
       }
 
       function objectConstructor() {
-        return new Format({key: 'value'})
+        return new Format({ key: 'value' })
       }
 
       function nullConstructor() {
@@ -37,6 +37,24 @@ describe('Format', () => {
       expect(numberConstructor).toThrow(new Error('Incorrect first argument to Format constructor'));
       expect(objectConstructor).toThrow(new Error('Incorrect first argument to Format constructor'));
       expect(nullConstructor).toThrow(new Error('Incorrect first argument to Format constructor'));
+    })
+
+    it('throws an error if parens in first arg are mismatched', () => {
+      function noClose() {
+        return new Format('(a')
+      }
+
+      function noOpen() {
+        return new Format('a)')
+      }
+
+      function closeBeforeOpen() {
+        return new Format('a)(')
+      }
+
+      expect(noClose).toThrow(new Error('Mismatched parentheses in Format string'))
+      expect(noOpen).toThrow(new Error('Mismatched parentheses in Format string'))
+      expect(closeBeforeOpen).toThrow(new Error('Mismatched parentheses in Format string'))
     })
   }) //end 'constructor'
 

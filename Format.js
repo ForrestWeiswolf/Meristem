@@ -3,6 +3,10 @@ function Format(formatString, definitions) {
     throw new Error('Incorrect first argument to Format constructor')
   }
 
+  if (!checkParens(formatString)) {
+    throw new Error('Mismatched parentheses in Format string')
+  }
+
   this.formatString = formatString
   this.definitions = definitions
   this.separators = { start: '(', end: ')' }
@@ -49,4 +53,24 @@ Format.prototype.handleNonterminal = function (nonterminalStr, definitions) {
   }
 }
 
+function checkParens(str) {
+  let parensOpen = 0
+  for (i = 0; i < str.length; i++) {
+    if (str.charAt(i) === '(') {
+      parensOpen++
+    } else if (str.charAt(i) === ')') {
+      parensOpen--
+    }
+
+    if (parensOpen < 0) {
+      return false
+    }
+  }
+
+  if (parensOpen !== 0) {
+    return false
+  } else {
+    return true
+  }
+}
 module.exports = Format
