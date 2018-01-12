@@ -1,17 +1,15 @@
 const {WeightedRandom, FrozenRandom} = require('../index')
 
 describe('FrozenRandom', () => {
-  let emptyRand
-  const data = {a: 1, b: 2, c : 2}
   let randWithData
+  const data = {a: 1, b: 2, c : 2}
 
   beforeEach( () => {
     randWithData = new FrozenRandom(data)
-    emptyRand = new FrozenRandom()
   })
 
   it('Inherits from WeightedRandom', () =>{
-    expect(emptyRand instanceof WeightedRandom).toBe(true)
+    expect(randWithData instanceof WeightedRandom).toBe(true)
   })
 
   describe('.choose', () => {

@@ -1,70 +1,66 @@
-const {WeightedRandom} = require('../index')
+const { WeightedRandom } = require('../index')
 
 describe('WeightedRandom', () => {
-  let emptyRand
-  const data = {a: 1, b: 2, c : 2}
+  const data = { a: 1, b: 2, c: 2 }
   let randWithData
 
-  beforeEach( () => {
+  beforeEach(() => {
     randWithData = new WeightedRandom(data)
-    emptyRand = new WeightedRandom()
   })
 
-  it('Is a constructor', ()  => {
+  it('Is a constructor', () => {
     expect(typeof WeightedRandom).toEqual('function')
-    expect(typeof emptyRand).toEqual('object')
+    expect(typeof randWithData).toEqual('object')
+  })
+
+  it('throws an error when no argument is passed', () => {
+    function emptyConstructor() {
+      return new WeightedRandom()
+    }
+
+    expect(emptyConstructor).toThrow(new Error('No argument passed to WeightedRandom constructor'))
   })
 
   describe('choices property', () => {
-    it('Is an object', ()  => {
-      expect(typeof emptyRand.choices).toEqual('object')
+    it('Is an object', () => {
+      expect(typeof randWithData.choices).toEqual('object')
     })
 
-    it('when the constructor is passed an object as first argument, is set to that object', ()  => {
+    it('when the constructor is passed an object as first argument, is set to that object', () => {
       expect(randWithData.choices).toEqual(data)
-    })
-
-    it('initializes empty when constructor is not passed arguments', ()  => {
-      const keys = Object.keys(emptyRand.choices)
-      expect(keys.length).toEqual(0)
-    })
-
-    xit('throws an error when the first argument is not an object', ()  => {
     })
   })
 
   describe('getTotalWeight method', () => {
-    it('Is a function', ()  => {
-      expect(typeof emptyRand.getTotalWeight).toEqual('function')
+    it('Is a function', () => {
+      expect(typeof randWithData.getTotalWeight).toEqual('function')
     })
 
-    it('Returns the sum of the values in choices property', ()  => {
-      expect(emptyRand.getTotalWeight()).toEqual(0)
+    it('Returns the sum of the values in choices property', () => {
       expect(randWithData.getTotalWeight()).toEqual(5)
     })
   })
 
   describe('choose method', () => {
-    it('Is a function', ()  => {
-      expect(typeof emptyRand.choose).toEqual('function')
+    it('Is a function', () => {
+      expect(typeof randWithData.choose).toEqual('function')
     })
 
-    it('calls Math.random', ()  => {
+    it('calls Math.random', () => {
       spyOn(Math, 'random').and.callThrough();
       randWithData.choose()
       expect(Math.random).toHaveBeenCalled();
     })
 
-    it('if there are no choices with postitive weight, returns null', ()  => {
-      const zeroWeights = new WeightedRandom({a: 0, b: 0})
+    it('if there are no choices with postitive weight, returns null', () => {
+      const zeroWeights = new WeightedRandom({ a: 0, b: 0 })
 
-      expect(emptyRand.choose()).toBeNull()
       expect(zeroWeights.choose()).toBeNull()
     })
 
-    it('otherwise, returns a key from choices property', ()  => {
+    it('otherwise, returns a key from choices property', () => {
       const rand = randWithData.choose()
-      expect( Object.keys(data).indexOf(rand) ).not.toBeLessThan(0);
+      expect(Object.keys(data).indexOf(rand)).not.toBeLessThan(0);
     })
   })
 })
