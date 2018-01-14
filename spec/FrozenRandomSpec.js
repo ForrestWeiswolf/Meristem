@@ -20,7 +20,14 @@ describe('FrozenRandom', () => {
       expect(wRandInInheritanceChain.choose.call).toHaveBeenCalledWith(randWithData)
     })
 
-    it('always returns the same thing thereafter', () =>{
+    it('returns the result of prototype\'s choose method the first time it\'s called', () => {
+      const wRandInInheritanceChain = Object.getPrototypeOf(FrozenRandom.prototype)
+      spyOn(wRandInInheritanceChain.choose, 'call').and.returnValue('foo')
+      
+      expect(randWithData.choose()).toEqual('foo')
+    })
+
+    it('returns the same thing thereafter', () =>{
       let tries = []
       for (let i = 0; i < 10; i++){
         tries.push(randWithData.choose())
