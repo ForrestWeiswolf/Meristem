@@ -2,10 +2,12 @@ const {WeightedRandom, FrozenRandom} = require('../index')
 
 describe('FrozenRandom', () => {
   let randWithData
+  let wRandInInheritanceChain
   const data = {a: 1, b: 2, c : 2}
 
   beforeEach( () => {
     randWithData = new FrozenRandom(data)
+    wRandInInheritanceChain = Object.getPrototypeOf(FrozenRandom.prototype)
   })
 
   it('Inherits from WeightedRandom', () =>{
@@ -13,15 +15,14 @@ describe('FrozenRandom', () => {
   })
 
   describe('.choose', () => {
-    it('calls through to prototype\'s choose method the first time it\'s called', () => {
-      const wRandInInheritanceChain = Object.getPrototypeOf(FrozenRandom.prototype)
-      spyOn(wRandInInheritanceChain.choose, 'call').and.callThrough()
+    it('calls prototype\'s choose method the first time it\'s called', () => {
+      spyOn(wRandInInheritanceChain.choose, 'call').and.returnValue('foo')
+
       randWithData.choose()
       expect(wRandInInheritanceChain.choose.call).toHaveBeenCalledWith(randWithData)
     })
 
     it('returns the result of prototype\'s choose method the first time it\'s called', () => {
-      const wRandInInheritanceChain = Object.getPrototypeOf(FrozenRandom.prototype)
       spyOn(wRandInInheritanceChain.choose, 'call').and.returnValue('foo')
       
       expect(randWithData.choose()).toEqual('foo')
@@ -34,6 +35,5 @@ describe('FrozenRandom', () => {
       }
       expect(tries.every( (item) => item === tries[0]))
     })
-
   })
 })
