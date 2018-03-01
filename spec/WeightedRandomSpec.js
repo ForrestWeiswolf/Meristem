@@ -39,6 +39,24 @@ describe('WeightedRandom', () => {
     expect(nullConstructor).toThrow(new Error('WeightedRandom constructor was passed null instead of object'))
   })
 
+  it('throws an informative error when the object has non-numeric keys', () => {
+    function stringWeightConstructor() {
+      return new WeightedRandom({a: 'three', b: 2})
+    }
+
+    function nullWeightConstructor() {
+      return new WeightedRandom({a: null, b: 2})
+    }
+
+    expect(stringWeightConstructor).toThrow(
+      new Error('WeightedRandom was passed a string as a weight in options, instead of a number')
+    )
+
+    expect(nullWeightConstructor).toThrow(
+      new Error('WeightedRandom was passed null as a weight in options, instead of a number')
+    )
+  })
+
   describe('choices property', () => {
     it('Is an object', () => {
       expect(typeof randWithData.choices).toEqual('object')

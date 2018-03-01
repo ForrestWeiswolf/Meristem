@@ -7,7 +7,22 @@ function WeightedRandom(choices) {
     throw new Error(`WeightedRandom constructor was passed ${typeof choices} instead of object`)
   }
 
-  this.choices = choices
+  this.choices = {}
+
+  Object.keys(choices).forEach((option) => {
+    if (typeof choices[option] === 'number') {
+      this.choices[option] = choices[option]
+    } else if (choices[option] === null) {
+      throw new Error(
+        `WeightedRandom was passed null as a weight in options, instead of a number`
+      )
+    }
+    else {
+      throw new Error(
+        `WeightedRandom was passed a ${typeof choices[option]} as a weight in options, instead of a number`
+      )
+    }
+  })
 }
 
 WeightedRandom.prototype.getTotalWeight = function () {
