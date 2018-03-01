@@ -18,5 +18,10 @@ FrozenRandom.prototype.choose = function () {
   }
 }
 
+FrozenRandom.prototype.reset = function () {
+  this.value = null
+  return this
+}
+
 module.exports = FrozenRandom
 
