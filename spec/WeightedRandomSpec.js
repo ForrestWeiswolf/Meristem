@@ -39,7 +39,7 @@ describe('WeightedRandom', () => {
     expect(nullConstructor).toThrow(new Error('WeightedRandom constructor was passed null instead of object'))
   })
 
-  it('throws an informative error when the object has non-numeric keys', () => {
+  it('throws an informative error when the object has non-numeric values', () => {
     function stringWeightConstructor() {
       return new WeightedRandom({a: 'three', b: 2})
     }
