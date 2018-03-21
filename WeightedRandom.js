@@ -25,6 +25,14 @@ function WeightedRandom(choices) {
   })
 }
 
+WeightedRandom.prototype.objToOptions = function (obj) {
+  let result = []
+  Object.keys(obj).forEach((option) => {
+    result.push({val: option, weight: obj[option]})
+  })
+  return result
+};
+
 WeightedRandom.prototype.getTotalWeight = function () {
   const keys = Object.keys(this.choices)
 

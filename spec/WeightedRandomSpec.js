@@ -36,13 +36,28 @@ describe('WeightedRandom', () => {
     expect(nullConstructor).toThrow(new Error('WeightedRandom constructor was passed null - it must be passed an object or a series of length 2 arrays'))
   })
 
+  it('has a objToOptions method', () => {
+    expect(typeof WeightedRandom.prototype.objToOptions).toBe('function')
+  })
+
+  describe('WeightedRandom.prototype.objToOptions', () => {
+    it(`converts object with numeric values into an array of
+    objects with .val and .weight properties corresponding to passed keys and values`, () => {
+      const result = WeightedRandom.prototype.objToOptions({ a: 1, b: 2 })
+
+      expect(result.length).toEqual(2)
+      expect(result).toContain({ val: 'a', weight: 1 })
+      expect(result).toContain({ val: 'b', weight: 2 })
+    })
+  })
+
   it('throws an informative error when the object has non-numeric values', () => {
     function stringWeightConstructor() {
-      return new WeightedRandom({a: 'three', b: 2})
+      return new WeightedRandom({ a: 'three', b: 2 })
     }
 
     function nullWeightConstructor() {
-      return new WeightedRandom({a: null, b: 2})
+      return new WeightedRandom({ a: null, b: 2 })
     }
 
     expect(stringWeightConstructor).toThrow(
