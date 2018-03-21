@@ -13,15 +13,11 @@ describe('WeightedRandom', () => {
     expect(typeof randWithData).toEqual('object')
   })
 
-  it('throws an error when no argument is passed', () => {
+  it('throws an informative error when the first argument is not an object or array', () => {
     function emptyConstructor() {
       return new WeightedRandom()
     }
 
-    expect(emptyConstructor).toThrow(new Error('No argument passed to WeightedRandom constructor'))
-  })
-
-  it('throws an informative error when the first argument is not an object', () => {
     function strConstructor() {
       return new WeightedRandom('Ce n\'est pas un objet')
     }
@@ -34,6 +30,7 @@ describe('WeightedRandom', () => {
       return new WeightedRandom(null)
     }
 
+    expect(emptyConstructor).toThrow(new Error('No argument passed to WeightedRandom constructor'))
     expect(strConstructor).toThrow(new Error('WeightedRandom constructor was passed string - it must be passed an object or a series of length 2 arrays'))
     expect(numConstructor).toThrow(new Error('WeightedRandom constructor was passed number - it must be passed an object or a series of length 2 arrays'))
     expect(nullConstructor).toThrow(new Error('WeightedRandom constructor was passed null - it must be passed an object or a series of length 2 arrays'))
