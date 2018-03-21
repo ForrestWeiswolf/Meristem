@@ -34,9 +34,9 @@ describe('WeightedRandom', () => {
       return new WeightedRandom(null)
     }
 
-    expect(strConstructor).toThrow(new Error('WeightedRandom constructor was passed string instead of object'))
-    expect(numConstructor).toThrow(new Error('WeightedRandom constructor was passed number instead of object'))
-    expect(nullConstructor).toThrow(new Error('WeightedRandom constructor was passed null instead of object'))
+    expect(strConstructor).toThrow(new Error('WeightedRandom constructor was passed string - it must be passed an object or a series of length 2 arrays'))
+    expect(numConstructor).toThrow(new Error('WeightedRandom constructor was passed number - it must be passed an object or a series of length 2 arrays'))
+    expect(nullConstructor).toThrow(new Error('WeightedRandom constructor was passed null - it must be passed an object or a series of length 2 arrays'))
   })
 
   it('throws an informative error when the object has non-numeric values', () => {
