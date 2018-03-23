@@ -1,18 +1,20 @@
-function WeightedRandom(choices) {
-  if (typeof choices === 'undefined') {
+function WeightedRandom() {
+  if (typeof arguments[0] === 'undefined') {
     throw new Error('No argument passed to WeightedRandom constructor')
-  } else if (choices === null) {
+  } else if (arguments[0] === null) {
     throw new Error('WeightedRandom constructor was passed null - it must be passed an object or a series of length 2 arrays')
-  } else if (typeof choices !== 'object') {
-    throw new Error(`WeightedRandom constructor was passed ${typeof choices} - it must be passed an object or a series of length 2 arrays`)
+  } else if (typeof arguments[0] !== 'object') {
+    throw new Error(`WeightedRandom constructor was passed ${typeof arguments[0]} - it must be passed an object or a series of length 2 arrays`)
+  } else if(arguments[0].constructor === Array){
+    this.pairsToOptions(...arguments)
   } else {
-    this.objToOptions(choices)
+    this.objToOptions(arguments[0])
   }
 
   this.choices = {}
 
-  Object.keys(choices).forEach((option) => {
-    this.choices[option] = choices[option]
+  Object.keys(arguments[0]).forEach((option) => {
+    this.choices[option] = arguments[0][option]
   })
 }
 

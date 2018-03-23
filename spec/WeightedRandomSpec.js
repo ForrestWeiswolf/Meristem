@@ -76,14 +76,14 @@ describe('WeightedRandom', () => {
     expect(WeightedRandom.prototype.objToOptions).toHaveBeenCalledWith(obj)
   })
 
-  it('has an pairsToOptions method', () => {
-    expect(typeof WeightedRandom.prototype.pairsToOptions).toBe('function')
-  })
-
   //as when passing an object, what we're doing here is giving it a list of 
   //options with weights. However, we want to be able to have options that 
   //are themselves objects; this would be problematic if options were 
   //expressed only as the keys of an object
+
+  it('has an pairsToOptions method', () => {
+    expect(typeof WeightedRandom.prototype.pairsToOptions).toBe('function')
+  })
 
   describe('WeightedRandom.prototype.pairsToOptions', () => {
     it('throws an informative error unless every argument is an array', () => {
@@ -141,6 +141,14 @@ describe('WeightedRandom', () => {
         new Error('WeightedRandom was passed null as a weight in options, instead of a number')
       )
     })
+  })
+
+  it('calls pairsToOptions on passed arrays', () => {
+    spyOn(WeightedRandom.prototype, 'pairsToOptions').and.callThrough()
+
+    const testWRand = new WeightedRandom(['a', 1], ['b', 2])
+
+    expect(WeightedRandom.prototype.pairsToOptions).toHaveBeenCalledWith(['a', 1], ['b', 2])
   })
 
   describe('getTotalWeight method', () => {
