@@ -40,17 +40,6 @@ describe('WeightedRandom', () => {
     expect(typeof WeightedRandom.prototype.objToOptions).toBe('function')
   })
 
-  describe('WeightedRandom.prototype.objToOptions', () => {
-    it(`converts object with numeric values into an array of
-    objects with .val and .weight properties corresponding to passed keys and values`, () => {
-      const result = WeightedRandom.prototype.objToOptions({ a: 1, b: 2 })
-
-      expect(result.length).toEqual(2)
-      expect(result).toContain({ val: 'a', weight: 1 })
-      expect(result).toContain({ val: 'b', weight: 2 })
-    })
-  })
-
   it('calls objToOptions on a passed object', () => {
     spyOn(WeightedRandom.prototype, 'objToOptions').and.callThrough()
 
@@ -75,16 +64,6 @@ describe('WeightedRandom', () => {
     expect(nullWeightConstructor).toThrow(
       new Error('WeightedRandom was passed null as a weight in options, instead of a number')
     )
-  })
-
-  describe('choices property', () => {
-    it('Is an object', () => {
-      expect(typeof randWithData.choices).toEqual('object')
-    })
-
-    it('when the constructor is passed an object as first argument, is set to that object', () => {
-      expect(randWithData.choices).toEqual(data)
-    })
   })
 
   describe('getTotalWeight method', () => {
