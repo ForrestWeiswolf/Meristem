@@ -5,6 +5,8 @@ function WeightedRandom(choices) {
     throw new Error('WeightedRandom constructor was passed null - it must be passed an object or a series of length 2 arrays')
   } else if (typeof choices !== 'object') {
     throw new Error(`WeightedRandom constructor was passed ${typeof choices} - it must be passed an object or a series of length 2 arrays`)
+  } else {
+    this.objToOptions(choices)
   }
 
   this.choices = {}

@@ -51,6 +51,14 @@ describe('WeightedRandom', () => {
     })
   })
 
+  it('calls objToOptions on a passed object', () => {
+    spyOn(WeightedRandom.prototype, 'objToOptions').and.callThrough()
+
+    const obj = { a: 1, b: 2 }
+    const testWRand = new WeightedRandom(obj)
+    expect(WeightedRandom.prototype.objToOptions).toHaveBeenCalledWith(obj)
+  })
+
   it('throws an informative error when the object has non-numeric values', () => {
     function stringWeightConstructor() {
       return new WeightedRandom({ a: 'three', b: 2 })
