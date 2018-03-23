@@ -76,6 +76,73 @@ describe('WeightedRandom', () => {
     expect(WeightedRandom.prototype.objToOptions).toHaveBeenCalledWith(obj)
   })
 
+  it('has an pairsToOptions method', () => {
+    expect(typeof WeightedRandom.prototype.pairsToOptions).toBe('function')
+  })
+
+  //as when passing an object, what we're doing here is giving it a list of 
+  //options with weights. However, we want to be able to have options that 
+  //are themselves objects; this would be problematic if options were 
+  //expressed only as the keys of an object
+
+  describe('WeightedRandom.prototype.pairsToOptions', () => {
+    it('throws an informative error unless every argument is an array', () => {
+      function nullArg() {
+        return WeightedRandom.prototype.pairsToOptions(['a', 1], null, ['c', 2])
+      }
+
+      function strArg() {
+        return WeightedRandom.prototype.pairsToOptions(['a', 1], 'not an array', ['c', 2])
+      }
+
+      expect(nullArg).toThrow(new Error(
+        'WeightedRandom constructor was passed null - it must be passed an object or a series of length 2 arrays'
+      ))
+
+      expect(strArg).toThrow(new Error(
+        'WeightedRandom constructor was passed string - it must be passed an object or a series of length 2 arrays'
+      ))
+    })
+
+    it('throws an informative error unless every argument has length 2', () => {
+      function emptyArrConstructor() {
+        return WeightedRandom.prototype.pairsToOptions(['cup after all the tea is gone', 2], [], ['old pen', 2])
+      }
+      function tooLongConstructor() {
+        return WeightedRandom.prototype.pairsToOptions(['a', 1], ['b', 1, 1], ['c', 2])
+      }
+
+      expect(emptyArrConstructor).toThrow(new Error('arrays passed to WeightedOptions constructor must be of length 2'))
+      expect(tooLongConstructor).toThrow(new Error('arrays passed to WeightedOptions constructor must be of length 2'))
+    })
+
+    it('throws an informative error when any argument has non-numeric second element', () => {
+      function stringWeight() {
+        return WeightedRandom.prototype.pairsToOptions(['a', 1], ['b', 'two'])
+      }
+
+      function objWeight() {
+        return WeightedRandom.prototype.pairsToOptions(['a', 1], ['b', {}])
+      }
+
+      function nullWeight() {
+        return WeightedRandom.prototype.pairsToOptions(['a', 1], ['b', null])
+      }
+
+      expect(stringWeight).toThrow(
+        new Error('WeightedRandom was passed a string as a weight in options, instead of a number')
+      )
+
+      expect(objWeight).toThrow(
+        new Error('WeightedRandom was passed a object as a weight in options, instead of a number')
+      )
+
+      expect(nullWeight).toThrow(
+        new Error('WeightedRandom was passed null as a weight in options, instead of a number')
+      )
+    })
+  })
+
   describe('getTotalWeight method', () => {
     it('Is a function', () => {
       expect(typeof randWithData.getTotalWeight).toEqual('function')
