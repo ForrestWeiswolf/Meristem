@@ -12,26 +12,31 @@ function WeightedRandom(choices) {
   this.choices = {}
 
   Object.keys(choices).forEach((option) => {
-    if (typeof choices[option] === 'number') {
-      this.choices[option] = choices[option]
-    } else if (choices[option] === null) {
-      throw new Error(
-        `WeightedRandom was passed null as a weight in options, instead of a number`
-      )
-    }
-    else {
-      throw new Error(
-        `WeightedRandom was passed a ${typeof choices[option]} as a weight in options, instead of a number`
-      )
-    }
+    this.choices[option] = choices[option]
   })
+}
+
+function mustbeNum(val) {
+  if (typeof val === 'number') {
+    return val
+  } else if (val === null) {
+    throw new Error(
+      `WeightedRandom was passed null as a weight in options, instead of a number`
+    )
+  }
+  else {
+    throw new Error(
+      `WeightedRandom was passed a ${typeof val} as a weight in options, instead of a number`
+    )
+  }
 }
 
 WeightedRandom.prototype.objToOptions = function (obj) {
   let result = []
   Object.keys(obj).forEach((option) => {
-    result.push({val: option, weight: obj[option]})
+    result.push({ val: option, weight: mustbeNum(obj[option]) })
   })
+
   return result
 };
 

@@ -40,30 +40,40 @@ describe('WeightedRandom', () => {
     expect(typeof WeightedRandom.prototype.objToOptions).toBe('function')
   })
 
+  describe('WeightedRandom.prototype.objToOptions', () => {
+    it('throws an informative error when the object has non-numeric values', () => {
+      function stringWeight() {
+        return WeightedRandom.prototype.objToOptions({ a: 'three', b: 2 })
+      }
+
+      function objWeight() {
+        return WeightedRandom.prototype.objToOptions({ a: {}, b: 2 })
+      }
+
+      function nullWeight() {
+        return WeightedRandom.prototype.objToOptions({ a: null, b: 2 })
+      }
+
+      expect(stringWeight).toThrow(
+        new Error('WeightedRandom was passed a string as a weight in options, instead of a number')
+      )
+
+      expect(objWeight).toThrow(
+        new Error('WeightedRandom was passed a object as a weight in options, instead of a number')
+      )
+
+      expect(nullWeight).toThrow(
+        new Error('WeightedRandom was passed null as a weight in options, instead of a number')
+      )
+    })
+  })
+
   it('calls objToOptions on a passed object', () => {
     spyOn(WeightedRandom.prototype, 'objToOptions').and.callThrough()
 
     const obj = { a: 1, b: 2 }
     const testWRand = new WeightedRandom(obj)
     expect(WeightedRandom.prototype.objToOptions).toHaveBeenCalledWith(obj)
-  })
-
-  it('throws an informative error when the object has non-numeric values', () => {
-    function stringWeightConstructor() {
-      return new WeightedRandom({ a: 'three', b: 2 })
-    }
-
-    function nullWeightConstructor() {
-      return new WeightedRandom({ a: null, b: 2 })
-    }
-
-    expect(stringWeightConstructor).toThrow(
-      new Error('WeightedRandom was passed a string as a weight in options, instead of a number')
-    )
-
-    expect(nullWeightConstructor).toThrow(
-      new Error('WeightedRandom was passed null as a weight in options, instead of a number')
-    )
   })
 
   describe('getTotalWeight method', () => {
