@@ -151,6 +151,11 @@ describe('WeightedRandom', () => {
     expect(WeightedRandom.prototype.pairsToOptions).toHaveBeenCalledWith(['a', 1], ['b', 2])
   })
 
+  it('objToOptions and pairsToOptions return the same thing when given equivalent inputs', () => {
+    expect(WeightedRandom.prototype.pairsToOptions(['foo', 1], ['bar', 2]))
+    .toEqual(WeightedRandom.prototype.objToOptions({foo: 1, bar: 2}))
+  })
+
   describe('getTotalWeight method', () => {
     it('Is a function', () => {
       expect(typeof randWithData.getTotalWeight).toEqual('function')
