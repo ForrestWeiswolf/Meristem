@@ -6,16 +6,10 @@ function WeightedRandom() {
   } else if (typeof arguments[0] !== 'object') {
     throw new Error(`WeightedRandom constructor was passed ${typeof arguments[0]} - it must be passed an object or a series of length 2 arrays`)
   } else if(arguments[0].constructor === Array){
-    this.pairsToOptions(...arguments)
+    this.choices = this.pairsToOptions(...arguments)
   } else {
-    this.objToOptions(arguments[0])
+    this.choices = this.objToOptions(arguments[0])
   }
-
-  this.choices = {}
-
-  Object.keys(arguments[0]).forEach((option) => {
-    this.choices[option] = arguments[0][option]
-  })
 }
 
 function mustBeNum(val) {
@@ -74,27 +68,26 @@ WeightedRandom.prototype.pairsToOptions = function () {
 
 
 WeightedRandom.prototype.getTotalWeight = function () {
-  const keys = Object.keys(this.choices)
-
-  return keys.reduce((sum, key) => {
-    return this.choices[key] + sum
+  return this.choices.reduce((sum, choice) => {
+    return choice.weight + sum
   }, 0)
 };
 
 WeightedRandom.prototype.choose = function () {
-  const rand = Math.random() * this.getTotalWeight()
-  let count = 0
-
   if (this.getTotalWeight() === 0) {
     return null
   }
 
-  for (var key in this.choices) {
-    count += this.choices[key]
+  const rand = Math.random() * this.getTotalWeight()
+  let count = 0
+
+  for(let i = 0; i < this.choices.length; i++){
+    count += this.choices[i].weight
+
     if (count > rand) {
-      return key
+      return this.choices[i].val
     }
-  }
+  }    
 };
 
 module.exports = WeightedRandom

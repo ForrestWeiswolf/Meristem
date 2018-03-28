@@ -156,6 +156,17 @@ describe('WeightedRandom', () => {
     .toEqual(WeightedRandom.prototype.objToOptions({foo: 1, bar: 2}))
   })
 
+  it('constructor creates identical objects when given equivalent inputs', () => {
+    let randFromPairs = new WeightedRandom(['foo', 1], ['bar', 2])
+    let randFromObj = new WeightedRandom({foo: 1, bar: 2})
+
+    expect(Object.keys(randFromPairs)).toEqual(Object.keys(randFromObj))
+
+    Object.keys(randFromPairs).forEach((key) => {
+      expect(randFromPairs[key]).toEqual(randFromObj[key])
+    })
+  })
+
   describe('getTotalWeight method', () => {
     it('Is a function', () => {
       expect(typeof randWithData.getTotalWeight).toEqual('function')
