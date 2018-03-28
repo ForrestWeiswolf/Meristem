@@ -13,15 +13,11 @@ describe('WeightedRandom', () => {
     expect(typeof randWithData).toEqual('object')
   })
 
-  it('throws an error when no argument is passed', () => {
+  it('throws an informative error when the first argument is not an object or array', () => {
     function emptyConstructor() {
       return new WeightedRandom()
     }
 
-    expect(emptyConstructor).toThrow(new Error('No argument passed to WeightedRandom constructor'))
-  })
-
-  it('throws an informative error when the first argument is not an object', () => {
     function strConstructor() {
       return new WeightedRandom('Ce n\'est pas un objet')
     }
@@ -34,36 +30,140 @@ describe('WeightedRandom', () => {
       return new WeightedRandom(null)
     }
 
-    expect(strConstructor).toThrow(new Error('WeightedRandom constructor was passed string instead of object'))
-    expect(numConstructor).toThrow(new Error('WeightedRandom constructor was passed number instead of object'))
-    expect(nullConstructor).toThrow(new Error('WeightedRandom constructor was passed null instead of object'))
+    expect(emptyConstructor).toThrow(new Error('No argument passed to WeightedRandom constructor'))
+    expect(strConstructor).toThrow(new Error('WeightedRandom constructor was passed string - it must be passed an object or a series of length 2 arrays'))
+    expect(numConstructor).toThrow(new Error('WeightedRandom constructor was passed number - it must be passed an object or a series of length 2 arrays'))
+    expect(nullConstructor).toThrow(new Error('WeightedRandom constructor was passed null - it must be passed an object or a series of length 2 arrays'))
   })
 
-  it('throws an informative error when the object has non-numeric values', () => {
-    function stringWeightConstructor() {
-      return new WeightedRandom({a: 'three', b: 2})
-    }
-
-    function nullWeightConstructor() {
-      return new WeightedRandom({a: null, b: 2})
-    }
-
-    expect(stringWeightConstructor).toThrow(
-      new Error('WeightedRandom was passed a string as a weight in options, instead of a number')
-    )
-
-    expect(nullWeightConstructor).toThrow(
-      new Error('WeightedRandom was passed null as a weight in options, instead of a number')
-    )
+  it('has a objToOptions method', () => {
+    expect(typeof WeightedRandom.prototype.objToOptions).toBe('function')
   })
 
-  describe('choices property', () => {
-    it('Is an object', () => {
-      expect(typeof randWithData.choices).toEqual('object')
+  describe('WeightedRandom.prototype.objToOptions', () => {
+    it('throws an informative error when the object has non-numeric values', () => {
+      function stringWeight() {
+        return WeightedRandom.prototype.objToOptions({ a: 'three', b: 2 })
+      }
+
+      function objWeight() {
+        return WeightedRandom.prototype.objToOptions({ a: {}, b: 2 })
+      }
+
+      function nullWeight() {
+        return WeightedRandom.prototype.objToOptions({ a: null, b: 2 })
+      }
+
+      expect(stringWeight).toThrow(
+        new Error('WeightedRandom was passed a string as a weight in options, instead of a number')
+      )
+
+      expect(objWeight).toThrow(
+        new Error('WeightedRandom was passed a object as a weight in options, instead of a number')
+      )
+
+      expect(nullWeight).toThrow(
+        new Error('WeightedRandom was passed null as a weight in options, instead of a number')
+      )
+    })
+  })
+
+  it('calls objToOptions on a passed object', () => {
+    spyOn(WeightedRandom.prototype, 'objToOptions').and.callThrough()
+
+    const obj = { a: 1, b: 2 }
+    const testWRand = new WeightedRandom(obj)
+    expect(WeightedRandom.prototype.objToOptions).toHaveBeenCalledWith(obj)
+  })
+
+  //as when passing an object, what we're doing here is giving it a list of 
+  //options with weights. However, we want to be able to have options that 
+  //are themselves objects; this would be problematic if options were 
+  //expressed only as the keys of an object
+
+  it('has an pairsToOptions method', () => {
+    expect(typeof WeightedRandom.prototype.pairsToOptions).toBe('function')
+  })
+
+  describe('WeightedRandom.prototype.pairsToOptions', () => {
+    it('throws an informative error unless every argument is an array', () => {
+      function nullArg() {
+        return WeightedRandom.prototype.pairsToOptions(['a', 1], null, ['c', 2])
+      }
+
+      function strArg() {
+        return WeightedRandom.prototype.pairsToOptions(['a', 1], 'not an array', ['c', 2])
+      }
+
+      expect(nullArg).toThrow(new Error(
+        'WeightedRandom constructor was passed null - it must be passed an object or a series of length 2 arrays'
+      ))
+
+      expect(strArg).toThrow(new Error(
+        'WeightedRandom constructor was passed string - it must be passed an object or a series of length 2 arrays'
+      ))
     })
 
-    it('when the constructor is passed an object as first argument, is set to that object', () => {
-      expect(randWithData.choices).toEqual(data)
+    it('throws an informative error unless every argument has length 2', () => {
+      function emptyArrConstructor() {
+        return WeightedRandom.prototype.pairsToOptions(['cup after all the tea is gone', 2], [], ['old pen', 2])
+      }
+      function tooLongConstructor() {
+        return WeightedRandom.prototype.pairsToOptions(['a', 1], ['b', 1, 1], ['c', 2])
+      }
+
+      expect(emptyArrConstructor).toThrow(new Error('arrays passed to WeightedOptions constructor must be of length 2'))
+      expect(tooLongConstructor).toThrow(new Error('arrays passed to WeightedOptions constructor must be of length 2'))
+    })
+
+    it('throws an informative error when any argument has non-numeric second element', () => {
+      function stringWeight() {
+        return WeightedRandom.prototype.pairsToOptions(['a', 1], ['b', 'two'])
+      }
+
+      function objWeight() {
+        return WeightedRandom.prototype.pairsToOptions(['a', 1], ['b', {}])
+      }
+
+      function nullWeight() {
+        return WeightedRandom.prototype.pairsToOptions(['a', 1], ['b', null])
+      }
+
+      expect(stringWeight).toThrow(
+        new Error('WeightedRandom was passed a string as a weight in options, instead of a number')
+      )
+
+      expect(objWeight).toThrow(
+        new Error('WeightedRandom was passed a object as a weight in options, instead of a number')
+      )
+
+      expect(nullWeight).toThrow(
+        new Error('WeightedRandom was passed null as a weight in options, instead of a number')
+      )
+    })
+  })
+
+  it('calls pairsToOptions on passed arrays', () => {
+    spyOn(WeightedRandom.prototype, 'pairsToOptions').and.callThrough()
+
+    const testWRand = new WeightedRandom(['a', 1], ['b', 2])
+
+    expect(WeightedRandom.prototype.pairsToOptions).toHaveBeenCalledWith(['a', 1], ['b', 2])
+  })
+
+  it('objToOptions and pairsToOptions return the same thing when given equivalent inputs', () => {
+    expect(WeightedRandom.prototype.pairsToOptions(['foo', 1], ['bar', 2]))
+    .toEqual(WeightedRandom.prototype.objToOptions({foo: 1, bar: 2}))
+  })
+
+  it('constructor creates identical objects when given equivalent inputs', () => {
+    let randFromPairs = new WeightedRandom(['foo', 1], ['bar', 2])
+    let randFromObj = new WeightedRandom({foo: 1, bar: 2})
+
+    expect(Object.keys(randFromPairs)).toEqual(Object.keys(randFromObj))
+
+    Object.keys(randFromPairs).forEach((key) => {
+      expect(randFromPairs[key]).toEqual(randFromObj[key])
     })
   })
 
