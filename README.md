@@ -54,14 +54,21 @@ Well, when a nonterminal's value is itself a Format, its expand method will be c
 However, a more common situation is for the value to be a WeightedRandom.
 
 ### WeightedRandom:
-The purpose of a WeightedRandom is to choose randomly from a list of options, but allow you to set weights, making some options more likely than others.
+The purpose of a WeightedRandom is to choose randomly from a list of options, while allowing you to set weights, making some options more likely than others.
 
-The WeightedRandom constructor currently takes an object, with numerical values (support may be added later for other types of input). It has a `.choose` method, which, when called, returns a random key from that object, with probability correspning to the assosciated value. For example
+The WeightedRandom constructor takes an arbitrary number of arrays, each consisting of some value as the first element, and a numerical weight assosciated with it as the second. It has a `.choose` method, which, when called, returns a random one of those values, with probability correspning to the assosciated weight. For example
+```javascript
+const wRand = new WeightedRandom(['rain', 1], ['sun', 2]})
+console.log(wRand.choose())
+```
+will print 'rain' 1/3 of the time, and 'sun' 2/3 of the time. (The denominator being the total of the weights.) 
+
+Alternatively, you may pass the WeightedRandom an object with numerical values, in which case the `.choose` method will returns a random key from that object, with probability correspning to the assosciated value. For example
 ```javascript
 const wRand = new WeightedRandom({rain: 1, sun: 2})
 console.log(wRand.choose())
 ```
-will print 'rain' 1/3 of the time, and 'sun' 2/3 of the time. (The denominator being the total of the weights.) 
+is equivalent to the previous example. This was the only for of input available in previous versions of Meristem; it's slighly more succinct, but does not allow for non-string options.
 
 ## Using a WeightedRandom in a format:
 When a nonterminal's value is a WeightedRandom, the WeightedRandom's `.choose` method is called, and the result expanded if relevant and inserted in the result, just as any other string would be. This allow you to generate random text using a format, like so:
