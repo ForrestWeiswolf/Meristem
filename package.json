@@ -1,6 +1,6 @@
 {
   "name": "meristem",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "Procedural text generation using a context-free grammar",
   "author": "Forrest Weiswolf <forrest.weiswolf@gmail.com>",
   "main": "dist/meristem.js",
@@ -10,11 +10,7 @@
     "build": "webpack"
   },
   "files": [
-    "Format.js",
-    "WeightedRandom.js",
-    "FrozenRandom.js",
-    "index.js",
-    "README.md"
+    "dist/meristem.js"
   ],
   "repository": {
     "type": "git",
