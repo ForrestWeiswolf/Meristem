@@ -7,7 +7,7 @@
   "bugs": "https://github.com/forrestWeiswolf/meristem/issues",
   "scripts": {
     "test": "jasmine",
-    "webpack": "webpack"
+    "build": "webpack"
   },
   "files": [
     "Format.js",

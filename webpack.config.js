@@ -1,33 +1,11 @@
-// var webpack = require("webpack");
+var path = require('path')
 
 module.exports = {
-  entry: "./index.js",
+  entry: './index.js',
   output: {
-    filename: "dist/bundle.js"
-  }//,
-  // module: {
-  //   loaders: [
-  //     {
-  //       test: /\.js$/,
-  //       loader: 'babel-loader',
-  //       query: {
-  //         presets: ['es2015']
-  //       }
-  //     }
-  //   ]
-  // },
-  // plugins: [
-  //   new webpack.optimize.UglifyJsPlugin({ minimize: true })
-  // ]
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'meristem.js',
+    library: 'meristem',
+    libraryTarget: 'umd'
+  }
 }
-
-// var path = require('path');
-
-// module.exports = {
-//   entry: "./index.js",
-//   devtool: "source-map",
-//   output: {
-//     path: path.resolve(__dirname, 'dist'),    
-//     filename: "Meristem.min.js"
-//   },
-// };
