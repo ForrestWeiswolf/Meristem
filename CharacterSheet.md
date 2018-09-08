@@ -14,8 +14,8 @@
 
 **_Dancing Pandas (Slack):_** 5
 
-**_Evergreen Trees: (Slack)_** 2
+**_Evergreen Trees (Slack):_** 2
 
-**_Seedlings: (Slack)_** 1
+**_Seedlings (Slack):_** 1
 
-**_Herbs: (Slack)_** 1
+**_Herbs (Slack):_** 1
