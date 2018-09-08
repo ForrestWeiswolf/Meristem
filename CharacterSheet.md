@@ -10,7 +10,7 @@
 
 ### Inventory:
 
-**_Stars (Github):_** 3
+**_Stars (Github):_** 4
 
 **_Dancing Pandas (Slack):_** 5
 
