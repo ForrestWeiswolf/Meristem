@@ -1,8 +1,7 @@
 function Format(formatString, definitions) {
   if (typeof formatString === 'undefined') {
     throw new Error('No argument passed to Format constructor')
-  }
-  else if (formatString === null) {
+  } else if (formatString === null) {
     throw new Error('Format constructor was passed null instead of string')
   } else if (typeof formatString !== 'string') {
     throw new Error(`Format constructor was passed ${typeof formatString} instead of string`)
