@@ -1,3 +1,12 @@
+/**
+ * A set of values with weights, which can return a random value 
+ * with probability corresponding to its weight.
+ * @constructor
+ * @param {...Array} options Any number of rrays of length 2,
+ * each consisting of an arbitrary value and the weight assigned to it.
+ * Alternatively, the constructor may be called with a single object
+ * where the keys are options and the assosciated values are their weights.
+ */
 function WeightedRandom() {
   if (typeof arguments[0] === 'undefined') {
     throw new Error('No argument passed to WeightedRandom constructor')
@@ -73,6 +82,12 @@ WeightedRandom.prototype.getTotalWeight = function () {
   }, 0)
 };
 
+/**
+ * Returns a random option. The chance of a given option being returned
+ * is equal to (that option's weight) / (total of all options' weights).
+ * E.g. if the constructor was passed `['a', 1], ['b', 2]`, there is a 
+ * 1/3 chance of `'a'` being returned and a 2/3 chance of `'b'` being returned.
+ */
 WeightedRandom.prototype.choose = function () {
   if (this.getTotalWeight() === 0) {
     return null
