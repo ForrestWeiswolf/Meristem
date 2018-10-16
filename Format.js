@@ -1,3 +1,13 @@
+/**
+ * The format according to which text will be generated.
+ * @constructor
+ * @param {string} formatString - A string which may contain 'nonterminals' - text enclosed
+ * in parentheses which will be replaced with a specified or randomly chosen substring
+ * @param {object} definitions - An object assosciating nonterminals as keys with
+ * the values they will be replaced with. If the value is a [WeightedRandom]{@link WeightedRandom},
+ * its .choose method will be called and the result inserted instead; if it is a Format
+ * its .expand method will be called and the result inserted.
+ */
 function Format(formatString, definitions) {
   if (typeof formatString === 'undefined') {
     throw new Error('No argument passed to Format constructor')
@@ -16,6 +26,9 @@ function Format(formatString, definitions) {
   this.separators = { start: '(', end: ')' }
 }
 
+/** Generate text according to the format.
+ * @param {object} definitionsArg - Optional; will be used if no definitions were passed to the constructor
+*/
 Format.prototype.expand = function (definitionsArg) {
   let result = '';
   let definitions = this.definitions || definitionsArg
