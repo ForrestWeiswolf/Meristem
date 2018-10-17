@@ -1,7 +1,7 @@
 const WeightedRandom = require('./WeightedRandom')
 
 /**
- * A WeightedRandom that always chooses the same value until reset.
+ * A [WeightedRandom]{@link WeightedRandom} that always chooses the same value until reset.
  * @constructor
  * @extends WeightedRandom
  */
@@ -14,9 +14,9 @@ FrozenRandom.prototype = Object.create(WeightedRandom.prototype)
 FrozenRandom.prototype.constructor = FrozenRandom
 
 /**
- * As [WeightedRandom.choose]{@link WeightedRandom#choose}, 
+ * As [WeightedRandom.choose]{@link WeightedRandom#choose},
  * except that once it has been called once, it will always return the same value
- * (unless [.reset]{@link FrozenRandom#reset},  is called)
+ * (unless [.reset]{@link FrozenRandom#reset} is called)
  */
 FrozenRandom.prototype.choose = function () {
   if (this.value) {
