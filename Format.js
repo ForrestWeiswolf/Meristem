@@ -26,7 +26,17 @@ function Format(formatString, definitions) {
   this.separators = { start: '(', end: ')' }
 }
 
-/** Generate text according to the format.
+/** Generate text according to the format. Uses the definitions passed to the constructor if there were any,
+ * or those passed as an argument if none were passed to the constructor.
+ * 
+ * Each section of the formatString that is enclosed in parentheses is replaced according to the following rules:
+ * 1. If it's not a key in the definitions passed to the constructor or this method, an error is thrown.
+ * 2. If its definition is a string, it's replaced with that string.
+ * 3. If its definition is also a Format, it's replaced with the returned value of a call to its
+ * .expand method on the definitions object currently in use
+ * (note if it has its own definitions they will take precedence).
+ * 4. If it's a [WeightedRandom]{@link WeightedRandom},  it's replaced with the returned value of a call to its
+ * .choose method.
  * @param {object} definitionsArg - Optional; will be used if no definitions were passed to the constructor
 */
 Format.prototype.expand = function (definitionsArg) {
