@@ -27,7 +27,7 @@ function Format(formatString, definitions) {
 
   this.formatString = formatString
   this.definitions = definitions
-  this.separators = { start: '(', end: ')' }
+  this._separators = { start: '(', end: ')' }
 }
 
 /** Generate text according to the format. Uses the definitions passed to the constructor if there were any,
@@ -53,18 +53,18 @@ Format.prototype.expand = function(definitionsArg) {
   }
 
   this.formatString
-    .split(this.separators.end) // splits into sections ending with a nonterminal
+    .split(this._separators.end) // splits into sections ending with a nonterminal
     .forEach(section => {
-      const splitSection = section.split(this.separators.start) // splits into arrays where first member is text and second is nonterminal
+      const splitSection = section.split(this._separators.start) // splits into arrays where first member is text and second is nonterminal
       const text = splitSection[0]
       const nonterminal = splitSection[1]
       if (text) result += text
-      result += this.handleNonterminal(nonterminal, definitions)
+      result += this._handleNonterminal(nonterminal, definitions)
     })
   return result
 }
 
-Format.prototype.handleNonterminal = function(nonterminalStr, definitions) {
+Format.prototype._handleNonterminal = function(nonterminalStr, definitions) {
   if (!nonterminalStr) {
     return ''
   } else if (!definitions[nonterminalStr]) {
