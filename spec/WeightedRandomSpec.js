@@ -76,10 +76,10 @@ describe('WeightedRandom', () => {
     expect(WeightedRandom.prototype.objToOptions).toHaveBeenCalledWith(obj)
   })
 
-  //as when passing an object, what we're doing here is giving it a list of 
-  //options with weights. However, we want to be able to have options that 
-  //are themselves objects; this would be problematic if options were 
-  //expressed only as the keys of an object
+  /* As when passing an object, what we're doing here is giving it a list of
+  options with weights. However, we want to be able to have options that
+  are themselves objects; this would be problematic if options were
+  expressed only as the keys of an object */
 
   it('has an pairsToOptions method', () => {
     expect(typeof WeightedRandom.prototype.pairsToOptions).toBe('function')
