@@ -18,7 +18,7 @@ function Format(formatString, definitions) {
 }
 
 Format.prototype.expand = function (definitionsArg) {
-  let result = '';
+  let result = ''
   let definitions = this.definitions || definitionsArg
   if (!definitions) {
     throw new Error('This.definitions does not exist and no definitions argument passed')
@@ -33,7 +33,7 @@ Format.prototype.expand = function (definitionsArg) {
       result += this.handleNonterminal(nonterminal, definitions)
 
     })
-  return result;
+  return result
 }
 
 Format.prototype.handleNonterminal = function (nonterminalStr, definitions) {
@@ -50,17 +50,14 @@ Format.prototype.handleNonterminal = function (nonterminalStr, definitions) {
     } else if (typeof nonterminal === 'object' && nonterminal.expand) {
       return nonterminal.expand(definitions)
     } else if (typeof nonterminal === 'object' && nonterminal.choose) {
-      //let choice = nonterminal.choose()
-      //return typeof choice === 'string' ? choice : 
       return new Format(nonterminal.choose(), definitions).expand()
     }
-
   }
 }
 
 function checkParens(str) {
   let parensOpen = 0
-  for (i = 0; i < str.length; i++) {
+  for (let i = 0; i < str.length; i++) {
     if (str.charAt(i) === '(') {
       parensOpen++
     } else if (str.charAt(i) === ')') {
@@ -78,4 +75,5 @@ function checkParens(str) {
     return true
   }
 }
+
 module.exports = Format
