@@ -55,11 +55,11 @@ describe('WeightedRandom', () => {
       }
 
       expect(stringWeight).toThrow(
-        new Error('WeightedRandom was passed a string as a weight in options, instead of a number')
+        new Error('WeightedRandom was passed string as a weight in options, instead of a number')
       )
 
       expect(objWeight).toThrow(
-        new Error('WeightedRandom was passed a object as a weight in options, instead of a number')
+        new Error('WeightedRandom was passed object as a weight in options, instead of a number')
       )
 
       expect(nullWeight).toThrow(
@@ -130,11 +130,11 @@ describe('WeightedRandom', () => {
       }
 
       expect(stringWeight).toThrow(
-        new Error('WeightedRandom was passed a string as a weight in options, instead of a number')
+        new Error('WeightedRandom was passed string as a weight in options, instead of a number')
       )
 
       expect(objWeight).toThrow(
-        new Error('WeightedRandom was passed a object as a weight in options, instead of a number')
+        new Error('WeightedRandom was passed object as a weight in options, instead of a number')
       )
 
       expect(nullWeight).toThrow(

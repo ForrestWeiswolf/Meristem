@@ -19,4 +19,32 @@ function checkParens(str) {
   }
 }
 
-module.exports = { checkParens }
+function mustBeNum(val, message) {
+  if (typeof val === 'number') {
+    return val
+  } else if (val === null) {
+    throw new Error(
+      message('null')
+    )
+  } else {
+    throw new Error(
+      message(typeof val)
+    )
+  }
+}
+
+function mustBeArr(val, message) {
+  if (val === null) {
+    throw new Error(
+      message('null')
+    )
+  } else if (val.constructor === Array) {
+    return val
+  } else {
+    throw new Error(
+      message(typeof val)
+    )
+  }
+}
+
+module.exports = { checkParens, mustBeArr, mustBeNum }
