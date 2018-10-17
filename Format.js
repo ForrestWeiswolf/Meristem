@@ -1,3 +1,5 @@
+const { checkParens } = require('./utils')
+
 /**
  * The format according to which text will be generated.
  * @constructor
@@ -14,7 +16,9 @@ function Format(formatString, definitions) {
   } else if (formatString === null) {
     throw new Error('Format constructor was passed null instead of string')
   } else if (typeof formatString !== 'string') {
-    throw new Error(`Format constructor was passed ${typeof formatString} instead of string`)
+    throw new Error(
+      `Format constructor was passed ${typeof formatString} instead of string`
+    )
   } else if (!checkParens(formatString)) {
     throw new Error('Mismatched parentheses in Format string')
   } else if (formatString.includes('()')) {
@@ -28,7 +32,7 @@ function Format(formatString, definitions) {
 
 /** Generate text according to the format. Uses the definitions passed to the constructor if there were any,
  * or those passed as an argument if none were passed to the constructor.
- * 
+ *
  * Each section of the formatString that is enclosed in parentheses is replaced according to the following rules:
  * 1. If it's not a key in the definitions passed to the constructor or this method, an error is thrown.
  * 2. If its definition is a string, it's replaced with that string.
@@ -38,33 +42,34 @@ function Format(formatString, definitions) {
  * 4. If it's a [WeightedRandom]{@link WeightedRandom},  it's replaced with the returned value of a call to its
  * .choose method.
  * @param {object} definitionsArg - Optional; will be used if no definitions were passed to the constructor
-*/
-Format.prototype.expand = function (definitionsArg) {
-  let result = '';
+ */
+Format.prototype.expand = function(definitionsArg) {
+  let result = ''
   let definitions = this.definitions || definitionsArg
   if (!definitions) {
-    throw new Error('This.definitions does not exist and no definitions argument passed')
+    throw new Error(
+      'This.definitions does not exist and no definitions argument passed'
+    )
   }
 
-  this.formatString.split(this.separators.end) //splits into sections ending with a nonterminal
-    .forEach((section) => {
-      const splitSection = section.split(this.separators.start) //splits into arrays where first member is text and second is nonterminal 
+  this.formatString
+    .split(this.separators.end) // splits into sections ending with a nonterminal
+    .forEach(section => {
+      const splitSection = section.split(this.separators.start) // splits into arrays where first member is text and second is nonterminal
       const text = splitSection[0]
       const nonterminal = splitSection[1]
       if (text) result += text
       result += this.handleNonterminal(nonterminal, definitions)
-
     })
-  return result;
+  return result
 }
 
-Format.prototype.handleNonterminal = function (nonterminalStr, definitions) {
+Format.prototype.handleNonterminal = function(nonterminalStr, definitions) {
   if (!nonterminalStr) {
     return ''
   } else if (!definitions[nonterminalStr]) {
     throw new Error(`"${nonterminalStr}" not found in definitions`)
   } else {
-
     let nonterminal = definitions[nonterminalStr]
 
     if (typeof nonterminal === 'string') {
@@ -72,32 +77,9 @@ Format.prototype.handleNonterminal = function (nonterminalStr, definitions) {
     } else if (typeof nonterminal === 'object' && nonterminal.expand) {
       return nonterminal.expand(definitions)
     } else if (typeof nonterminal === 'object' && nonterminal.choose) {
-      //let choice = nonterminal.choose()
-      //return typeof choice === 'string' ? choice : 
       return new Format(nonterminal.choose(), definitions).expand()
     }
-
   }
 }
 
-function checkParens(str) {
-  let parensOpen = 0
-  for (i = 0; i < str.length; i++) {
-    if (str.charAt(i) === '(') {
-      parensOpen++
-    } else if (str.charAt(i) === ')') {
-      parensOpen--
-    }
-
-    if (parensOpen < 0) {
-      return false
-    }
-  }
-
-  if (parensOpen !== 0) {
-    return false
-  } else {
-    return true
-  }
-}
 module.exports = Format

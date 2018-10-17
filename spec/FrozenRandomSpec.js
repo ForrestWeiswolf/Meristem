@@ -15,14 +15,16 @@ describe('FrozenRandom', () => {
   })
 
   describe('.choose', () => {
-    it('calls prototype\'s choose method the first time it\'s called', () => {
+    it("calls prototype's choose method the first time it's called", () => {
       spyOn(wRandInInheritanceChain.choose, 'call').and.returnValue('foo')
 
       randWithData.choose()
-      expect(wRandInInheritanceChain.choose.call).toHaveBeenCalledWith(randWithData)
+      expect(wRandInInheritanceChain.choose.call).toHaveBeenCalledWith(
+        randWithData
+      )
     })
 
-    it('returns the result of prototype\'s choose method the first time it\'s called', () => {
+    it("returns the result of prototype's choose method the first time it's called", () => {
       spyOn(wRandInInheritanceChain.choose, 'call').and.returnValue('foo')
 
       expect(randWithData.choose()).toEqual('foo')
@@ -33,13 +35,13 @@ describe('FrozenRandom', () => {
       for (let i = 0; i < 10; i++) {
         tries.push(randWithData.choose())
       }
-      expect(tries.every((item) => item === tries[0]))
+      expect(tries.every(item => item === tries[0]))
     })
   })
 
   describe('.reset', () => {
     describe('.choose, after it has been called', () => {
-      it('calls through to prototype\'s choose method again, and returns the new result', () => {
+      it("calls through to prototype's choose method again, and returns the new result", () => {
         randWithData.choose()
 
         spyOn(wRandInInheritanceChain.choose, 'call').and.returnValue('bar')
