@@ -7,7 +7,8 @@
   "bugs": "https://github.com/forrestWeiswolf/meristem/issues",
   "scripts": {
     "test": "jasmine",
-    "build": "webpack"
+    "build": "webpack",
+    "document": "jsdoc *.js -d ./docs -c jsdocConfig.json"
   },
   "files": [
     "dist/meristem.js"
@@ -17,9 +18,9 @@
     "url": "https://github.com/ForrestWeiswolf/Meristem.git"
   },
   "license": "ISC",
-  "dependencies": {},
   "devDependencies": {
     "jasmine": "^2.8.0",
+    "jsdoc": "~3.5.5",
     "webpack": "^3.8.1"
   }
 }
