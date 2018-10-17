@@ -18,11 +18,11 @@ FrozenRandom.prototype.constructor = FrozenRandom
  * except that once it has been called once, it will always return the same value
  * (unless [.reset]{@link FrozenRandom#reset} is called)
  */
-FrozenRandom.prototype.choose = function () {
+FrozenRandom.prototype.choose = function() {
   if (this.value) {
     return this.value
   } else {
-    //call WeightedRandom's choose method, but with this FrozenRandom as 'this' context:
+    // call WeightedRandom's choose method, but with this FrozenRandom as 'this' context:
     this.value = Object.getPrototypeOf(FrozenRandom.prototype).choose.call(this)
     return this.value
   }
@@ -33,10 +33,9 @@ FrozenRandom.prototype.choose = function () {
  * next time [.choose]{@link FrozenRandom#choose} is called,
  * not necessarily returning the same value as before.
  */
-FrozenRandom.prototype.reset = function () {
+FrozenRandom.prototype.reset = function() {
   this.value = null
   return this
 }
 
 module.exports = FrozenRandom
-
