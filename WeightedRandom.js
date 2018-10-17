@@ -50,7 +50,7 @@ WeightedRandom.prototype.objToOptions = function (obj) {
   })
 
   return result
-};
+}
 
 WeightedRandom.prototype.pairsToOptions = function () {
   let result = []
@@ -64,14 +64,14 @@ WeightedRandom.prototype.pairsToOptions = function () {
   })
 
   return result
-};
+}
 
 
 WeightedRandom.prototype.getTotalWeight = function () {
   return this.choices.reduce((sum, choice) => {
     return choice.weight + sum
   }, 0)
-};
+}
 
 WeightedRandom.prototype.choose = function () {
   if (this.getTotalWeight() === 0) {
@@ -88,6 +88,6 @@ WeightedRandom.prototype.choose = function () {
       return this.choices[i].val
     }
   }    
-};
+}
 
 module.exports = WeightedRandom
