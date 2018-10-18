@@ -92,37 +92,37 @@ describe('Format', () => {
 
     it('calls handleNonterminal on any parenthetical nonterminals, and replaces them with the returned value', () => {
       const format = new Format('(a) (b) (c)...', { a: 'example' })
-      spyOn(format, 'handleNonterminal').and.callFake(
+      spyOn(format, '_handleNonterminal').and.callFake(
         (nonterminal, defs) => (nonterminal ? 'baz' : '')
       )
 
       expect(format.expand()).toEqual('baz baz baz...')
-      expect(format.handleNonterminal.calls.argsFor(0)).toContain('a')
-      expect(format.handleNonterminal.calls.argsFor(1)).toContain('b')
-      expect(format.handleNonterminal.calls.argsFor(2)).toContain('c')
+      expect(format._handleNonterminal.calls.argsFor(0)).toContain('a')
+      expect(format._handleNonterminal.calls.argsFor(1)).toContain('b')
+      expect(format._handleNonterminal.calls.argsFor(2)).toContain('c')
     })
 
     it('passes its definitions as a second argument to handleNonterminal', () => {
       const definitions = { a: 'example' }
       const format = new Format('(a) (b) (c)...', definitions)
-      spyOn(format, 'handleNonterminal').and.callFake(
+      spyOn(format, '_handleNonterminal').and.callFake(
         (nonterminal, defs) => (nonterminal ? 'baz' : '')
       )
 
       expect(format.expand()).toEqual('baz baz baz...')
-      expect(format.handleNonterminal).toHaveBeenCalledWith('a', definitions)
+      expect(format._handleNonterminal).toHaveBeenCalledWith('a', definitions)
     })
 
     it('uses passed definitions object if this.definitions does not exist', () => {
       const definitions = { a: 'example' }
       const format = new Format('(a) (b) (c)...', definitions)
 
-      spyOn(format, 'handleNonterminal').and.callFake(
+      spyOn(format, '_handleNonterminal').and.callFake(
         (nonterminal, defs) => (nonterminal ? 'baz' : '')
       )
 
       expect(format.expand(definitions)).toEqual('baz baz baz...')
-      expect(format.handleNonterminal).toHaveBeenCalledWith('a', definitions)
+      expect(format._handleNonterminal).toHaveBeenCalledWith('a', definitions)
     })
 
     it('throws an error when this.definitions does not exist and no object is passed', () => {
@@ -143,7 +143,7 @@ describe('Format', () => {
     it('throws an error when a nonterminal is not found in the definitions object', () => {
       // wrapper function because passing a method to expect().toThrow seems to cause issues:
       function badExpand() {
-        return format.handleNonterminal('a', { b: 'foo' })
+        return format._handleNonterminal('a', { b: 'foo' })
       }
 
       expect(badExpand).toThrow(new Error('"a" not found in definitions'))
@@ -158,7 +158,7 @@ describe('Format', () => {
           bog: 'bog down in the valley, oh',
         }
 
-        expect(format.handleNonterminal('nest', definitions)).toEqual(
+        expect(format._handleNonterminal('nest', definitions)).toEqual(
           '..a nest in a tree in a bog down in the valley, oh'
         )
       })
@@ -169,7 +169,7 @@ describe('Format', () => {
         format = new Format('(a)', { a: 'recursive' })
         spyOn(format, 'expand').and.returnValue('recursive')
 
-        format.handleNonterminal('recurse', { recurse: format })
+        format._handleNonterminal('recurse', { recurse: format })
 
         expect(format.expand).toHaveBeenCalled()
       })
@@ -179,7 +179,7 @@ describe('Format', () => {
         let definitions = { recurse: format }
         spyOn(format, 'expand').and.returnValue('recursive')
 
-        format.handleNonterminal('recurse', definitions)
+        format._handleNonterminal('recurse', definitions)
 
         expect(format.expand).toHaveBeenCalledWith(definitions)
       })
@@ -195,7 +195,7 @@ describe('Format', () => {
         })
         spyOn(wOpt, 'choose').and.callThrough()
 
-        format.handleNonterminal('Bast', { Bast: wOpt })
+        format._handleNonterminal('Bast', { Bast: wOpt })
 
         expect(wOpt.choose).toHaveBeenCalled()
       })
@@ -206,7 +206,7 @@ describe('Format', () => {
         const definitions = { city: cities, NYC: 'New York City' }
         format = new Format('(city)', definitions)
 
-        expect(format.handleNonterminal('city', definitions)).toEqual(
+        expect(format._handleNonterminal('city', definitions)).toEqual(
           'New York City'
         )
       })

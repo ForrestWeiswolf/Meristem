@@ -51,21 +51,21 @@ describe('WeightedRandom', () => {
   })
 
   it('has a objToOptions method', () => {
-    expect(typeof WeightedRandom.prototype.objToOptions).toBe('function')
+    expect(typeof WeightedRandom.prototype._objToOptions).toBe('function')
   })
 
-  describe('WeightedRandom.prototype.objToOptions', () => {
+  describe('WeightedRandom.prototype._objToOptions', () => {
     it('throws an informative error when the object has non-numeric values', () => {
       function stringWeight() {
-        return WeightedRandom.prototype.objToOptions({ a: 'three', b: 2 })
+        return WeightedRandom.prototype._objToOptions({ a: 'three', b: 2 })
       }
 
       function objWeight() {
-        return WeightedRandom.prototype.objToOptions({ a: {}, b: 2 })
+        return WeightedRandom.prototype._objToOptions({ a: {}, b: 2 })
       }
 
       function nullWeight() {
-        return WeightedRandom.prototype.objToOptions({ a: null, b: 2 })
+        return WeightedRandom.prototype._objToOptions({ a: null, b: 2 })
       }
 
       expect(stringWeight).toThrow(
@@ -89,11 +89,11 @@ describe('WeightedRandom', () => {
   })
 
   it('calls objToOptions on a passed object', () => {
-    spyOn(WeightedRandom.prototype, 'objToOptions').and.callThrough()
+    spyOn(WeightedRandom.prototype, '_objToOptions').and.callThrough()
 
     const obj = { a: 1, b: 2 }
     const testWRand = new WeightedRandom(obj)
-    expect(WeightedRandom.prototype.objToOptions).toHaveBeenCalledWith(obj)
+    expect(WeightedRandom.prototype._objToOptions).toHaveBeenCalledWith(obj)
   })
 
   /* As when passing an object, what we're doing here is giving it a list of
@@ -102,17 +102,17 @@ describe('WeightedRandom', () => {
   expressed only as the keys of an object */
 
   it('has an pairsToOptions method', () => {
-    expect(typeof WeightedRandom.prototype.pairsToOptions).toBe('function')
+    expect(typeof WeightedRandom.prototype._pairsToOptions).toBe('function')
   })
 
-  describe('WeightedRandom.prototype.pairsToOptions', () => {
+  describe('WeightedRandom.prototype._pairsToOptions', () => {
     it('throws an informative error unless every argument is an array', () => {
       function nullArg() {
-        return WeightedRandom.prototype.pairsToOptions(['a', 1], null, ['c', 2])
+        return WeightedRandom.prototype._pairsToOptions(['a', 1], null, ['c', 2])
       }
 
       function strArg() {
-        return WeightedRandom.prototype.pairsToOptions(
+        return WeightedRandom.prototype._pairsToOptions(
           ['a', 1],
           'not an array',
           ['c', 2]
@@ -134,14 +134,14 @@ describe('WeightedRandom', () => {
 
     it('throws an informative error unless every argument has length 2', () => {
       function emptyArrConstructor() {
-        return WeightedRandom.prototype.pairsToOptions(
+        return WeightedRandom.prototype._pairsToOptions(
           ['cup after all the tea is gone', 2],
           [],
           ['old pen', 2]
         )
       }
       function tooLongConstructor() {
-        return WeightedRandom.prototype.pairsToOptions(
+        return WeightedRandom.prototype._pairsToOptions(
           ['a', 1],
           ['b', 1, 1],
           ['c', 2]
@@ -162,15 +162,15 @@ describe('WeightedRandom', () => {
 
     it('throws an informative error when any argument has non-numeric second element', () => {
       function stringWeight() {
-        return WeightedRandom.prototype.pairsToOptions(['a', 1], ['b', 'two'])
+        return WeightedRandom.prototype._pairsToOptions(['a', 1], ['b', 'two'])
       }
 
       function objWeight() {
-        return WeightedRandom.prototype.pairsToOptions(['a', 1], ['b', {}])
+        return WeightedRandom.prototype._pairsToOptions(['a', 1], ['b', {}])
       }
 
       function nullWeight() {
-        return WeightedRandom.prototype.pairsToOptions(['a', 1], ['b', null])
+        return WeightedRandom.prototype._pairsToOptions(['a', 1], ['b', null])
       }
 
       expect(stringWeight).toThrow(
@@ -194,11 +194,11 @@ describe('WeightedRandom', () => {
   })
 
   it('calls pairsToOptions on passed arrays', () => {
-    spyOn(WeightedRandom.prototype, 'pairsToOptions').and.callThrough()
+    spyOn(WeightedRandom.prototype, '_pairsToOptions').and.callThrough()
 
     const testWRand = new WeightedRandom(['a', 1], ['b', 2])
 
-    expect(WeightedRandom.prototype.pairsToOptions).toHaveBeenCalledWith(
+    expect(WeightedRandom.prototype._pairsToOptions).toHaveBeenCalledWith(
       ['a', 1],
       ['b', 2]
     )
@@ -206,8 +206,8 @@ describe('WeightedRandom', () => {
 
   it('objToOptions and pairsToOptions return the same thing when given equivalent inputs', () => {
     expect(
-      WeightedRandom.prototype.pairsToOptions(['foo', 1], ['bar', 2])
-    ).toEqual(WeightedRandom.prototype.objToOptions({ foo: 1, bar: 2 }))
+      WeightedRandom.prototype._pairsToOptions(['foo', 1], ['bar', 2])
+    ).toEqual(WeightedRandom.prototype._objToOptions({ foo: 1, bar: 2 }))
   })
 
   it('constructor creates identical objects when given equivalent inputs', () => {

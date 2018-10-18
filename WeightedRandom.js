@@ -21,13 +21,13 @@ function WeightedRandom() {
       `WeightedRandom constructor was passed ${typeof arguments[0]} - it must be passed an object or a series of length 2 arrays`
     )
   } else if (arguments[0].constructor === Array) {
-    this.choices = this.pairsToOptions(...arguments)
+    this.choices = this._pairsToOptions(...arguments)
   } else {
-    this.choices = this.objToOptions(arguments[0])
+    this.choices = this._objToOptions(arguments[0])
   }
 }
 
-WeightedRandom.prototype.objToOptions = function(obj) {
+WeightedRandom.prototype._objToOptions = function(obj) {
   let result = []
 
   Object.keys(obj).forEach(option => {
@@ -44,7 +44,7 @@ WeightedRandom.prototype.objToOptions = function(obj) {
   return result
 }
 
-WeightedRandom.prototype.pairsToOptions = function() {
+WeightedRandom.prototype._pairsToOptions = function() {
   let result = []
 
   Array.prototype.slice.call(arguments).forEach(pair => {
