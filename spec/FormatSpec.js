@@ -102,6 +102,21 @@ describe('Format', () => {
       expect(format._handleNonterminal.calls.argsFor(2)).toContain('c')
     })
 
+    it('uses separators other than parentheses instead if they were passed as options to the constructor', () => {
+      const format = new Format(
+        '{a} (not a nonterminal anymore) {b}',
+        { a: 'example' },
+        { separators: { start: '{', end: '}' } }
+      )
+      spyOn(format, '_handleNonterminal').and.callFake(
+        (nonterminal, defs) => (nonterminal ? 'baz' : '')
+      )
+
+      expect(format.expand()).toEqual('baz (not a nonterminal anymore) baz')
+      expect(format._handleNonterminal.calls.argsFor(0)).toContain('a')
+      expect(format._handleNonterminal.calls.argsFor(1)).toContain('b')
+    })
+
     it('passes its definitions as a second argument to handleNonterminal', () => {
       const definitions = { a: 'example' }
       const format = new Format('(a) (b) (c)...', definitions)

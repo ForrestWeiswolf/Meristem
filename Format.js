@@ -9,8 +9,15 @@ const { checkParens } = require('./utils')
  * the values they will be replaced with. If the value is a [WeightedRandom]{@link WeightedRandom},
  * its .choose method will be called and the result inserted instead; if it is a Format
  * its .expand method will be called and the result inserted.
+ * @param {object} [options] - an object containing the options used by this Format:
+ * options.separators.start and options.separators.end may contain strings that will signal 
+ * the start and end of a nonterminal instead of the default parentheses.
  */
-function Format(formatString, definitions) {
+function Format(
+  formatString,
+  definitions,
+  options = { separators: { start: '(', end: ')' } }
+) {
   if (typeof formatString === 'undefined') {
     throw new Error('No argument passed to Format constructor')
   } else if (formatString === null) {
@@ -27,7 +34,7 @@ function Format(formatString, definitions) {
 
   this.formatString = formatString
   this.definitions = definitions
-  this._separators = { start: '(', end: ')' }
+  this._separators = { start: options.separators.start, end: options.separators.end }
 }
 
 /** Generate text according to the format. Uses the definitions passed to the constructor if there were any,
