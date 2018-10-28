@@ -3,14 +3,24 @@ const { checkParens } = require('./utils')
 /**
  * The format according to which text will be generated.
  * @constructor
- * @param {string} formatString - A string which may contain 'nonterminals' - text enclosed
- * in parentheses which will be replaced with a specified or randomly chosen substring
+ * @param {string} formatString - A string which may contain 'nonterminals' - text which will be replaced with a specified or randomly chosen substring.
+ * By default, any sections of the text enclosed in parentheses will be replaced;
+ * this can be changed in the setings argument.
  * @param {object} definitions - An object assosciating nonterminals as keys with
  * the values they will be replaced with. If the value is a [WeightedRandom]{@link WeightedRandom},
  * its .choose method will be called and the result inserted instead; if it is a Format
  * its .expand method will be called and the result inserted.
+ * @param {object} [settings] - an object containing the settings used by this Format:
+ * settings.separators.start and settings.separators.end may contain strings that will signal
+ * the start and end of a nonterminal.
+ *
+ * Default value: `{ separators: { start: '(', end: ')' } }`
  */
-function Format(formatString, definitions) {
+function Format(
+  formatString,
+  definitions,
+  settings = { separators: { start: '(', end: ')' } }
+) {
   if (typeof formatString === 'undefined') {
     throw new Error('No argument passed to Format constructor')
   } else if (formatString === null) {
@@ -27,7 +37,7 @@ function Format(formatString, definitions) {
 
   this.formatString = formatString
   this.definitions = definitions
-  this._separators = { start: '(', end: ')' }
+  this._separators = { start: settings.separators.start, end: settings.separators.end }
 }
 
 /** Generate text according to the format. Uses the definitions passed to the constructor if there were any,
