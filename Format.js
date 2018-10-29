@@ -1,6 +1,22 @@
 const { checkParens, mustBeType } = require('./utils')
 const mustBeStr = (val, message) => mustBeType(val, 'string', message)
 
+function validateFormatString(formatString) {
+  mustBeStr(
+    formatString,
+    type =>
+      type === 'undefined'
+        ? 'No argument passed to Format constructor'
+        : `Format constructor was passed ${type} instead of string`
+  )
+
+  if (!checkParens(formatString)) {
+    throw new Error('Mismatched parentheses in Format string')
+  } else if (formatString.includes('()')) {
+    throw new Error('Empty parentheses in Format string')
+  }
+}
+
 /**
  * The format according to which text will be generated.
  * @constructor
@@ -22,19 +38,7 @@ function Format(
   definitions,
   settings = { separators: { start: '(', end: ')' } }
 ) {
-  mustBeStr(
-    formatString,
-    type =>
-      type === 'undefined'
-        ? 'No argument passed to Format constructor'
-        : `Format constructor was passed ${type} instead of string`
-  )
-
-  if (!checkParens(formatString)) {
-    throw new Error('Mismatched parentheses in Format string')
-  } else if (formatString.includes('()')) {
-    throw new Error('Empty parentheses in Format string')
-  }
+  validateFormatString(formatString)
 
   this.formatString = formatString
   this.definitions = definitions
