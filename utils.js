@@ -19,10 +19,14 @@ function checkParens(str) {
   }
 }
 
+// to avoid the bug where typeof null === 'object'
 function typeOf(val) {
   return val === null ? 'null' : typeof val
 }
 
+// returns the val if it's the right type, otherwise throws an error
+// message arg should be a function that takes the (incorrect) type
+// and returns a message for the error.
 function mustBeType(val, type, message) {
   if (typeOf(val) === type) {
     return val
@@ -31,6 +35,8 @@ function mustBeType(val, type, message) {
   }
 }
 
+// as mustBeType, but checks that val's constructor matches the
+// constructor arg.
 function mustBeClass(val, constructor, message) {
   if (typeOf(val) !== 'object') {
     throw new Error(message(typeOf(val)))
