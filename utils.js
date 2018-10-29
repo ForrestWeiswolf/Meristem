@@ -35,7 +35,7 @@ function mustBeClass(val, constructor, message) {
   if (typeOf(val) !== 'object') {
     throw new Error(message(typeOf(val)))
   } else if (val.constructor !== constructor) {
-    throw new Error(message(typeOf(val)))
+    return new Error(message(val.constructor))
   } else {
     return val
   }
