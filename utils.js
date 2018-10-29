@@ -47,7 +47,4 @@ function mustBeClass(val, constructor, message) {
   }
 }
 
-const mustBeNum = (val, message) => mustBeType(val, 'number', message)
-const mustBeArr = (val, message) => mustBeClass(val, Array, message)
-
-module.exports = { checkParens, mustBeArr, mustBeNum }
+module.exports = { checkParens, mustBeType, mustBeClass }

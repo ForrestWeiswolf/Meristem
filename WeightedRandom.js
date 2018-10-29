@@ -1,4 +1,7 @@
-const { mustBeArr, mustBeNum } = require('./utils')
+const { mustBeType, mustBeClass } = require('./utils')
+
+const mustBeNum = (val, message) => mustBeType(val, 'number', message)
+const mustBeArr = (val, message) => mustBeClass(val, Array, message)
 
 /**
  * A set of values with weights, which can return a random value
