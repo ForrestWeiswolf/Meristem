@@ -31,16 +31,17 @@ function mustBeType(val, type, message) {
   }
 }
 
-const mustBeNum = (val, message) => mustBeType(val, 'number', message)
-
-function mustBeArr(val, message) {
-  if (val === null) {
-    throw new Error(message('null'))
-  } else if (val.constructor === Array) {
-    return val
+function mustBeClass(val, constructor, message) {
+  if (typeOf(val) !== 'object') {
+    throw new Error(message(typeOf(val)))
+  } else if (val.constructor !== constructor) {
+    throw new Error(message(typeOf(val)))
   } else {
-    throw new Error(message(typeof val))
+    return val
   }
 }
+
+const mustBeNum = (val, message) => mustBeType(val, 'number', message)
+const mustBeArr = (val, message) => mustBeClass(val, Array, message)
 
 module.exports = { checkParens, mustBeArr, mustBeNum }
