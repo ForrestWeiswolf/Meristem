@@ -19,15 +19,19 @@ function checkParens(str) {
   }
 }
 
-function mustBeNum(val, message) {
-  if (typeof val === 'number') {
+function typeOf(val) {
+  return val === null ? 'null' : typeof val
+}
+
+function mustBeType(val, type, message) {
+  if (typeOf(val) === type) {
     return val
-  } else if (val === null) {
-    throw new Error(message('null'))
   } else {
-    throw new Error(message(typeof val))
+    throw new Error(message(typeOf(val)))
   }
 }
+
+const mustBeNum = (val, message) => mustBeType(val, 'number', message)
 
 function mustBeArr(val, message) {
   if (val === null) {
