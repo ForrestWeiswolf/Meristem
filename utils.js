@@ -8,12 +8,12 @@ function checkParens(str) {
     }
 
     if (parensOpen < 0) {
-      return false
+      throw new Error('Mismatched parentheses in Format string')
     }
   }
 
   if (parensOpen !== 0) {
-    return false
+    throw new Error('Mismatched parentheses in Format string')
   } else {
     return true
   }

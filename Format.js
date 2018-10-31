@@ -10,9 +10,9 @@ function validateFormatString(formatString) {
         : `Format constructor was passed ${type} instead of string`
   )
 
-  if (!checkParens(formatString)) {
-    throw new Error('Mismatched parentheses in Format string')
-  } else if (formatString.includes('()')) {
+  checkParens(formatString)
+
+  if (formatString.includes('()')) {
     throw new Error('Empty parentheses in Format string')
   }
 }
