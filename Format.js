@@ -43,8 +43,14 @@ function Format(
   this.formatString = formatString
   this.definitions = definitions
   this._separators = {
-    start: settings.separators.start,
-    end: settings.separators.end,
+    start: mustBeStr(
+      settings.separators.start,
+      type => `Separators must be strings (was ${type})`
+    ),
+    end: mustBeStr(
+      settings.separators.end,
+      type => `Separators must be strings (was ${type})`
+    ),
   }
 }
 

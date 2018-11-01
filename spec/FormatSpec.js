@@ -113,6 +113,16 @@ describe('Format', () => {
         )
       })
     })
+
+    it('throws an error if separators aren\'t strings', () => {
+      function badSeparator() {
+        return new Format('(a)', {a: 'a'}, {separators: {start: null, end: '>'}})
+      }
+
+      expect(badSeparator).toThrow(
+        new Error('Separators must be strings (was null)')
+      )
+    })
   }) // end 'constructor'
 
   describe('expand method', () => {
