@@ -1,19 +1,22 @@
-function checkParens(str) {
-  let parensOpen = 0
+// Used by Format constructor to checks if parentheses, brackets, etc. are valid.
+// To check parentheses, for example,
+// pass {start: '(', end: ')'} as the symbols argument.
+function checkGroupingSymbols(str, symbols) {
+  let open = 0
   for (let i = 0; i < str.length; i++) {
-    if (str.charAt(i) === '(') {
-      parensOpen++
-    } else if (str.charAt(i) === ')') {
-      parensOpen--
+    if (str.charAt(i) === symbols.start) {
+      open++
+    } else if (str.charAt(i) === symbols.end) {
+      open--
     }
 
-    if (parensOpen < 0) {
-      throw new Error('Mismatched parentheses in Format string')
+    if (open < 0) {
+      throw new Error(`Format string includes "${symbols.end}" without matching "${symbols.start}"`)
     }
   }
 
-  if (parensOpen !== 0) {
-    throw new Error('Mismatched parentheses in Format string')
+  if (open !== 0) {
+    throw new Error(`Format string includes "${symbols.start}" without matching "${symbols.end}"`)
   } else {
     return true
   }
@@ -47,4 +50,4 @@ function mustBeClass(val, constructor, message) {
   }
 }
 
-module.exports = { checkParens, mustBeType, mustBeClass }
+module.exports = { checkGroupingSymbols, mustBeType, mustBeClass }

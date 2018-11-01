@@ -1,7 +1,7 @@
-const { checkParens, mustBeType } = require('./utils')
+const { checkGroupingSymbols, mustBeType } = require('./utils')
 const mustBeStr = (val, message) => mustBeType(val, 'string', message)
 
-function validateFormatString(formatString) {
+function validateFormatString(formatString, separators) {
   mustBeStr(
     formatString,
     type =>
@@ -10,10 +10,10 @@ function validateFormatString(formatString) {
         : `Format constructor was passed ${type} instead of string`
   )
 
-  checkParens(formatString)
+  checkGroupingSymbols(formatString, separators)
 
-  if (formatString.includes('()')) {
-    throw new Error('Empty parentheses in Format string')
+  if (formatString.includes(separators.start + separators.end)) {
+    throw new Error('Empty nonterminal in Format string')
   }
 }
 
@@ -38,7 +38,7 @@ function Format(
   definitions,
   settings = { separators: { start: '(', end: ')' } }
 ) {
-  validateFormatString(formatString)
+  validateFormatString(formatString, settings.separators)
 
   this.formatString = formatString
   this.definitions = definitions

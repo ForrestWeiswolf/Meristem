@@ -64,13 +64,13 @@ describe('Format', () => {
       }
 
       expect(noClose).toThrow(
-        new Error('Mismatched parentheses in Format string')
+        new Error('Format string includes "(" without matching ")"')
       )
       expect(noOpen).toThrow(
-        new Error('Mismatched parentheses in Format string')
+        new Error('Format string includes ")" without matching "("')
       )
       expect(closeBeforeOpen).toThrow(
-        new Error('Mismatched parentheses in Format string')
+        new Error('Format string includes ")" without matching "("')
       )
     })
 
@@ -80,8 +80,38 @@ describe('Format', () => {
       }
 
       expect(emptyParens).toThrow(
-        new Error('Empty parentheses in Format string')
+        new Error('Empty nonterminal in Format string')
       )
+    })
+
+    describe('when settings include separators other that parentheses', () => {
+      it('throws an error if separators in first arg are mismatched', () => {
+        function noClose() {
+          return new Format(
+            '{a',
+            { a: 'foo' },
+            { separators: { start: '{', end: '}' } }
+          )
+        }
+
+        expect(noClose).toThrow(
+          new Error('Format string includes "{" without matching "}"')
+        )
+      })
+
+      it('throws an error if separators in first arg are empty', () => {
+        function emptyBrackets() {
+          return new Format(
+            '{}',
+            {},
+            { separators: { start: '{', end: '}' } }
+          )
+        }
+
+        expect(emptyBrackets).toThrow(
+          new Error('Empty nonterminal in Format string')
+        )
+      })
     })
   }) // end 'constructor'
 
