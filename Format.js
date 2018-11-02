@@ -1,4 +1,21 @@
-const { checkParens } = require('./utils')
+const { checkGroupingSymbols, mustBeType } = require('./utils')
+const mustBeStr = (val, message) => mustBeType(val, 'string', message)
+
+function validateFormatString(formatString, separators) {
+  mustBeStr(
+    formatString,
+    type =>
+      type === 'undefined'
+        ? 'No argument passed to Format constructor'
+        : `Format constructor was passed ${type} instead of string`
+  )
+
+  checkGroupingSymbols(formatString, separators)
+
+  if (formatString.includes(separators.start + separators.end)) {
+    throw new Error('Empty nonterminal in Format string')
+  }
+}
 
 /**
  * The format according to which text will be generated.
@@ -21,23 +38,20 @@ function Format(
   definitions,
   settings = { separators: { start: '(', end: ')' } }
 ) {
-  if (typeof formatString === 'undefined') {
-    throw new Error('No argument passed to Format constructor')
-  } else if (formatString === null) {
-    throw new Error('Format constructor was passed null instead of string')
-  } else if (typeof formatString !== 'string') {
-    throw new Error(
-      `Format constructor was passed ${typeof formatString} instead of string`
-    )
-  } else if (!checkParens(formatString)) {
-    throw new Error('Mismatched parentheses in Format string')
-  } else if (formatString.includes('()')) {
-    throw new Error('Empty parentheses in Format string')
-  }
+  validateFormatString(formatString, settings.separators)
 
   this.formatString = formatString
   this.definitions = definitions
-  this._separators = { start: settings.separators.start, end: settings.separators.end }
+  this._separators = {
+    start: mustBeStr(
+      settings.separators.start,
+      type => `Separators must be strings (was ${type})`
+    ),
+    end: mustBeStr(
+      settings.separators.end,
+      type => `Separators must be strings (was ${type})`
+    ),
+  }
 }
 
 /** Generate text according to the format. Uses the definitions passed to the constructor if there were any,
