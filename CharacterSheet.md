@@ -1,8 +1,8 @@
 ## Meristem.js Character Sheet:
 
-**_Class and Level:_** Node Module 1
+**_Class and Level:_** Node Module 2
 
-**_XP:_** 70
+**_XP:_** 0
 
 **_GP:_** 0
 
