@@ -17,6 +17,7 @@ function validateFormatString(formatString, separators) {
   }
 }
 
+const defaultSettings = {separators: { start: '(', end: ')' }}
 /**
  * The format according to which text will be generated.
  * @constructor
@@ -36,19 +37,21 @@ function validateFormatString(formatString, separators) {
 function Format(
   formatString,
   definitions,
-  settings = { separators: { start: '(', end: ')' } }
+  settings = {}
 ) {
-  validateFormatString(formatString, settings.separators)
+  this._settings = {...defaultSettings, ...settings}
+
+  validateFormatString(formatString, this._settings.separators)
 
   this.formatString = formatString
   this.definitions = definitions
   this._separators = {
     start: mustBeStr(
-      settings.separators.start,
+      this._settings.separators.start,
       type => `Separators must be strings (was ${type})`
     ),
     end: mustBeStr(
-      settings.separators.end,
+      this._settings.separators.end,
       type => `Separators must be strings (was ${type})`
     ),
   }
