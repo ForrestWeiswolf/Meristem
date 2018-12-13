@@ -116,7 +116,7 @@ describe('Format', () => {
 
     it('throws an error if separators aren\'t strings', () => {
       function badSeparator() {
-        return new Format('(a)', {a: 'a'}, {separators: {start: null, end: '>'}})
+        return new Format('(a)', { a: 'a' }, { separators: { start: null, end: '>' } })
       }
 
       expect(badSeparator).toThrow(
@@ -170,6 +170,40 @@ describe('Format', () => {
       expect(format.expand()).toEqual('baz (not a nonterminal anymore) baz')
       expect(format._handleNonterminal.calls.argsFor(0)).toContain('a')
       expect(format._handleNonterminal.calls.argsFor(1)).toContain('b')
+    })
+
+    describe('if constructor set inlineOptionals setting', () => {
+      describe('when probability is 1', () => {
+        it('treats text in an inline optional normally', () => {
+          const withOptional = new Format(
+            '{a}(bc)def({a})',
+            { a: 'example' },
+            { 
+              separators: { start: '{', end: '}' }, 
+              inlineOptionals: { start: '(', end: ')', probability: 1 } 
+            }
+          )
+
+          const noOptional = new Format(
+            '{a}bcdef{a}',
+            { a: 'example' },
+            { 
+              separators: { start: '{', end: '}' }, 
+              inlineOptionals: { start: '(', end: ')', probability: 1 } 
+            }
+          )
+
+          expect(withOptional.expand()).toEqual(noOptional.expand())
+        })
+      })
+
+      xdescribe('when probability is 1', () => {
+        it('ignores text in an inline optional', () => {
+        })
+      })
+
+      xit('includes text in an inline optional with correct probability', () => {
+      })
     })
 
     it('passes its definitions as a second argument to handleNonterminal', () => {
