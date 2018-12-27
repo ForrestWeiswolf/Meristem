@@ -17,7 +17,7 @@ function validateFormatString(formatString, separators) {
   }
 }
 
-const defaultSettings = {separators: { start: '(', end: ')' }}
+const defaultSettings = { separators: { start: '(', end: ')' }, inlineOptionals: false }
 /**
  * The format according to which text will be generated.
  * @constructor
@@ -39,7 +39,7 @@ function Format(
   definitions,
   settings = {}
 ) {
-  this._settings = {...defaultSettings, ...settings}
+  this._settings = { ...defaultSettings, ...settings }
 
   validateFormatString(formatString, this._settings.separators)
 
@@ -70,8 +70,7 @@ function Format(
  * .choose method.
  * @param {object} definitionsArg - Optional; will be used if no definitions were passed to the constructor
  */
-Format.prototype.expand = function(definitionsArg) {
-  let result = ''
+Format.prototype.expand = function (definitionsArg) {
   let definitions = this.definitions || definitionsArg
   if (!definitions) {
     throw new Error(
@@ -79,19 +78,19 @@ Format.prototype.expand = function(definitionsArg) {
     )
   }
 
-  this.formatString
-    .split(this._separators.end) // splits into sections ending with a nonterminal
+  let result = ''
+  this._splitFormatString(this.formatString)
     .forEach(section => {
-      const splitSection = section.split(this._separators.start) // splits into arrays where first member is text and second is nonterminal
-      const text = splitSection[0]
-      const nonterminal = splitSection[1]
-      if (text) result += text
-      result += this._handleNonterminal(nonterminal, definitions)
+      if (section.type === 'nonterminal') {
+        result += this._handleNonterminal(section.val, definitions)
+      } else {
+        result += section.val
+      }
     })
   return result
 }
 
-Format.prototype._handleNonterminal = function(nonterminalStr, definitions) {
+Format.prototype._handleNonterminal = function (nonterminalStr, definitions) {
   if (!nonterminalStr) {
     return ''
   } else if (!definitions[nonterminalStr]) {
@@ -107,6 +106,33 @@ Format.prototype._handleNonterminal = function(nonterminalStr, definitions) {
       return new Format(nonterminal.choose(), definitions).expand()
     }
   }
+}
+
+Format.prototype._splitFormatString = function (str) {
+  const inlineOptionals = this._settings.inlineOptionals
+
+  let sections = []
+  let section = { type: 'text', val: '' }
+
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charAt(i)
+
+    if (char === this._separators.start) {
+      sections.push(section)
+      section = { type: 'nonterminal', val: '' }
+    } else if (inlineOptionals && char === inlineOptionals.start) {
+      sections.push(section)
+      section = { type: 'optional', val: '' }
+    } else if (char === this._separators.end || (inlineOptionals && char === inlineOptionals.end)) {
+      sections.push(section)
+      section = { type: 'text', val: '' }
+    } else {
+      section.val += char
+    }
+  }
+
+  sections.push(section)
+  return sections
 }
 
 module.exports = Format
