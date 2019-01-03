@@ -50,4 +50,15 @@ function mustBeClass(val, constructor, message) {
   }
 }
 
-module.exports = { checkGroupingSymbols, mustBeType, mustBeClass }
+function containsAt(outer, inner, index) {
+  for(let i = 0; i < inner.length; i++){
+    if(outer.charAt(index + i) !== inner.charAt(i)){
+      return false
+    }
+  }
+
+  return true
+}
+
+
+module.exports = { checkGroupingSymbols, mustBeType, mustBeClass, containsAt }

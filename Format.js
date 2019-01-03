@@ -1,4 +1,4 @@
-const { checkGroupingSymbols, mustBeType } = require('./utils')
+const { checkGroupingSymbols, mustBeType, containsAt } = require('./utils')
 const mustBeStr = (val, message) => mustBeType(val, 'string', message)
 
 function validateFormatString(formatString, separators) {
@@ -114,20 +114,29 @@ Format.prototype._splitFormatString = function (str) {
   let sections = []
   let section = { type: 'text', val: '' }
 
-  for (let i = 0; i < str.length; i++) {
+  let i = 0
+  while (i < str.length) {
     const char = str.charAt(i)
 
-    if (char === this._separators.start) {
+    if (containsAt(str, this._separators.start, i)) {
       sections.push(section)
       section = { type: 'nonterminal', val: '' }
-    } else if (inlineOptionals && char === inlineOptionals.start) {
+      i = i + this._separators.start.length
+    } else if (inlineOptionals && containsAt(str, inlineOptionals.start, i)) {
       sections.push(section)
       section = { type: 'optional', val: '' }
-    } else if (char === this._separators.end || (inlineOptionals && char === inlineOptionals.end)) {
+      i = i + inlineOptionals.start.length
+    } else if (containsAt(str, this._separators.end, i)) {
       sections.push(section)
       section = { type: 'text', val: '' }
+      i = i + this._separators.end.length
+    } else if (inlineOptionals && containsAt(str, inlineOptionals.end, i)) {
+      sections.push(section)
+      section = { type: 'text', val: '' }
+      i = i + inlineOptionals.end.length
     } else {
       section.val += char
+      i++
     }
   }
 
