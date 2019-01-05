@@ -174,35 +174,73 @@ describe('Format', () => {
 
     describe('if constructor set inlineOptionals setting', () => {
       describe('when probability is 1', () => {
-        it('treats text in an inline optional normally', () => {
-          const withOptional = new Format(
-            '{a}(bc)def({a})',
+        it('includes text inside an inline optional normally', () => {
+          const format = new Format(
+            '(a)bc',
             { a: 'example' },
-            { 
-              separators: { start: '{', end: '}' }, 
-              inlineOptionals: { start: '(', end: ')', probability: 1 } 
+            {
+              separators: { start: '{', end: '}' },
+              inlineOptionals: { start: '(', end: ')', probability: 1 }
             }
           )
 
-          const noOptional = new Format(
-            '{a}bcdef{a}',
-            { a: 'example' },
-            { 
-              separators: { start: '{', end: '}' }, 
-              inlineOptionals: { start: '(', end: ')', probability: 1 } 
-            }
-          )
-
-          expect(withOptional.expand()).toEqual(noOptional.expand())
+          expect(format.expand()).toEqual('abc')
         })
       })
 
-      xdescribe('when probability is 1', () => {
+      describe('when probability is 0', () => {
         it('ignores text in an inline optional', () => {
+          const format = new Format(
+            '(a)bc',
+            { a: 'example' },
+            {
+              separators: { start: '{', end: '}' },
+              inlineOptionals: { start: '(', end: ')', probability: 0 }
+            }
+          )
+
+          expect(format.expand()).toEqual('bc')
         })
       })
 
       xit('includes text in an inline optional with correct probability', () => {
+      })
+
+      it('handles nonterminals inside inline optionals', () => {
+        const format = new Format(
+          '({a} )bc',
+          { a: 'A' },
+          {
+            separators: { start: '{', end: '}' },
+            inlineOptionals: { start: '(', end: ')', probability: 1 }
+          }
+        )
+
+        expect(format.expand()).toEqual('example bc')
+      })
+
+      it('handles inline optionals inside nonterminals', () => {
+        const formatProbability1 = new Format(
+          '{a}bc',
+          { a: '(A) ' },
+          {
+            separators: { start: '{', end: '}' },
+            inlineOptionals: { start: '(', end: ')', probability: 1 }
+          }
+        )
+
+        const formatProbability0 = new Format(
+          '{a}bc',
+          { a: '(A) ' },
+          {
+            separators: { start: '{', end: '}' },
+            inlineOptionals: { start: '(', end: ')', probability: 0 }
+          }
+        )
+
+
+        expect(formatProbability1.expand()).toEqual('A bc')
+        expect(formatProbability0.expand()).toEqual('bc')
       })
     })
 
