@@ -82,7 +82,7 @@ Format.prototype.expand = function (definitionsArg) {
   this._splitFormatString(this.formatString)
     .forEach(section => {
       if (section.type === 'nonterminal') {
-        result += this._handleNonterminal(section.val, definitions)
+        result += this._handleNonterminal(section.val, definitions, this._settings)
       } else {
         result += section.val
       }

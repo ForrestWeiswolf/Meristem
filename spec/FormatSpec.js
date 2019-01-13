@@ -244,15 +244,27 @@ describe('Format', () => {
       })
     })
 
-    it('passes its definitions as a second argument to handleNonterminal', () => {
+    it('passes its definitions as second arg to handleNonterminal', () => {
+      const settings = { separators: { start: '{', end: '}' } }
       const definitions = { a: 'example' }
-      const format = new Format('(a) (b) (c)...', definitions)
-      spyOn(format, '_handleNonterminal').and.callFake(
-        (nonterminal, defs) => (nonterminal ? 'baz' : '')
-      )
+      const format = new Format('{a}...', definitions, settings)
+      spyOn(format, '_handleNonterminal')
 
-      expect(format.expand()).toEqual('baz baz baz...')
-      expect(format._handleNonterminal).toHaveBeenCalledWith('a', definitions)
+      format.expand()
+      expect(format._handleNonterminal.calls.argsFor(0)[1]).toBe(definitions)
+    })
+
+    it('passes its settings as third arg to handleNonterminal', () => {
+      const settings = { separators: { start: '{', end: '}' } }
+      const definitions = { a: 'example' }
+      const format = new Format('{a}...', definitions, settings)
+      spyOn(format, '_handleNonterminal')
+
+      format.expand()
+
+      /* The format constructor sets some settings to defaults if thety weren't in the
+      constructor, so we can't just test that it equals the settings we passed. */
+      expect(format._handleNonterminal.calls.argsFor(0)[2]).toEqual(format._settings)
     })
 
     it('uses passed definitions object if this.definitions does not exist', () => {
@@ -264,7 +276,7 @@ describe('Format', () => {
       )
 
       expect(format.expand(definitions)).toEqual('baz baz baz...')
-      expect(format._handleNonterminal).toHaveBeenCalledWith('a', definitions)
+      expect(format._handleNonterminal.calls.argsFor(0)[1]).toBe(definitions)
     })
 
     it('throws an error when this.definitions does not exist and no object is passed', () => {
