@@ -173,34 +173,30 @@ describe('Format', () => {
     })
 
     describe('if constructor set inlineOptionals setting', () => {
-      describe('when probability is 1', () => {
-        it('includes text inside an inline optional normally', () => {
-          const format = new Format(
-            '(a)bc',
-            { a: 'example' },
-            {
-              separators: { start: '{', end: '}' },
-              inlineOptionals: { start: '(', end: ')', probability: 1 }
-            }
-          )
+      it('includes text inside an inline optional normally when probability is 1', () => {
+        const format = new Format(
+          '(a)bc',
+          { a: 'example' },
+          {
+            separators: { start: '{', end: '}' },
+            inlineOptionals: { start: '(', end: ')', probability: 1 }
+          }
+        )
 
-          expect(format.expand()).toEqual('abc')
-        })
+        expect(format.expand()).toEqual('abc')
       })
 
-      describe('when probability is 0', () => {
-        it('ignores text in an inline optional', () => {
-          const format = new Format(
-            '(a)bc',
-            { a: 'example' },
-            {
-              separators: { start: '{', end: '}' },
-              inlineOptionals: { start: '(', end: ')', probability: 0 }
-            }
-          )
+      it('ignores text in an inline optional when probability is 0', () => {
+        const format = new Format(
+          '(a)bc',
+          { a: 'example' },
+          {
+            separators: { start: '{', end: '}' },
+            inlineOptionals: { start: '(', end: ')', probability: 0 }
+          }
+        )
 
-          expect(format.expand()).toEqual('bc')
-        })
+        expect(format.expand()).toEqual('bc')
       })
 
       xit('includes text in an inline optional with correct probability', () => {

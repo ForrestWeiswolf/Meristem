@@ -83,6 +83,12 @@ Format.prototype.expand = function (definitionsArg) {
     .forEach(section => {
       if (section.type === 'nonterminal') {
         result += this._handleNonterminal(section.val, definitions, this._settings)
+      } else if (section.type === 'optional') {
+        let rand = Math.random()
+        result += (rand < this._settings.inlineOptionals.probability) ?
+          section.val
+          :
+          ''
       } else {
         result += section.val
       }
