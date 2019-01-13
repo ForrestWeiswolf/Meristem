@@ -107,7 +107,7 @@ Format.prototype._handleNonterminal = function (nonterminalStr, definitions) {
     if (typeof nonterminal === 'string') {
       return new Format(nonterminal, definitions).expand()
     } else if (typeof nonterminal === 'object' && nonterminal.expand) {
-      return nonterminal.expand(definitions)
+      return nonterminal.expand(definitions, this._settings)
     } else if (typeof nonterminal === 'object' && nonterminal.choose) {
       return new Format(nonterminal.choose(), definitions).expand()
     }

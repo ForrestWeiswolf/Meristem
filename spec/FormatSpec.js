@@ -202,7 +202,7 @@ describe('Format', () => {
       xit('includes text in an inline optional with correct probability', () => {
       })
 
-      it('handles nonterminals inside inline optionals', () => {
+      xit('handles nonterminals inside inline optionals', () => {
         const format = new Format(
           '({a} )bc',
           { a: 'A' },
@@ -215,7 +215,7 @@ describe('Format', () => {
         expect(format.expand()).toEqual('example bc')
       })
 
-      it('handles inline optionals inside nonterminals', () => {
+      xit('handles inline optionals inside nonterminals', () => {
         const formatProbability1 = new Format(
           '{a}bc',
           { a: '(A) ' },
@@ -331,7 +331,21 @@ describe('Format', () => {
 
         format._handleNonterminal('recurse', definitions)
 
-        expect(format.expand).toHaveBeenCalledWith(definitions)
+        expect(format.expand.calls.argsFor(0)[0]).toBe(definitions)
+      })
+
+      it('passes the expand method this._settings', () => {
+        format = new Format('(a)', { a: 'recursive' })
+
+        let definitions = { recurse: format }
+        let settings = { inlineOptionals: { start: '(', end: ')', probability: 0.5 } }
+        spyOn(format, 'expand').and.returnValue('recursive')
+
+        format._handleNonterminal('recurse', definitions, settings)
+
+        /* The format constructor sets some settings to defaults if thety weren't in the
+        constructor, so we can't just test that it equals the settings we passed. */
+        expect(format.expand.calls.argsFor(0)[1]).toBe(format._settings)
       })
     }) // end 'when a nonterminal is itself a Format'
 
