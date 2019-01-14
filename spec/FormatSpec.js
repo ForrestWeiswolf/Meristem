@@ -199,7 +199,24 @@ describe('Format', () => {
         expect(format.expand()).toEqual('bc')
       })
 
-      xit('includes text in an inline optional with correct probability', () => {
+      it('includes text in an inline optional with correct probability', () => {
+        const format = new Format(
+          '(a)bc',
+          {},
+          {
+            separators: { start: '{', end: '}' },
+            inlineOptionals: { start: '(', end: ')', probability: 0.3 }
+          }
+        )
+
+        let count = 0
+        for(let i = 0; i < 10000; i++){
+          if(format.expand() === 'abc'){
+            count++
+          }
+        }
+
+        expect(count).toBeCloseTo(3000, -2)
       })
 
       xit('handles nonterminals inside inline optionals', () => {
