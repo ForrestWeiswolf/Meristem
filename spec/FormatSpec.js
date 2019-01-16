@@ -292,6 +292,28 @@ describe('Format', () => {
       expect(format._handleNonterminal.calls.argsFor(0)[1]).toBe(definitions)
     })
 
+    it('lets properties of passed settings override this._settings', () => {
+      const definitions = { a: 'example' }
+      const format = new Format('{a} (a)', definitions, {
+        separators: { start: '{', end: '}' }
+      })
+
+      expect(format.expand(definitions, {
+        separators: { start: '(', end: ')' }
+      })).toEqual('{a} example')
+    })
+
+    it('uses properties of this._settings if not overridden', () => {
+      const definitions = { a: 'example' }
+      const format = new Format('{a} (a)', definitions, {
+        separators: { start: '(', end: ')' }
+      })
+
+      expect(format.expand(definitions, {
+        inlineOptionals: { start: '<', end: '>', probability: 0 }
+      })).toEqual('{a} example')
+    })
+
     it('throws an error when this.definitions does not exist and no object is passed', () => {
       const format = new Format('(a)BC')
       expect(format.expand).toThrow(
