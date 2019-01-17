@@ -6,7 +6,7 @@ describe('Format', () => {
       expect(typeof Format).toEqual('function')
     })
 
-    it('can take a string and an optional non-empty object as arguments', () => {
+    it('can take a string or an optional non-empty object as arguments', () => {
       expect(new Format('(a)', { a: 'example' })).toBeDefined()
       expect(new Format('(a)')).toBeDefined()
     })
@@ -125,7 +125,7 @@ describe('Format', () => {
     })
   }) // end 'constructor'
 
-  describe('expand method', () => {
+  describe('.expand', () => {
     it('is an instance method', () => {
       expect(typeof Format.prototype.expand).toEqual('function')
     })
