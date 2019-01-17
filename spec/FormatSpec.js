@@ -210,8 +210,8 @@ describe('Format', () => {
         )
 
         let count = 0
-        for(let i = 0; i < 10000; i++){
-          if(format.expand() === 'abc'){
+        for (let i = 0; i < 10000; i++) {
+          if (format.expand() === 'abc') {
             count++
           }
         }
@@ -268,8 +268,8 @@ describe('Format', () => {
     })
 
     it('passes its settings as third arg to handleNonterminal', () => {
-      const settings = { separators: { start: '{', end: '}' } }
       const definitions = { a: 'example' }
+      const settings = { separators: { start: '{', end: '}' } }
       const format = new Format('{a}...', definitions, settings)
       spyOn(format, '_handleNonterminal')
 

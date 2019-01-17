@@ -70,8 +70,9 @@ function Format(
  * .choose method.
  * @param {object} definitionsArg - Optional; will be used if no definitions were passed to the constructor
  */
-Format.prototype.expand = function (definitionsArg) {
+Format.prototype.expand = function (definitionsArg, settingsArg) {
   let definitions = this.definitions || definitionsArg
+  let settings = { ...this._settings, ...settingsArg }
   if (!definitions) {
     throw new Error(
       'This.definitions does not exist and no definitions argument passed'
@@ -79,13 +80,13 @@ Format.prototype.expand = function (definitionsArg) {
   }
 
   let result = ''
-  this._splitFormatString(this.formatString)
+  this._splitFormatString(this.formatString, settings)
     .forEach(section => {
       if (section.type === 'nonterminal') {
-        result += this._handleNonterminal(section.val, definitions, this._settings)
+        result += this._handleNonterminal(section.val, definitions, settings)
       } else if (section.type === 'optional') {
         let rand = Math.random()
-        result += (rand < this._settings.inlineOptionals.probability) ?
+        result += (rand < settings.inlineOptionals.probability) ?
           section.val
           :
           ''
@@ -114,8 +115,9 @@ Format.prototype._handleNonterminal = function (nonterminalStr, definitions) {
   }
 }
 
-Format.prototype._splitFormatString = function (str) {
-  const inlineOptionals = this._settings.inlineOptionals
+Format.prototype._splitFormatString = function (str, settings) {
+  const inlineOptionals = settings.inlineOptionals
+  const separators = settings.separators
 
   let sections = []
   let section = { type: 'text', val: '' }
@@ -124,15 +126,15 @@ Format.prototype._splitFormatString = function (str) {
   while (i < str.length) {
     const char = str.charAt(i)
 
-    if (containsAt(str, this._separators.start, i)) {
+    if (containsAt(str, separators.start, i)) {
       sections.push(section)
       section = { type: 'nonterminal', val: '' }
-      i = i + this._separators.start.length
+      i = i + separators.start.length
     } else if (inlineOptionals && containsAt(str, inlineOptionals.start, i)) {
       sections.push(section)
       section = { type: 'optional', val: '' }
       i = i + inlineOptionals.start.length
-    } else if (containsAt(str, this._separators.end, i)) {
+    } else if (containsAt(str, separators.end, i)) {
       sections.push(section)
       section = { type: 'text', val: '' }
       i = i + this._separators.end.length
