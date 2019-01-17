@@ -87,7 +87,7 @@ Format.prototype.expand = function (definitionsArg, settingsArg) {
       } else if (section.type === 'optional') {
         let rand = Math.random()
         result += (rand < settings.inlineOptionals.probability) ?
-          section.val
+          new Format(section.val, definitions, settings).expand()
           :
           ''
       } else {
@@ -97,7 +97,7 @@ Format.prototype.expand = function (definitionsArg, settingsArg) {
   return result
 }
 
-Format.prototype._handleNonterminal = function (nonterminalStr, definitions) {
+Format.prototype._handleNonterminal = function (nonterminalStr, definitions, settings) {
   if (!nonterminalStr) {
     return ''
   } else if (!definitions[nonterminalStr]) {
@@ -106,9 +106,9 @@ Format.prototype._handleNonterminal = function (nonterminalStr, definitions) {
     let nonterminal = definitions[nonterminalStr]
 
     if (typeof nonterminal === 'string') {
-      return new Format(nonterminal, definitions).expand()
+      return new Format(nonterminal, definitions, settings).expand()
     } else if (typeof nonterminal === 'object' && nonterminal.expand) {
-      return nonterminal.expand(definitions, this._settings)
+      return nonterminal.expand(definitions, settings)
     } else if (typeof nonterminal === 'object' && nonterminal.choose) {
       return new Format(nonterminal.choose(), definitions).expand()
     }

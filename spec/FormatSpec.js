@@ -225,10 +225,10 @@ describe('Format', () => {
         expect(count).toBeCloseTo(3000, -2)
       })
 
-      xit('handles nonterminals inside inline optionals', () => {
-        const format = new Format(
+      it('handles nonterminals inside inline optionals', () => {
+        format = new Format(
           '({a} )bc',
-          { a: 'A' },
+          exampleDefinitions,
           {
             separators: { start: '{', end: '}' },
             inlineOptionals: { start: '(', end: ')', probability: 1 }
@@ -238,28 +238,23 @@ describe('Format', () => {
         expect(format.expand()).toEqual('example bc')
       })
 
-      xit('handles inline optionals inside nonterminals', () => {
-        const formatProbability1 = new Format(
+      it('handles inline optionals inside nonterminals', () => {
+        format = new Format(
           '{a}bc',
-          { a: '(A) ' },
+          { a: '(A)-' },
           {
             separators: { start: '{', end: '}' },
-            inlineOptionals: { start: '(', end: ')', probability: 1 }
+            inlineOptionals: { start: '(', end: ')', probability: 0.5 }
           }
         )
 
-        const formatProbability0 = new Format(
-          '{a}bc',
-          { a: '(A) ' },
-          {
-            separators: { start: '{', end: '}' },
-            inlineOptionals: { start: '(', end: ')', probability: 0 }
-          }
-        )
+        let results = []
+        for (let i = 0; i < 20; i++) {
+          results.push(format.expand())
+        }
 
-
-        expect(formatProbability1.expand()).toEqual('A bc')
-        expect(formatProbability0.expand()).toEqual('bc')
+        expect(results).toContain('A-bc')
+        expect(results).toContain('-bc')
       })
     })
 
@@ -360,28 +355,27 @@ describe('Format', () => {
         expect(format.expand).toHaveBeenCalled()
       })
 
-      it('passes the expand method this.definitions', () => {
+      it('passes the expand method definitions', () => {
         format = new Format('(a)', { a: 'recursive' })
-        let definitions = { recurse: format }
         spyOn(format, 'expand').and.returnValue('recursive')
+
+        let definitions = { recurse: format }
 
         format._handleNonterminal('recurse', definitions)
 
         expect(format.expand.calls.argsFor(0)[0]).toBe(definitions)
       })
 
-      it('passes the expand method this._settings', () => {
+      it('passes the expand method settings', () => {
         format = new Format('(a)', { a: 'recursive' })
+        spyOn(format, 'expand').and.returnValue('recursive')
 
         let definitions = { recurse: format }
         let settings = { inlineOptionals: { start: '(', end: ')', probability: 0.5 } }
-        spyOn(format, 'expand').and.returnValue('recursive')
 
         format._handleNonterminal('recurse', definitions, settings)
 
-        /* The format constructor sets some settings to defaults if thety weren't in the
-        constructor, so we can't just test that it equals the settings we passed. */
-        expect(format.expand.calls.argsFor(0)[1]).toBe(format._settings)
+        expect(format.expand.calls.argsFor(0)[1]).toBe(settings)
       })
     }) // end 'when a nonterminal is itself a Format'
 
