@@ -282,13 +282,10 @@ describe('Format', () => {
 
     it('uses passed definitions object if this.definitions does not exist', () => {
       const definitions = { a: 'example' }
-      const format = new Format('(a) (b) (c)...', definitions)
+      const format = new Format('(a) (a) (a)...')
+      spyOn(format, '_handleNonterminal').and.callThrough()
 
-      spyOn(format, '_handleNonterminal').and.callFake(
-        (nonterminal, defs) => (nonterminal ? 'baz' : '')
-      )
-
-      expect(format.expand(definitions)).toEqual('baz baz baz...')
+      expect(format.expand(definitions)).toEqual('example example example...')
       expect(format._handleNonterminal.calls.argsFor(0)[1]).toBe(definitions)
     })
 
