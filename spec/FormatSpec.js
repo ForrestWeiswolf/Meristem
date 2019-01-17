@@ -126,24 +126,30 @@ describe('Format', () => {
   }) // end 'constructor'
 
   describe('.expand', () => {
+    const exampleDefinitions = { a: 'example' }
+    let format
+
+    beforeEach(() => {
+      format = new Format('(a) (a) (a)...', exampleDefinitions)
+    })
+
     it('is an instance method', () => {
       expect(typeof Format.prototype.expand).toEqual('function')
     })
 
     it('calls handleNonterminal on any parenthetical nonterminals, and replaces them with the returned value', () => {
-      const format = new Format('(a) (b) (c)...', { a: 'example' })
       spyOn(format, '_handleNonterminal').and.callFake(
         (nonterminal, defs) => (nonterminal ? 'baz' : '')
       )
 
       expect(format.expand()).toEqual('baz baz baz...')
       expect(format._handleNonterminal.calls.argsFor(0)).toContain('a')
-      expect(format._handleNonterminal.calls.argsFor(1)).toContain('b')
-      expect(format._handleNonterminal.calls.argsFor(2)).toContain('c')
+      expect(format._handleNonterminal.calls.argsFor(1)).toContain('a')
+      expect(format._handleNonterminal.calls.argsFor(2)).toContain('a')
     })
 
     it('uses separators other than parentheses instead if they were passed as options to the constructor', () => {
-      const format = new Format(
+      format = new Format(
         '{a} (not a nonterminal anymore) {b}',
         { a: 'example' },
         { separators: { start: '{', end: '}' } }
@@ -158,7 +164,7 @@ describe('Format', () => {
     })
 
     it('works if separators are more than one character long', () => {
-      const format = new Format(
+      format = new Format(
         '((a)) (not a nonterminal anymore) ((b))',
         { a: 'example' },
         { separators: { start: '((', end: '))' } }
@@ -174,7 +180,7 @@ describe('Format', () => {
 
     describe('if constructor set inlineOptionals setting', () => {
       it('includes text inside an inline optional normally when probability is 1', () => {
-        const format = new Format(
+        format = new Format(
           '(a)bc',
           { a: 'example' },
           {
@@ -187,7 +193,7 @@ describe('Format', () => {
       })
 
       it('ignores text in an inline optional when probability is 0', () => {
-        const format = new Format(
+        format = new Format(
           '(a)bc',
           { a: 'example' },
           {
@@ -200,7 +206,7 @@ describe('Format', () => {
       })
 
       it('includes text in an inline optional with correct probability', () => {
-        const format = new Format(
+        format = new Format(
           '(a)bc',
           {},
           {
@@ -259,18 +265,16 @@ describe('Format', () => {
 
     it('passes its definitions as second arg to handleNonterminal', () => {
       const settings = { separators: { start: '{', end: '}' } }
-      const definitions = { a: 'example' }
-      const format = new Format('{a}...', definitions, settings)
+      format = new Format('{a}...', exampleDefinitions, settings)
       spyOn(format, '_handleNonterminal')
 
       format.expand()
-      expect(format._handleNonterminal.calls.argsFor(0)[1]).toBe(definitions)
+      expect(format._handleNonterminal.calls.argsFor(0)[1]).toBe(exampleDefinitions)
     })
 
     it('passes its settings as third arg to handleNonterminal', () => {
-      const definitions = { a: 'example' }
       const settings = { separators: { start: '{', end: '}' } }
-      const format = new Format('{a}...', definitions, settings)
+      format = new Format('{a}...', exampleDefinitions, settings)
       spyOn(format, '_handleNonterminal')
 
       format.expand()
@@ -281,38 +285,34 @@ describe('Format', () => {
     })
 
     it('uses passed definitions object if this.definitions does not exist', () => {
-      const definitions = { a: 'example' }
-      const format = new Format('(a) (a) (a)...')
       spyOn(format, '_handleNonterminal').and.callThrough()
 
-      expect(format.expand(definitions)).toEqual('example example example...')
-      expect(format._handleNonterminal.calls.argsFor(0)[1]).toBe(definitions)
+      expect(format.expand(exampleDefinitions)).toEqual('example example example...')
+      expect(format._handleNonterminal.calls.argsFor(0)[1]).toBe(exampleDefinitions)
     })
 
     it('lets properties of passed settings override this._settings', () => {
-      const definitions = { a: 'example' }
-      const format = new Format('{a} (a)', definitions, {
+      format = new Format('{a} (a)', exampleDefinitions, {
         separators: { start: '{', end: '}' }
       })
 
-      expect(format.expand(definitions, {
+      expect(format.expand(exampleDefinitions, {
         separators: { start: '(', end: ')' }
       })).toEqual('{a} example')
     })
 
     it('uses properties of this._settings if not overridden', () => {
-      const definitions = { a: 'example' }
-      const format = new Format('{a} (a)', definitions, {
+      format = new Format('{a} (a)', exampleDefinitions, {
         separators: { start: '(', end: ')' }
       })
 
-      expect(format.expand(definitions, {
+      expect(format.expand(exampleDefinitions, {
         inlineOptionals: { start: '<', end: '>', probability: 0 }
       })).toEqual('{a} example')
     })
 
     it('throws an error when this.definitions does not exist and no object is passed', () => {
-      const format = new Format('(a)BC')
+      format = new Format('(a)BC')
       expect(format.expand).toThrow(
         new Error(
           'This.definitions does not exist and no definitions argument passed'
