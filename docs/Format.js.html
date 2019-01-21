@@ -26,7 +26,7 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>const { checkGroupingSymbols, mustBeType } = require('./utils')
+            <pre class="prettyprint source linenums"><code>const { checkGroupingSymbols, mustBeType, containsAt } = require('./utils')
 const mustBeStr = (val, message) => mustBeType(val, 'string', message)
 
 function validateFormatString(formatString, separators) {
@@ -46,6 +46,19 @@ function validateFormatString(formatString, separators) {
 }
 
 /**
+ * Settings for a Format object
+ * @typedef {Object} formatSettings
+ * @property {object} [separators] An object with `start` and `end` properties:
+ * @property {string} separators.start string that will indicate the start of a nonterminal.
+ * @property {string} separators.end string that will indicate the end of a nonterminal.
+ * @property {object}  [inlineOptionals] An object with `start`, `end`, and `probability` properties:
+ * @property {string} inlineOptionals.start string that will indicate the start of an inlineOptional.
+ * @property {string} inlineOptionals.end string that will indicate the end of an inlineOptional.
+ * @property {string} inlineOptionals.probability the probability of text within an inlineOptional being included in string returned by this Format's [expand]{@link Format#expand} method
+ */
+const defaultSettings = { separators: { start: '(', end: ')' }, inlineOptionals: false }
+
+/**
  * The format according to which text will be generated.
  * @constructor
  * @param {string} formatString - A string which may contain 'nonterminals' - text which will be replaced with a specified or randomly chosen substring.
@@ -55,28 +68,27 @@ function validateFormatString(formatString, separators) {
  * the values they will be replaced with. If the value is a [WeightedRandom]{@link WeightedRandom},
  * its .choose method will be called and the result inserted instead; if it is a Format
  * its .expand method will be called and the result inserted.
- * @param {object} [settings] - an object containing the settings used by this Format:
- * settings.separators.start and settings.separators.end may contain strings that will signal
- * the start and end of a nonterminal.
- *
- * Default value: `{ separators: { start: '(', end: ')' } }`
+ * @param {formatSettings} [settings] - An object containing the settings used by this Format.
+ * Default value: `{ separators: { start: '(', end: ')' }, inlineOptionals: false }`
  */
 function Format(
   formatString,
   definitions,
-  settings = { separators: { start: '(', end: ')' } }
+  settings = {}
 ) {
-  validateFormatString(formatString, settings.separators)
+  this._settings = { ...defaultSettings, ...settings }
+
+  validateFormatString(formatString, this._settings.separators)
 
   this.formatString = formatString
   this.definitions = definitions
   this._separators = {
     start: mustBeStr(
-      settings.separators.start,
+      this._settings.separators.start,
       type => `Separators must be strings (was ${type})`
     ),
     end: mustBeStr(
-      settings.separators.end,
+      this._settings.separators.end,
       type => `Separators must be strings (was ${type})`
     ),
   }
@@ -93,30 +105,37 @@ function Format(
  * (note if it has its own definitions they will take precedence).
  * 4. If it's a [WeightedRandom]{@link WeightedRandom},  it's replaced with the returned value of a call to its
  * .choose method.
- * @param {object} definitionsArg - Optional; will be used if no definitions were passed to the constructor
+ * @param {object} [definitionsArg] - Definitions to be used if no definitions were passed to the constructor
+ * @param {formatSettings} [settings] - An object containing the settings used by this Format. Settings passed to this method will take precedence over those set in the constructor. 
  */
-Format.prototype.expand = function(definitionsArg) {
-  let result = ''
+Format.prototype.expand = function (definitionsArg, settingsArg) {
   let definitions = this.definitions || definitionsArg
+  let settings = { ...this._settings, ...settingsArg }
   if (!definitions) {
     throw new Error(
       'This.definitions does not exist and no definitions argument passed'
     )
   }
 
-  this.formatString
-    .split(this._separators.end) // splits into sections ending with a nonterminal
+  let result = ''
+  this._splitFormatString(this.formatString, settings)
     .forEach(section => {
-      const splitSection = section.split(this._separators.start) // splits into arrays where first member is text and second is nonterminal
-      const text = splitSection[0]
-      const nonterminal = splitSection[1]
-      if (text) result += text
-      result += this._handleNonterminal(nonterminal, definitions)
+      if (section.type === 'nonterminal') {
+        result += this._handleNonterminal(section.val, definitions, settings)
+      } else if (section.type === 'optional') {
+        let rand = Math.random()
+        result += (rand &lt; settings.inlineOptionals.probability) ?
+          new Format(section.val, definitions, settings).expand()
+          :
+          ''
+      } else {
+        result += section.val
+      }
     })
   return result
 }
 
-Format.prototype._handleNonterminal = function(nonterminalStr, definitions) {
+Format.prototype._handleNonterminal = function (nonterminalStr, definitions, settings) {
   if (!nonterminalStr) {
     return ''
   } else if (!definitions[nonterminalStr]) {
@@ -125,13 +144,50 @@ Format.prototype._handleNonterminal = function(nonterminalStr, definitions) {
     let nonterminal = definitions[nonterminalStr]
 
     if (typeof nonterminal === 'string') {
-      return new Format(nonterminal, definitions).expand()
+      return new Format(nonterminal, definitions, settings).expand()
     } else if (typeof nonterminal === 'object' &amp;&amp; nonterminal.expand) {
-      return nonterminal.expand(definitions)
+      return nonterminal.expand(definitions, settings)
     } else if (typeof nonterminal === 'object' &amp;&amp; nonterminal.choose) {
       return new Format(nonterminal.choose(), definitions).expand()
     }
   }
+}
+
+Format.prototype._splitFormatString = function (str, settings) {
+  const inlineOptionals = settings.inlineOptionals
+  const separators = settings.separators
+
+  let sections = []
+  let section = { type: 'text', val: '' }
+
+  let i = 0
+  while (i &lt; str.length) {
+    const char = str.charAt(i)
+
+    if (containsAt(str, separators.start, i)) {
+      sections.push(section)
+      section = { type: 'nonterminal', val: '' }
+      i = i + separators.start.length
+    } else if (inlineOptionals &amp;&amp; containsAt(str, inlineOptionals.start, i)) {
+      sections.push(section)
+      section = { type: 'optional', val: '' }
+      i = i + inlineOptionals.start.length
+    } else if (containsAt(str, separators.end, i)) {
+      sections.push(section)
+      section = { type: 'text', val: '' }
+      i = i + this._separators.end.length
+    } else if (inlineOptionals &amp;&amp; containsAt(str, inlineOptionals.end, i)) {
+      sections.push(section)
+      section = { type: 'text', val: '' }
+      i = i + inlineOptionals.end.length
+    } else {
+      section.val += char
+      i++
+    }
+  }
+
+  sections.push(section)
+  return sections
 }
 
 module.exports = Format
@@ -145,13 +201,13 @@ module.exports = Format
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Format.html">Format</a></li><li><a href="FrozenRandom.html">FrozenRandom</a></li><li><a href="WeightedRandom.html">WeightedRandom</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Format.html">Format</a></li><li><a href="FrozenRandom.html">FrozenRandom</a></li><li><a href="WeightedRandom.html">WeightedRandom</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Nov 02 2018 10:23:31 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Jan 21 2019 10:38:35 GMT-0500 (EST)
 </footer>
 
 <script> prettyPrint(); </script>

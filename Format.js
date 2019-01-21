@@ -17,7 +17,19 @@ function validateFormatString(formatString, separators) {
   }
 }
 
+/**
+ * Settings for a Format object
+ * @typedef {Object} formatSettings
+ * @property {object} [separators] An object with `start` and `end` properties:
+ * @property {string} separators.start string that will indicate the start of a nonterminal.
+ * @property {string} separators.end string that will indicate the end of a nonterminal.
+ * @property {object}  [inlineOptionals] An object with `start`, `end`, and `probability` properties:
+ * @property {string} inlineOptionals.start string that will indicate the start of an inlineOptional.
+ * @property {string} inlineOptionals.end string that will indicate the end of an inlineOptional.
+ * @property {string} inlineOptionals.probability the probability of text within an inlineOptional being included in string returned by this Format's [expand]{@link Format#expand} method
+ */
 const defaultSettings = { separators: { start: '(', end: ')' }, inlineOptionals: false }
+
 /**
  * The format according to which text will be generated.
  * @constructor
@@ -28,11 +40,8 @@ const defaultSettings = { separators: { start: '(', end: ')' }, inlineOptionals:
  * the values they will be replaced with. If the value is a [WeightedRandom]{@link WeightedRandom},
  * its .choose method will be called and the result inserted instead; if it is a Format
  * its .expand method will be called and the result inserted.
- * @param {object} [settings] - an object containing the settings used by this Format:
- * settings.separators.start and settings.separators.end may contain strings that will signal
- * the start and end of a nonterminal.
- *
- * Default value: `{ separators: { start: '(', end: ')' } }`
+ * @param {formatSettings} [settings] - An object containing the settings used by this Format.
+ * Default value: `{ separators: { start: '(', end: ')' }, inlineOptionals: false }`
  */
 function Format(
   formatString,
@@ -68,7 +77,8 @@ function Format(
  * (note if it has its own definitions they will take precedence).
  * 4. If it's a [WeightedRandom]{@link WeightedRandom},  it's replaced with the returned value of a call to its
  * .choose method.
- * @param {object} definitionsArg - Optional; will be used if no definitions were passed to the constructor
+ * @param {object} [definitionsArg] - Definitions to be used if no definitions were passed to the constructor
+ * @param {formatSettings} [settings] - An object containing the settings used by this Format. Settings passed to this method will take precedence over those set in the constructor.
  */
 Format.prototype.expand = function (definitionsArg, settingsArg) {
   let definitions = this.definitions || definitionsArg
