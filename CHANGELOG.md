@@ -10,4 +10,16 @@
 
 - Private methods are now correctly prefixed with underscores
 
-- Added a formal changelog 
+- Added a formal changelog
+
+# 2.1.0 / 2019-01-22
+
+- Update documentation to describe Format settings
+
+- Format.expand can take settings as an argument
+
+- Add inline optionals setting - defaults to false, but when set with an object containin `start`, `end`, and `probability` properties, Format.expand will randomly decide whether to include or ignore text in the format string if it is enclosed between `inlineOptionals.start` and `inlineOptionals.end`
+
+- Refactor how Format handles settings
+
+- Refactor several tests for Format

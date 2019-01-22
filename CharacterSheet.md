@@ -2,7 +2,7 @@
 
 **_Class and Level:_** Node Module 2
 
-**_XP:_** 0
+**_XP:_** 1
 
 **_GP:_** 0
 
