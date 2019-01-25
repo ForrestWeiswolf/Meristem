@@ -7,7 +7,7 @@ const mustBeArr = (val, message) => mustBeClass(val, Array, message)
  * A set of values with weights, which can return a random value
  * with probability corresponding to its weight.
  * @constructor
- * @param {...Array} options Any number of rrays of length 2,
+ * @param {...Array} options Any number of arrays of length 2,
  * each consisting of an arbitrary value and the weight assigned to it.
  * Alternatively, the constructor may be called with a single object
  * where the keys are options and the assosciated values are their weights.
