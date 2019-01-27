@@ -19,6 +19,7 @@
   },
   "license": "ISC",
   "devDependencies": {
+    "coveralls": "^3.0.2",
     "istanbul": "^1.1.0-alpha.1",
     "jasmine": "^2.99.0",
     "jsdoc": "~3.5.5",
