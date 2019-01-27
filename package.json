@@ -19,7 +19,7 @@
   },
   "license": "ISC",
   "devDependencies": {
-    "istanbul": "^0.4.5",
+    "istanbul": "^1.1.0-alpha.1",
     "jasmine": "^2.8.0",
     "jsdoc": "~3.5.5",
     "webpack": "^3.8.1"
