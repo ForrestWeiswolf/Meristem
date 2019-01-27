@@ -9,4 +9,4 @@ jobs:
   include:
     - stage: Produce Coverage
       node_js: node
-script: istanbul cover jasmine --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+script: istanbul cover node_modules/jasmine/bin/jasmine.js --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
