@@ -222,7 +222,7 @@ describe('Format', () => {
           }
         }
 
-        expect(count).toBeCloseTo(3000, -2)
+        expect(count).toBeCloseTo(3000, -3)
       })
 
       it('handles nonterminals inside inline optionals', () => {
