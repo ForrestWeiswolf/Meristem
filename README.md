@@ -2,6 +2,7 @@ Meristem
 ======
 [![npm version](http://img.shields.io/npm/v/meristem.svg?style=flat)](https://npmjs.org/package/meristem "View this project on npm")
 [![Status](https://travis-ci.org/ForrestWeiswolf/meristem.svg?branch=master)](https://travis-ci.org/ForrestWeiswolf/Meristem)
+[![Coverage Status](https://coveralls.io/repos/github/ForrestWeiswolf/Meristem/badge.svg?branch=master)](https://coveralls.io/github/ForrestWeiswolf/Meristem?branch=continuous-integration)
 [![Known Vulnerabilities](https://snyk.io/test/github/ForrestWeiswolf/Meristem/badge.svg?targetFile=package.json)](https://snyk.io/test/github/ForrestWeiswolf/Meristem?targetFile=package.json)
 
 A lightweight (no dependencies!) Javascript library for procedural text generation using a context-free grammar.
