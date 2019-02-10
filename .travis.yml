@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - "stable"
+cache:
+  directories:
+    - "node_modules"
+
+jobs:
+  include:
+    - stage: Produce Coverage
+      node_js: node
+
+script: npx istanbul cover jasmine --report lcovonly && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
