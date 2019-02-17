@@ -5,12 +5,10 @@ Meristem
 [![Coverage Status](https://coveralls.io/repos/github/ForrestWeiswolf/Meristem/badge.svg?branch=master)](https://coveralls.io/github/ForrestWeiswolf/Meristem?branch=continuous-integration)
 [![Known Vulnerabilities](https://snyk.io/test/github/ForrestWeiswolf/Meristem/badge.svg?targetFile=package.json)](https://snyk.io/test/github/ForrestWeiswolf/Meristem?targetFile=package.json)
 
-A lightweight (no dependencies!) Javascript library for procedural text generation using a context-free grammar.
-Several examples of usage can be found [here](https://github.com/ForrestWeiswolf/Meristem-examples)
+A lightweight (no dependencies!) Javascript library for procedural text generation using a context-free grammar. Like template literals, or Python's string formatting, but significantly more flexible.
 
-[Documentation](https://forrestweiswolf.github.io/Meristem/)
-
-[Changelog](https://github.com/ForrestWeiswolf/Meristem/blob/master/CHANGELOG.md)
+[Examples of usage](https://github.com/ForrestWeiswolf/Meristem-examples)
+ – [Documentation](https://forrestweiswolf.github.io/Meristem/) – [Changelog](https://github.com/ForrestWeiswolf/Meristem/blob/master/CHANGELOG.md)
 
 (I apologize for any unconventional terminology - what I'm trying to do here is close enough to the normal uses of context-free grammars that I feel I ought to follow convention, but not so similar that I'm easily able to do so without potentially misleading)
 
