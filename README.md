@@ -1,6 +1,6 @@
-Meristem
-======
-[![npm version](http://img.shields.io/npm/v/meristem.svg?style=flat)](https://npmjs.org/package/meristem "View this project on npm")
+# Meristem
+
+[![npm version](http://img.shields.io/npm/v/meristem.svg?style=flat)](https://npmjs.org/package/meristem 'View this project on npm')
 [![Build Status](https://travis-ci.org/ForrestWeiswolf/Meristem.svg?branch=master)](https://travis-ci.org/ForrestWeiswolf/Meristem)
 [![Coverage Status](https://coveralls.io/repos/github/ForrestWeiswolf/Meristem/badge.svg?branch=master)](https://coveralls.io/github/ForrestWeiswolf/Meristem?branch=continuous-integration)
 [![Known Vulnerabilities](https://snyk.io/test/github/ForrestWeiswolf/Meristem/badge.svg?targetFile=package.json)](https://snyk.io/test/github/ForrestWeiswolf/Meristem?targetFile=package.json)
@@ -37,8 +37,8 @@ If you pass an object to `Format.expand`, it will be used instead of the Format'
 
 ```javascript
 let f = new Format('(month) is the cruelest month,', { month: 'April' })
-console.log(f.expand()) //prints 'April is the cruelest month,'
-console.log(f.expand(), { month: 'May' }) //prints 'May is the cruelest month,'
+console.log(f.expand()) //logs 'April is the cruelest month,'
+console.log(f.expand(), { month: 'May' }) //logs 'May is the cruelest month,'
 ```
 
 `Format.expand` also operates recursively: if a nonterminal's definition is itself a string with parentheticals in it, they will be treated as nonterminals as well. For example:
@@ -84,7 +84,7 @@ const wRand = new WeightedRandom(['Lilacs', 1], ['Hyacinths', 2], ['That corpse 
 console.log(wRand.choose())
 ```
 
-will print `Lilacs` 1/4 of the time, `That corpse you planted last year in your garden` 1/4 of the time, and `Hyacinths` 2/4 of the time. (Since the weights total to 4.)
+will log `Lilacs` 1/4 of the time, `That corpse you planted last year in your garden`<sup>[1](#wasteland)</sup> 1/4 of the time, and `Hyacinths` 2/4 of the time. (Since the weights total to 4.)
 
 Alternatively, you may pass the WeightedRandom an object with numerical values, in which case the `.choose` method will returns a random key from that object, with probability correspning to the assosciated value. For example
 

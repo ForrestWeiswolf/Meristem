@@ -2,7 +2,7 @@
   "name": "meristem",
   "version": "2.1.0",
   "description": "Procedural text generation using a context-free grammar",
-  "author": "Forrest Weiswolf <forrest.weiswolf@gmail.com>",
+  "author": "Forrest Wolf <forrest.weiswolf@gmail.com>",
   "main": "dist/meristem.js",
   "bugs": "https://github.com/forrestWeiswolf/meristem/issues",
   "scripts": {
