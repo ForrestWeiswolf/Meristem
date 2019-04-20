@@ -31,7 +31,7 @@ When you call a Format's `.expand` method, it will return the format string, but
 let f = new Format('(month) is the cruelest month', { month: 'April' })
 console.log(f.expand()) //
 ```
-...prints ['April is the cruelest month'](https://en.wikipedia.org/wiki/The_Waste_Land).
+...logs `April is the cruelest month`<sup>[1](#wasteland)</sup>
 
 If you pass an object to `Format.expand`, it will be used instead of the Format's own definitions object. This also you to use a format with no definitions specified:
 
@@ -58,11 +58,11 @@ const burialOfTheDead = new Format(
 )
 console.log(burialOfTheDead.expand())
 ```
-...prints
+...logs
 `April is the cruelest month, breeding
 Lilacs out of the dead land, mixing
 Memory and desire, stirring
-Dull roots with spring rain`.
+Dull roots with spring rain`<sup>[1](#wasteland)</sup>
 
 
 What if the values in the definitions object aren't strings?
@@ -114,7 +114,8 @@ const divination = new Format('Here, said she, is your card, (card)', {
 
 console.log(divination.expand())
 ```
-...prints `Here, said she, is your card, the drowned Phoenician Sailor` or `Here, said she, is your card, Belladonna, The Lady of the Rocks`
+...logs `Here, said she, is your card, the drowned Phoenician Sailor`
+or `Here, said she, is your card, Belladonna, The Lady of the Rocks`<sup>[1](#wasteland)</sup>
 
 ## FrozenRandom:
 
@@ -128,7 +129,18 @@ const introductions = new Format(
 )
 ```
 
-will return `You gave me hyacinths first a year ago;\nThey called me the hyacinth girl.` or `You gave me lilacs first a year ago;\nThey called me the lilac girl.`, but _won't_ ever return `You gave me hyacinths first a year ago;\nThey called me the lilac girl.`
+will log `You gave me hyacinths first a year ago;\nThey called me the hyacinth girl.`<sup>[1](#wasteland)</sup> or `You gave me lilacs first a year ago;\nThey called me the lilac girl.`, but _won't_ ever return `You gave me hyacinths first a year ago;\nThey called me the lilac girl.`
 
 Once you call `.reset`, however, the FrozenRandom will choose randomly again the next time `.choose` is called.
 
+
+---
+
+### Footnotes
+<a name="wasteland">1</a>: [Eliot, Thomas S., *The Waste Land*, 1922](http://eliotswasteland.tripod.com/)<sup>[2](#footnotes)</sup>
+
+<a name="wasteland">2</a>: Perhaps it's not really neccessary to cite in this context, but I like footnotes, as you can see.<sup>[3](#more-footnotes)</sup>
+
+<a name="more-footnotes">3</a>: Although this may be going a bit too far. <sup>[3](#more-footnotes)</sup> <sup>[4](#xkcd)</sup>
+
+<a name="more-footnotes">4</a>: [Relevant xkcd](https://xkcd.com/1208/)
