@@ -49,7 +49,7 @@ const Format = require('./Format')
 let definitions = {
   aprilDescription: 'the cruelest month',
   'things the cruelest month does':
-    'breeding \nLilacs out of the dead land, mixing\nMemory and desire, stirring\nDull roots with (season) rain',
+    'breeding  / Lilacs out of the dead land, mixing / Memory and desire, stirring / Dull roots with (season) rain',
   season: 'spring',
 }
 const burialOfTheDead = new Format(
@@ -124,12 +124,12 @@ FrozenRandom extends WeightedRandom, and behaves identically the first time its 
 ```javascript
 const randomFlowers = new FrozenRandom( ['hyacinth', 3], ['lilac', 1] })
 const introductions = new Format(
-  'You gave me (flower)s first a year ago;\nThey called me the (flower) girl.',
+  'You gave me (flower)s first a year ago; / They called me the (flower) girl.',
   { d: day, w: weather }
 )
 ```
 
-will log `You gave me hyacinths first a year ago;\nThey called me the hyacinth girl.`<sup>[1](#wasteland)</sup> or `You gave me lilacs first a year ago;\nThey called me the lilac girl.`, but _won't_ ever return `You gave me hyacinths first a year ago;\nThey called me the lilac girl.`
+will log `You gave me hyacinths first a year ago; / They called me the hyacinth girl.`<sup>[1](#wasteland)</sup> or `You gave me lilacs first a year ago; / They called me the lilac girl.`, but _won't_ ever return `You gave me hyacinths first a year ago; / They called me the lilac girl.`
 
 Once you call `.reset`, however, the FrozenRandom will choose randomly again the next time `.choose` is called.
 
