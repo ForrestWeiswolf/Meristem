@@ -26,4 +26,4 @@
 
 # 2.1.0 / 2019-04-20
 
-- Not technically a new version, but I rewrote parts of the README.
+- Change parts of the README to be clearer and use different examples
