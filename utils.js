@@ -33,9 +33,8 @@ function typeOf(val) {
 function mustBeType(val, type, message) {
   if (typeOf(val) === type) {
     return val
-  } else {
-    throw new Error(message(typeOf(val)))
   }
+  throw new Error(message(typeOf(val)))
 }
 
 // as mustBeType, but checks that val's constructor matches the
@@ -51,8 +50,8 @@ function mustBeClass(val, constructor, message) {
 }
 
 function containsAt(outer, inner, index) {
-  for(let i = 0; i < inner.length; i++){
-    if(outer.charAt(index + i) !== inner.charAt(i)){
+  for (let i = 0; i < inner.length; i++) {
+    if (outer.charAt(index + i) !== inner.charAt(i)) {
       return false
     }
   }
@@ -61,4 +60,6 @@ function containsAt(outer, inner, index) {
 }
 
 
-module.exports = { checkGroupingSymbols, mustBeType, mustBeClass, containsAt }
+module.exports = {
+  checkGroupingSymbols, mustBeType, mustBeClass, containsAt,
+}

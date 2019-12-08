@@ -12,34 +12,33 @@ const mustBeArr = (val, message) => mustBeClass(val, Array, message)
  * Alternatively, the constructor may be called with a single object
  * where the keys are options and the assosciated values are their weights.
  */
-function WeightedRandom() {
-  if (typeof arguments[0] === 'undefined') {
+function WeightedRandom(...args) {
+  if (typeof args[0] === 'undefined') {
     throw new Error('No argument passed to WeightedRandom constructor')
-  } else if (arguments[0] === null) {
+  } else if (args[0] === null) {
     throw new Error(
-      'WeightedRandom constructor was passed null - it must be passed an object or a series of length 2 arrays'
+      'WeightedRandom constructor was passed null - it must be passed an object or a series of length 2 arrays',
     )
-  } else if (typeof arguments[0] !== 'object') {
+  } else if (typeof args[0] !== 'object') {
     throw new Error(
-      `WeightedRandom constructor was passed ${typeof arguments[0]} - it must be passed an object or a series of length 2 arrays`
+      `WeightedRandom constructor was passed ${typeof args[0]} - it must be passed an object or a series of length 2 arrays`,
     )
-  } else if (arguments[0].constructor === Array) {
-    this.choices = this._pairsToOptions(...arguments)
+  } else if (args[0].constructor === Array) {
+    this.choices = this._pairsToOptions(...args)
   } else {
-    this.choices = this._objToOptions(arguments[0])
+    this.choices = this._objToOptions(args[0])
   }
 }
 
 WeightedRandom.prototype._objToOptions = function(obj) {
-  let result = []
+  const result = []
 
-  Object.keys(obj).forEach(option => {
+  Object.keys(obj).forEach((option) => {
     result.push({
       val: option,
       weight: mustBeNum(
         obj[option],
-        type =>
-          `WeightedRandom was passed ${type} as a weight in options, instead of a number`
+        (type) => `WeightedRandom was passed ${type} as a weight in options, instead of a number`,
       ),
     })
   })
@@ -47,27 +46,25 @@ WeightedRandom.prototype._objToOptions = function(obj) {
   return result
 }
 
-WeightedRandom.prototype._pairsToOptions = function() {
-  let result = []
+WeightedRandom.prototype._pairsToOptions = function(...args) {
+  const result = []
 
-  Array.prototype.slice.call(arguments).forEach(pair => {
+  Array.prototype.slice.call(args).forEach((pair) => {
     mustBeArr(
       pair,
-      type =>
-        `WeightedRandom constructor was passed ${type} - it must be passed an object or a series of length 2 arrays`
+      (type) => `WeightedRandom constructor was passed ${type} - it must be passed an object or a series of length 2 arrays`,
     )
 
     if (pair.length !== 2) {
       throw new Error(
-        'arrays passed to WeightedOptions constructor must be of length 2'
+        'arrays passed to WeightedOptions constructor must be of length 2',
       )
     } else {
       result.push({
         val: pair[0],
         weight: mustBeNum(
           pair[1],
-          type =>
-            `WeightedRandom was passed ${type} as a weight in options, instead of a number`
+          (type) => `WeightedRandom was passed ${type} as a weight in options, instead of a number`,
         ),
       })
     }
@@ -77,9 +74,7 @@ WeightedRandom.prototype._pairsToOptions = function() {
 }
 
 WeightedRandom.prototype.getTotalWeight = function() {
-  return this.choices.reduce((sum, choice) => {
-    return choice.weight + sum
-  }, 0)
+  return this.choices.reduce((sum, choice) => choice.weight + sum, 0)
 }
 
 /**

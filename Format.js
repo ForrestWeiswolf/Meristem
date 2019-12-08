@@ -1,13 +1,13 @@
 const { checkGroupingSymbols, mustBeType, containsAt } = require('./utils')
+
 const mustBeStr = (val, message) => mustBeType(val, 'string', message)
 
 function validateFormatString(formatString, separators) {
   mustBeStr(
     formatString,
-    type =>
-      type === 'undefined'
-        ? 'No argument passed to Format constructor'
-        : `Format constructor was passed ${type} instead of string`
+    (type) => (type === 'undefined'
+      ? 'No argument passed to Format constructor'
+      : `Format constructor was passed ${type} instead of string`),
   )
 
   checkGroupingSymbols(formatString, separators)
@@ -46,7 +46,7 @@ const defaultSettings = { separators: { start: '(', end: ')' }, inlineOptionals:
 function Format(
   formatString,
   definitions,
-  settings = {}
+  settings = {},
 ) {
   this._settings = { ...defaultSettings, ...settings }
 
@@ -57,11 +57,11 @@ function Format(
   this._separators = {
     start: mustBeStr(
       this._settings.separators.start,
-      type => `Separators must be strings (was ${type})`
+      (type) => `Separators must be strings (was ${type})`,
     ),
     end: mustBeStr(
       this._settings.separators.end,
-      type => `Separators must be strings (was ${type})`
+      (type) => `Separators must be strings (was ${type})`,
     ),
   }
 }
@@ -80,26 +80,25 @@ function Format(
  * @param {object} [definitionsArg] - Definitions to be used if no definitions were passed to the constructor
  * @param {formatSettings} [settings] - An object containing the settings used by this Format. Settings passed to this method will take precedence over those set in the constructor.
  */
-Format.prototype.expand = function (definitionsArg, settingsArg) {
-  let definitions = this.definitions || definitionsArg
-  let settings = { ...this._settings, ...settingsArg }
+Format.prototype.expand = function(definitionsArg, settingsArg) {
+  const definitions = this.definitions || definitionsArg
+  const settings = { ...this._settings, ...settingsArg }
   if (!definitions) {
     throw new Error(
-      'This.definitions does not exist and no definitions argument passed'
+      'This.definitions does not exist and no definitions argument passed',
     )
   }
 
   let result = ''
   this._splitFormatString(this.formatString, settings)
-    .forEach(section => {
+    .forEach((section) => {
       if (section.type === 'nonterminal') {
         result += this._handleNonterminal(section.val, definitions, settings)
       } else if (section.type === 'optional') {
-        let rand = Math.random()
-        result += (rand < settings.inlineOptionals.probability) ?
-          new Format(section.val, definitions, settings).expand()
-          :
-          ''
+        const rand = Math.random()
+        result += (rand < settings.inlineOptionals.probability)
+          ? new Format(section.val, definitions, settings).expand()
+          : ''
       } else {
         result += section.val
       }
@@ -107,29 +106,29 @@ Format.prototype.expand = function (definitionsArg, settingsArg) {
   return result
 }
 
-Format.prototype._handleNonterminal = function (nonterminalStr, definitions, settings) {
+Format.prototype._handleNonterminal = function(nonterminalStr, definitions, settings) {
   if (!nonterminalStr) {
     return ''
-  } else if (!definitions[nonterminalStr]) {
+  } if (!definitions[nonterminalStr]) {
     throw new Error(`"${nonterminalStr}" not found in definitions`)
   } else {
-    let nonterminal = definitions[nonterminalStr]
+    const nonterminal = definitions[nonterminalStr]
 
     if (typeof nonterminal === 'string') {
       return new Format(nonterminal, definitions, settings).expand()
-    } else if (typeof nonterminal === 'object' && nonterminal.expand) {
+    } if (typeof nonterminal === 'object' && nonterminal.expand) {
       return nonterminal.expand(definitions, settings)
-    } else if (typeof nonterminal === 'object' && nonterminal.choose) {
+    } if (typeof nonterminal === 'object' && nonterminal.choose) {
       return new Format(nonterminal.choose(), definitions).expand()
     }
   }
 }
 
-Format.prototype._splitFormatString = function (str, settings) {
-  const inlineOptionals = settings.inlineOptionals
-  const separators = settings.separators
+Format.prototype._splitFormatString = function(str, settings) {
+  const { inlineOptionals } = settings
+  const { separators } = settings
 
-  let sections = []
+  const sections = []
   let section = { type: 'text', val: '' }
 
   let i = 0
@@ -139,19 +138,19 @@ Format.prototype._splitFormatString = function (str, settings) {
     if (containsAt(str, separators.start, i)) {
       sections.push(section)
       section = { type: 'nonterminal', val: '' }
-      i = i + separators.start.length
+      i += separators.start.length
     } else if (inlineOptionals && containsAt(str, inlineOptionals.start, i)) {
       sections.push(section)
       section = { type: 'optional', val: '' }
-      i = i + inlineOptionals.start.length
+      i += inlineOptionals.start.length
     } else if (containsAt(str, separators.end, i)) {
       sections.push(section)
       section = { type: 'text', val: '' }
-      i = i + this._separators.end.length
+      i += this._separators.end.length
     } else if (inlineOptionals && containsAt(str, inlineOptionals.end, i)) {
       sections.push(section)
       section = { type: 'text', val: '' }
-      i = i + inlineOptionals.end.length
+      i += inlineOptionals.end.length
     } else {
       section.val += char
       i++
