@@ -80,7 +80,7 @@ function Format(
  * @param {object} [definitionsArg] - Definitions to be used if no definitions were passed to the constructor
  * @param {formatSettings} [settings] - An object containing the settings used by this Format. Settings passed to this method will take precedence over those set in the constructor.
  */
-Format.prototype.expand = function(definitionsArg, settingsArg) {
+Format.prototype.expand = function expand(definitionsArg, settingsArg) {
   const definitions = this.definitions || definitionsArg
   const settings = { ...this._settings, ...settingsArg }
   if (!definitions) {
@@ -106,7 +106,7 @@ Format.prototype.expand = function(definitionsArg, settingsArg) {
   return result
 }
 
-Format.prototype._handleNonterminal = function(nonterminalStr, definitions, settings) {
+Format.prototype._handleNonterminal = function handleNonterminal(nonterminalStr, definitions, settings) {
   if (!nonterminalStr) {
     return ''
   } if (!definitions[nonterminalStr]) {
@@ -124,7 +124,7 @@ Format.prototype._handleNonterminal = function(nonterminalStr, definitions, sett
   }
 }
 
-Format.prototype._splitFormatString = function(str, settings) {
+Format.prototype._splitFormatString = function splitFormatString(str, settings) {
   const { inlineOptionals } = settings
   const { separators } = settings
 

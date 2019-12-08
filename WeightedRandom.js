@@ -30,7 +30,7 @@ function WeightedRandom(...args) {
   }
 }
 
-WeightedRandom.prototype._objToOptions = function(obj) {
+WeightedRandom.prototype._objToOptions = function objToOptions(obj) {
   const result = []
 
   Object.keys(obj).forEach((option) => {
@@ -46,7 +46,7 @@ WeightedRandom.prototype._objToOptions = function(obj) {
   return result
 }
 
-WeightedRandom.prototype._pairsToOptions = function(...args) {
+WeightedRandom.prototype._pairsToOptions = function pairsToOptions(...args) {
   const result = []
 
   Array.prototype.slice.call(args).forEach((pair) => {
@@ -73,7 +73,7 @@ WeightedRandom.prototype._pairsToOptions = function(...args) {
   return result
 }
 
-WeightedRandom.prototype.getTotalWeight = function() {
+WeightedRandom.prototype.getTotalWeight = function getTotalWeight() {
   return this.choices.reduce((sum, choice) => choice.weight + sum, 0)
 }
 
@@ -83,7 +83,7 @@ WeightedRandom.prototype.getTotalWeight = function() {
  * E.g. if the constructor was passed `['a', 1], ['b', 2]`, there is a
  * 1/3 chance of `'a'` being returned and a 2/3 chance of `'b'` being returned.
  */
-WeightedRandom.prototype.choose = function() {
+WeightedRandom.prototype.choose = function choose() {
   if (this.getTotalWeight() === 0) {
     return null
   }
