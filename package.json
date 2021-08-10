@@ -7,6 +7,8 @@
   "bugs": "https://github.com/forrestWeiswolf/meristem/issues",
   "scripts": {
     "test": "jasmine",
+    "lint": "eslint .",
+    "lint-fix": "eslint . --fix",
     "build": "webpack",
     "document": "jsdoc *.js -d ./docs -c jsdocConfig.json -R README.md -P package.json"
   },
