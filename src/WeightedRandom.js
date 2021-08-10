@@ -17,11 +17,11 @@ function WeightedRandom(...args) {
     throw new Error('No argument passed to WeightedRandom constructor')
   } else if (args[0] === null) {
     throw new Error(
-      'WeightedRandom constructor was passed null - it must be passed an object or a series of length 2 arrays',
+      'WeightedRandom constructor was passed null - it must be passed an object or a series of length 2 arrays'
     )
   } else if (typeof args[0] !== 'object') {
     throw new Error(
-      `WeightedRandom constructor was passed ${typeof args[0]} - it must be passed an object or a series of length 2 arrays`,
+      `WeightedRandom constructor was passed ${typeof args[0]} - it must be passed an object or a series of length 2 arrays`
     )
   } else if (args[0].constructor === Array) {
     this.choices = this._pairsToOptions(...args)
@@ -38,7 +38,7 @@ WeightedRandom.prototype._objToOptions = function objToOptions(obj) {
       val: option,
       weight: mustBeNum(
         obj[option],
-        (type) => `WeightedRandom was passed ${type} as a weight in options, instead of a number`,
+        (type) => `WeightedRandom was passed ${type} as a weight in options, instead of a number`
       ),
     })
   })
@@ -52,19 +52,19 @@ WeightedRandom.prototype._pairsToOptions = function pairsToOptions(...args) {
   Array.prototype.slice.call(args).forEach((pair) => {
     mustBeArr(
       pair,
-      (type) => `WeightedRandom constructor was passed ${type} - it must be passed an object or a series of length 2 arrays`,
+      (type) => `WeightedRandom constructor was passed ${type} - it must be passed an object or a series of length 2 arrays`
     )
 
     if (pair.length !== 2) {
       throw new Error(
-        'arrays passed to WeightedOptions constructor must be of length 2',
+        'arrays passed to WeightedOptions constructor must be of length 2'
       )
     } else {
       result.push({
         val: pair[0],
         weight: mustBeNum(
           pair[1],
-          (type) => `WeightedRandom was passed ${type} as a weight in options, instead of a number`,
+          (type) => `WeightedRandom was passed ${type} as a weight in options, instead of a number`
         ),
       })
     }

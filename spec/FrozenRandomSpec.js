@@ -1,4 +1,4 @@
-const { WeightedRandom, FrozenRandom } = require('../index')
+const { WeightedRandom, FrozenRandom } = require('../src/index')
 
 describe('FrozenRandom', () => {
   let randWithData
@@ -20,7 +20,7 @@ describe('FrozenRandom', () => {
 
       randWithData.choose()
       expect(wRandInInheritanceChain.choose.call).toHaveBeenCalledWith(
-        randWithData,
+        randWithData
       )
     })
 

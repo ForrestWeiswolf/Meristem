@@ -7,6 +7,8 @@
   "bugs": "https://github.com/forrestWeiswolf/meristem/issues",
   "scripts": {
     "test": "jasmine",
+    "lint": "eslint .",
+    "lint-fix": "eslint . --fix",
     "build": "webpack",
     "document": "jsdoc *.js -d ./docs -c jsdocConfig.json -R README.md -P package.json"
   },
@@ -19,6 +21,9 @@
   },
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/preset-env": "^7.15.0",
+    "babel-loader": "^8.2.2",
     "coveralls": "^3.0.2",
     "eslint": "^6.7.2",
     "eslint-config-airbnb": "^18.0.1",
