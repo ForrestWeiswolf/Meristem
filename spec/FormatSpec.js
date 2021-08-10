@@ -22,7 +22,7 @@ describe('Format', () => {
       }
 
       expect(emptyConstructor).toThrow(
-        new Error('No argument passed to Format constructor')
+        new Error('No argument passed to Format constructor'),
       )
     })
 
@@ -40,13 +40,13 @@ describe('Format', () => {
       }
 
       expect(objectConstructor).toThrow(
-        new Error('Format constructor was passed object instead of string')
+        new Error('Format constructor was passed object instead of string'),
       )
       expect(numConstructor).toThrow(
-        new Error('Format constructor was passed number instead of string')
+        new Error('Format constructor was passed number instead of string'),
       )
       expect(nullConstructor).toThrow(
-        new Error('Format constructor was passed null instead of string')
+        new Error('Format constructor was passed null instead of string'),
       )
     })
 
@@ -64,13 +64,13 @@ describe('Format', () => {
       }
 
       expect(noClose).toThrow(
-        new Error('Format string includes "(" without matching ")"')
+        new Error('Format string includes "(" without matching ")"'),
       )
       expect(noOpen).toThrow(
-        new Error('Format string includes ")" without matching "("')
+        new Error('Format string includes ")" without matching "("'),
       )
       expect(closeBeforeOpen).toThrow(
-        new Error('Format string includes ")" without matching "("')
+        new Error('Format string includes ")" without matching "("'),
       )
     })
 
@@ -80,7 +80,7 @@ describe('Format', () => {
       }
 
       expect(emptyParens).toThrow(
-        new Error('Empty nonterminal in Format string')
+        new Error('Empty nonterminal in Format string'),
       )
     })
 
@@ -90,12 +90,12 @@ describe('Format', () => {
           return new Format(
             '{a',
             { a: 'foo' },
-            { separators: { start: '{', end: '}' } }
+            { separators: { start: '{', end: '}' } },
           )
         }
 
         expect(noClose).toThrow(
-          new Error('Format string includes "{" without matching "}"')
+          new Error('Format string includes "{" without matching "}"'),
         )
       })
 
@@ -104,12 +104,12 @@ describe('Format', () => {
           return new Format(
             '{}',
             {},
-            { separators: { start: '{', end: '}' } }
+            { separators: { start: '{', end: '}' } },
           )
         }
 
         expect(emptyBrackets).toThrow(
-          new Error('Empty nonterminal in Format string')
+          new Error('Empty nonterminal in Format string'),
         )
       })
     })
@@ -120,7 +120,7 @@ describe('Format', () => {
       }
 
       expect(badSeparator).toThrow(
-        new Error('Separators must be strings (was null)')
+        new Error('Separators must be strings (was null)'),
       )
     })
   }) // end 'constructor'
@@ -139,7 +139,7 @@ describe('Format', () => {
 
     it('calls handleNonterminal on any parenthetical nonterminals, and replaces them with the returned value', () => {
       spyOn(format, '_handleNonterminal').and.callFake(
-        (nonterminal, defs) => (nonterminal ? 'baz' : '')
+        (nonterminal) => (nonterminal ? 'baz' : ''),
       )
 
       expect(format.expand()).toEqual('baz baz baz...')
@@ -152,10 +152,10 @@ describe('Format', () => {
       format = new Format(
         '{a} (not a nonterminal anymore) {b}',
         { a: 'example' },
-        { separators: { start: '{', end: '}' } }
+        { separators: { start: '{', end: '}' } },
       )
       spyOn(format, '_handleNonterminal').and.callFake(
-        (nonterminal, defs) => (nonterminal ? 'baz' : '')
+        (nonterminal) => (nonterminal ? 'baz' : ''),
       )
 
       expect(format.expand()).toEqual('baz (not a nonterminal anymore) baz')
@@ -167,10 +167,10 @@ describe('Format', () => {
       format = new Format(
         '((a)) (not a nonterminal anymore) ((b))',
         { a: 'example' },
-        { separators: { start: '((', end: '))' } }
+        { separators: { start: '((', end: '))' } },
       )
       spyOn(format, '_handleNonterminal').and.callFake(
-        (nonterminal, defs) => (nonterminal ? 'baz' : '')
+        (nonterminal) => (nonterminal ? 'baz' : ''),
       )
 
       expect(format.expand()).toEqual('baz (not a nonterminal anymore) baz')
@@ -185,8 +185,8 @@ describe('Format', () => {
           { a: 'example' },
           {
             separators: { start: '{', end: '}' },
-            inlineOptionals: { start: '(', end: ')', probability: 1 }
-          }
+            inlineOptionals: { start: '(', end: ')', probability: 1 },
+          },
         )
 
         expect(format.expand()).toEqual('abc')
@@ -198,8 +198,8 @@ describe('Format', () => {
           { a: 'example' },
           {
             separators: { start: '{', end: '}' },
-            inlineOptionals: { start: '(', end: ')', probability: 0 }
-          }
+            inlineOptionals: { start: '(', end: ')', probability: 0 },
+          },
         )
 
         expect(format.expand()).toEqual('bc')
@@ -211,8 +211,8 @@ describe('Format', () => {
           {},
           {
             separators: { start: '{', end: '}' },
-            inlineOptionals: { start: '(', end: ')', probability: 0.3 }
-          }
+            inlineOptionals: { start: '(', end: ')', probability: 0.3 },
+          },
         )
 
         let count = 0
@@ -231,8 +231,8 @@ describe('Format', () => {
           exampleDefinitions,
           {
             separators: { start: '{', end: '}' },
-            inlineOptionals: { start: '(', end: ')', probability: 1 }
-          }
+            inlineOptionals: { start: '(', end: ')', probability: 1 },
+          },
         )
 
         expect(format.expand()).toEqual('example bc')
@@ -244,11 +244,11 @@ describe('Format', () => {
           { a: '(A)-' },
           {
             separators: { start: '{', end: '}' },
-            inlineOptionals: { start: '(', end: ')', probability: 0.5 }
-          }
+            inlineOptionals: { start: '(', end: ')', probability: 0.5 },
+          },
         )
 
-        let results = []
+        const results = []
         for (let i = 0; i < 20; i++) {
           results.push(format.expand())
         }
@@ -287,36 +287,29 @@ describe('Format', () => {
     })
 
     it('lets properties of passed settings override this._settings', () => {
-      format = new Format('{a} (a)', exampleDefinitions, {
-        separators: { start: '{', end: '}' }
-      })
+      format = new Format('{a} (a)', exampleDefinitions, { separators: { start: '{', end: '}' } })
 
-      expect(format.expand(exampleDefinitions, {
-        separators: { start: '(', end: ')' }
-      })).toEqual('{a} example')
+      expect(format.expand(exampleDefinitions, { separators: { start: '(', end: ')' } })).toEqual('{a} example')
     })
 
     it('uses properties of this._settings if not overridden', () => {
-      format = new Format('{a} (a)', exampleDefinitions, {
-        separators: { start: '(', end: ')' }
-      })
+      format = new Format('{a} (a)', exampleDefinitions, { separators: { start: '(', end: ')' } })
 
-      expect(format.expand(exampleDefinitions, {
-        inlineOptionals: { start: '<', end: '>', probability: 0 }
-      })).toEqual('{a} example')
+      expect(format.expand(exampleDefinitions, { inlineOptionals: { start: '<', end: '>', probability: 0 } })).toEqual('{a} example')
     })
 
     it('throws an error when this.definitions does not exist and no object is passed', () => {
       format = new Format('(a)BC')
       expect(format.expand).toThrow(
         new Error(
-          'This.definitions does not exist and no definitions argument passed'
-        )
+          'This.definitions does not exist and no definitions argument passed',
+        ),
       )
     })
   }) // end 'expand'
 
   describe('handleNonterminal', () => {
+    let format
     beforeEach(() => {
       format = new Format('nothing')
     })
@@ -340,7 +333,7 @@ describe('Format', () => {
         }
 
         expect(format._handleNonterminal('nest', definitions)).toEqual(
-          '..a nest in a tree in a bog down in the valley, oh'
+          '..a nest in a tree in a bog down in the valley, oh',
         )
       })
     })
@@ -359,7 +352,7 @@ describe('Format', () => {
         format = new Format('(a)', { a: 'recursive' })
         spyOn(format, 'expand').and.returnValue('recursive')
 
-        let definitions = { recurse: format }
+        const definitions = { recurse: format }
 
         format._handleNonterminal('recurse', definitions)
 
@@ -370,8 +363,8 @@ describe('Format', () => {
         format = new Format('(a)', { a: 'recursive' })
         spyOn(format, 'expand').and.returnValue('recursive')
 
-        let definitions = { recurse: format }
-        let settings = { inlineOptionals: { start: '(', end: ')', probability: 0.5 } }
+        const definitions = { recurse: format }
+        const settings = { inlineOptionals: { start: '(', end: ')', probability: 0.5 } }
 
         format._handleNonterminal('recurse', definitions, settings)
 
@@ -401,7 +394,7 @@ describe('Format', () => {
         format = new Format('(city)', definitions)
 
         expect(format._handleNonterminal('city', definitions)).toEqual(
-          'New York City'
+          'New York City',
         )
       })
     }) // end 'when a nonterminal is a WeightedRandom'

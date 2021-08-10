@@ -20,7 +20,7 @@ describe('FrozenRandom', () => {
 
       randWithData.choose()
       expect(wRandInInheritanceChain.choose.call).toHaveBeenCalledWith(
-        randWithData
+        randWithData,
       )
     })
 
@@ -31,11 +31,11 @@ describe('FrozenRandom', () => {
     })
 
     it('returns the same thing thereafter', () => {
-      let tries = []
+      const tries = []
       for (let i = 0; i < 10; i++) {
         tries.push(randWithData.choose())
       }
-      expect(tries.every(item => item === tries[0]))
+      expect(tries.every((item) => item === tries[0]))
     })
   })
 

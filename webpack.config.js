@@ -1,4 +1,4 @@
-var path = require('path')
+const path = require('path')
 
 module.exports = {
   entry: './index.js',
@@ -6,6 +6,6 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'meristem.js',
     library: 'meristem',
-    libraryTarget: 'umd'
-  }
+    libraryTarget: 'umd',
+  },
 }
