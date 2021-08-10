@@ -26,6 +26,7 @@ module.exports = {
     }],
     "no-use-before-define": "off",
     "no-plusplus": "off",
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "consistent-return": "off"
   },
 };
