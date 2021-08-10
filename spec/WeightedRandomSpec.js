@@ -84,6 +84,7 @@ describe('WeightedRandom', () => {
     spyOn(WeightedRandom.prototype, '_objToOptions').and.callThrough()
 
     const obj = { a: 1, b: 2 }
+    // eslint-disable-next-line no-new
     new WeightedRandom(obj)
 
     expect(WeightedRandom.prototype._objToOptions).toHaveBeenCalledWith(obj)
@@ -163,6 +164,7 @@ describe('WeightedRandom', () => {
   it('calls pairsToOptions on passed arrays', () => {
     spyOn(WeightedRandom.prototype, '_pairsToOptions').and.callThrough()
 
+    // eslint-disable-next-line no-new
     new WeightedRandom(['a', 1], ['b', 2])
 
     expect(WeightedRandom.prototype._pairsToOptions).toHaveBeenCalledWith(['a', 1], ['b', 2])
