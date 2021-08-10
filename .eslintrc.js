@@ -27,6 +27,13 @@ module.exports = {
     "no-use-before-define": "off",
     "no-plusplus": "off",
     "no-underscore-dangle": "off",
-    "consistent-return": "off"
+    "consistent-return": "off",
+    "comma-dangle": ["error", {
+      "arrays": "always-multiline",
+      "objects": "always-multiline",
+      "imports": "always-multiline",
+      "exports": "always-multiline",
+      "functions": "never"
+  }]
   },
 };

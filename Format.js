@@ -7,7 +7,7 @@ function validateFormatString(formatString, separators) {
     formatString,
     (type) => (type === 'undefined'
       ? 'No argument passed to Format constructor'
-      : `Format constructor was passed ${type} instead of string`),
+      : `Format constructor was passed ${type} instead of string`)
   )
 
   checkGroupingSymbols(formatString, separators)
@@ -46,7 +46,7 @@ const defaultSettings = { separators: { start: '(', end: ')' }, inlineOptionals:
 function Format(
   formatString,
   definitions,
-  settings = {},
+  settings = {}
 ) {
   this._settings = { ...defaultSettings, ...settings }
 
@@ -57,11 +57,11 @@ function Format(
   this._separators = {
     start: mustBeStr(
       this._settings.separators.start,
-      (type) => `Separators must be strings (was ${type})`,
+      (type) => `Separators must be strings (was ${type})`
     ),
     end: mustBeStr(
       this._settings.separators.end,
-      (type) => `Separators must be strings (was ${type})`,
+      (type) => `Separators must be strings (was ${type})`
     ),
   }
 }
@@ -85,7 +85,7 @@ Format.prototype.expand = function expand(definitionsArg, settingsArg) {
   const settings = { ...this._settings, ...settingsArg }
   if (!definitions) {
     throw new Error(
-      'This.definitions does not exist and no definitions argument passed',
+      'This.definitions does not exist and no definitions argument passed'
     )
   }
 

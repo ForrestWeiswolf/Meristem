@@ -33,18 +33,18 @@ describe('WeightedRandom', () => {
     expect(emptyConstructor).toThrow(new Error('No argument passed to WeightedRandom constructor'))
     expect(strConstructor).toThrow(
       new Error(
-        'WeightedRandom constructor was passed string - it must be passed an object or a series of length 2 arrays',
-      ),
+        'WeightedRandom constructor was passed string - it must be passed an object or a series of length 2 arrays'
+      )
     )
     expect(numConstructor).toThrow(
       new Error(
-        'WeightedRandom constructor was passed number - it must be passed an object or a series of length 2 arrays',
-      ),
+        'WeightedRandom constructor was passed number - it must be passed an object or a series of length 2 arrays'
+      )
     )
     expect(nullConstructor).toThrow(
       new Error(
-        'WeightedRandom constructor was passed null - it must be passed an object or a series of length 2 arrays',
-      ),
+        'WeightedRandom constructor was passed null - it must be passed an object or a series of length 2 arrays'
+      )
     )
   })
 
@@ -67,15 +67,15 @@ describe('WeightedRandom', () => {
       }
 
       expect(stringWeight).toThrow(
-        new Error('WeightedRandom was passed string as a weight in options, instead of a number'),
+        new Error('WeightedRandom was passed string as a weight in options, instead of a number')
       )
 
       expect(objWeight).toThrow(
-        new Error('WeightedRandom was passed object as a weight in options, instead of a number'),
+        new Error('WeightedRandom was passed object as a weight in options, instead of a number')
       )
 
       expect(nullWeight).toThrow(
-        new Error('WeightedRandom was passed null as a weight in options, instead of a number'),
+        new Error('WeightedRandom was passed null as a weight in options, instead of a number')
       )
     })
   })
@@ -110,14 +110,14 @@ describe('WeightedRandom', () => {
 
       expect(nullArg).toThrow(
         new Error(
-          'WeightedRandom constructor was passed null - it must be passed an object or a series of length 2 arrays',
-        ),
+          'WeightedRandom constructor was passed null - it must be passed an object or a series of length 2 arrays'
+        )
       )
 
       expect(strArg).toThrow(
         new Error(
-          'WeightedRandom constructor was passed string - it must be passed an object or a series of length 2 arrays',
-        ),
+          'WeightedRandom constructor was passed string - it must be passed an object or a series of length 2 arrays'
+        )
       )
     })
 
@@ -147,15 +147,15 @@ describe('WeightedRandom', () => {
       }
 
       expect(stringWeight).toThrow(
-        new Error('WeightedRandom was passed string as a weight in options, instead of a number'),
+        new Error('WeightedRandom was passed string as a weight in options, instead of a number')
       )
 
       expect(objWeight).toThrow(
-        new Error('WeightedRandom was passed object as a weight in options, instead of a number'),
+        new Error('WeightedRandom was passed object as a weight in options, instead of a number')
       )
 
       expect(nullWeight).toThrow(
-        new Error('WeightedRandom was passed null as a weight in options, instead of a number'),
+        new Error('WeightedRandom was passed null as a weight in options, instead of a number')
       )
     })
   })
@@ -170,7 +170,7 @@ describe('WeightedRandom', () => {
 
   it('objToOptions and pairsToOptions return the same thing when given equivalent inputs', () => {
     expect(WeightedRandom.prototype._pairsToOptions(['foo', 1], ['bar', 2])).toEqual(
-      WeightedRandom.prototype._objToOptions({ foo: 1, bar: 2 }),
+      WeightedRandom.prototype._objToOptions({ foo: 1, bar: 2 })
     )
   })
 

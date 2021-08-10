@@ -20,7 +20,7 @@ describe('FrozenRandom', () => {
 
       randWithData.choose()
       expect(wRandInInheritanceChain.choose.call).toHaveBeenCalledWith(
-        randWithData,
+        randWithData
       )
     })
 
