@@ -1,4 +1,4 @@
-const { WeightedRandom, Format } = require('../index')
+const { WeightedRandom, Format } = require('../src/index')
 
 describe('Format', () => {
   describe('constructor', () => {

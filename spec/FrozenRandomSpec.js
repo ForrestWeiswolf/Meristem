@@ -1,4 +1,4 @@
-const { WeightedRandom, FrozenRandom } = require('../index')
+const { WeightedRandom, FrozenRandom } = require('../src/index')
 
 describe('FrozenRandom', () => {
   let randWithData

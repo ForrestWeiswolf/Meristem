@@ -1,4 +1,4 @@
-const { WeightedRandom } = require('../index')
+const { WeightedRandom } = require('../src/index')
 
 describe('WeightedRandom', () => {
   const data = { a: 1, b: 2, c: 2 }
