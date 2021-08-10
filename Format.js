@@ -106,7 +106,9 @@ Format.prototype.expand = function expand(definitionsArg, settingsArg) {
   return result
 }
 
-Format.prototype._handleNonterminal = function handleNonterminal(nonterminalStr, definitions, settings) {
+Format.prototype._handleNonterminal = function handleNonterminal(
+  nonterminalStr, definitions, settings
+) {
   if (!nonterminalStr) {
     return ''
   } if (!definitions[nonterminalStr]) {

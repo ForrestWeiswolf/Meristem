@@ -34,6 +34,12 @@ module.exports = {
       "imports": "always-multiline",
       "exports": "always-multiline",
       "functions": "never"
-  }]
+    }],
+    "max-len": ["error", {
+      "code": 100,
+      "ignoreComments": true,
+      "ignoreStrings": true,
+      "ignoreTemplateLiterals": true,
+    }]
   },
 };
