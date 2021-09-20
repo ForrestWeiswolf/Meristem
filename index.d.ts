@@ -11,5 +11,15 @@ declare module 'meristem' {
     choose: () => any;
   }
 
+  type Definitions = {
+    [key: string]: Format | WeightedRandom | string
+  }
+
   export class FrozenRandom extends WeightedRandom
+
+  export class Format {
+    constructor(formatString: string, definitions?: Definitions)
+
+    expand: (definitions?: Definitions) => string;
+  }
 }
