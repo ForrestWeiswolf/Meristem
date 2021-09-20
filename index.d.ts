@@ -5,9 +5,11 @@ type WeightedOption = {
 
 declare module 'meristem' {
   export class WeightedRandom {
-    constructor(options: {});
-    constructor(...options: Array<WeightedOption>);
+    constructor(options: {})
+    constructor(...options: Array<WeightedOption>)
 
     choose: () => any;
   }
+
+  export class FrozenRandom extends WeightedRandom
 }
