@@ -5,7 +5,7 @@ declare module 'meristem' {
   }
 
   type WeightedOptionMap = {
-    [key: any]: number
+    [key in any]: number
   }
 
   type Definitions = {
