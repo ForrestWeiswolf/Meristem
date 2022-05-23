@@ -27,3 +27,9 @@
 # 2.1.0 / 2019-04-20
 
 - Change parts of the README to be clearer and use different examples
+
+# 2.2.0 / 2022-05-23
+
+- Add type declarations
+
+- Change build process and update assorted dev dependencies

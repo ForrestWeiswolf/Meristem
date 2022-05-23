@@ -1,9 +1,10 @@
 {
   "name": "meristem",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "Procedural text generation using a context-free grammar",
   "author": "Forrest Wolf <forrest.weiswolf@gmail.com>",
   "main": "dist/meristem.js",
+  "types": "index.d.ts",
   "bugs": "https://github.com/forrestWeiswolf/meristem/issues",
   "scripts": {
     "test": "jasmine",
