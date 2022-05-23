@@ -2,7 +2,7 @@
 
 **_Class and Level:_** Node Module 2
 
-**_XP:_** 1
+**_XP:_** 2
 
 **_GP:_** 0
 
@@ -10,7 +10,7 @@
 
 ### Inventory:
 
-**_Stars (Github):_** 5
+**_Stars (Github):_** 10
 
 **_Dancing Pandas (Slack):_** 5
 
