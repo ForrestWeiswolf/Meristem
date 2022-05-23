@@ -1,6 +1,6 @@
 declare module 'meristem' {
-  type WeightedOption = {
-    0: any,
+  type WeightedOption<T> = {
+    0: T,
     1: number
   }
 
@@ -13,14 +13,14 @@ declare module 'meristem' {
   }
   export class WeightedRandom<T> {
     constructor(options: WeightedOptionMap)
-    constructor(...options: Array<WeightedOption>)
+    constructor(...options: Array<WeightedOption<T>>)
 
     choose: () => T;
   }
 
   export class FrozenRandom<T> {
     constructor(options: WeightedOptionMap)
-    constructor(...options: Array<WeightedOption>)
+    constructor(...options: Array<WeightedOption<T>>)
 
     choose: () => T;
   }
