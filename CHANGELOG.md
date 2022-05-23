@@ -30,6 +30,6 @@
 
 # 2.2.0 / 2022-05-23
 
-- Add Typescript support
+- Add type declarations
 
 - Change build process and update assorted dev dependencies
