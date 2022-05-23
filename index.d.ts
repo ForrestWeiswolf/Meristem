@@ -24,6 +24,7 @@ declare module 'meristem' {
 
     choose: () => T;
   }
+
   export class Format {
     constructor(formatString: string, definitions?: Definitions)
 
