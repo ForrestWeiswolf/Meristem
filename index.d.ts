@@ -8,6 +8,9 @@ declare module 'meristem' {
     [key: any]: number
   }
 
+  type Definitions = {
+    [key: string]: Format | WeightedRandom | string
+  }
   export class WeightedRandom {
     constructor(options: WeightedOptionMap)
     constructor(...options: Array<WeightedOption>)
@@ -16,11 +19,6 @@ declare module 'meristem' {
   }
 
   export class FrozenRandom extends WeightedRandom
-
-  type Definitions = {
-    [key: string]: Format | WeightedRandom | string
-  }
-
   export class Format {
     constructor(formatString: string, definitions?: Definitions)
 
